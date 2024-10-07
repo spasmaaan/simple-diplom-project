@@ -1,0 +1,1 @@
+export { useFaqsStore } from './useFaqsStore';

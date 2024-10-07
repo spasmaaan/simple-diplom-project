@@ -1,0 +1,13 @@
+{
+  "extends": [
+    "stylelint-config-standard-scss",
+    "stylelint-prettier/recommended",
+    "stylelint-config-idiomatic-order"
+  ],
+  "plugins": ["stylelint-prettier"],
+  "rules": {
+    "selector-class-pattern": null,
+    "max-nesting-depth": 10,
+    "prettier/prettier": true
+  }
+}

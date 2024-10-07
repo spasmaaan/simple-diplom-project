@@ -1,0 +1,1 @@
+export { useDishesStore } from './useDishesStore';

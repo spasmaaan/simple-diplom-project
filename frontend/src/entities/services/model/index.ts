@@ -1,0 +1,1 @@
+export { useServiceStoreBase } from './ServiceStore';

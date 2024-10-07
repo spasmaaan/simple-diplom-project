@@ -1,0 +1,1 @@
+export { usePhotosStore } from './usePhotosStore';

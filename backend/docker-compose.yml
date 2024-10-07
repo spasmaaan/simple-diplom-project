@@ -1,0 +1,30 @@
+version: '3.4'
+
+services:
+  webapi:
+    build:
+      context: .
+      dockerfile: src/SimpleDiplomBackend.Api/Dockerfile
+    environment:
+      - "ASPNETCORE_ENVIRONMENT=Local"
+      - "ASPNETCORE_URLS=https://+:44372;http://+:5000"
+      - "ConnectionStrings__DatabaseConnection=server=ms-sql-server;Database=applicationdb;User=sa;Password=Pa55w0rd2023;MultipleActiveResultSets=true;Encrypt=False"
+      - "ASPNETCORE_kestrel__Certificates__Default__Password=Password123"
+      - "ASPNETCORE_kestrel__Certificates__Default__Path=/https/aspnetapp.pfx"
+    ports:
+      - "5000:5000"
+      - "44372:44372"
+    volumes:
+      - ~/.aspnet/https:/https:ro
+    depends_on:
+      - ms-sql-server
+    restart: on-failure
+
+  ms-sql-server:
+    image: "mcr.microsoft.com/mssql/server:2022-latest"
+    environment:
+      - "MSSQL_SA_PASSWORD=Pa55w0rd2023"
+      - "ACCEPT_EULA=Y"
+      - MSSQL_PID=Express
+    ports:
+      - "1433:1433"

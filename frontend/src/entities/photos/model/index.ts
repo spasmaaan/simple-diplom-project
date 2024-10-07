@@ -1,0 +1,1 @@
+export { usePhotosStoreBase } from './PhotosStore';
