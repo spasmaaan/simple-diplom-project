@@ -1,5 +1,5 @@
 import { UserId } from 'shared/types';
-import { IAuthData, IRefreshTokenPayload, IUser, RoleId } from './types';
+import { IAuthData, IRefreshTokenPayload, IRegisterUser, IUser, RoleId } from './types';
 import { UserRole } from '../constants';
 
 export type AuthState = {
@@ -10,6 +10,7 @@ export type AuthState = {
   usersLoading: boolean;
   usersLoaded: boolean;
   users: IUser[];
+  isAdmin: boolean;
   rolesLoading: boolean;
   rolesLoaded: boolean;
   roles: Record<RoleId, UserRole>;
@@ -17,7 +18,7 @@ export type AuthState = {
 
 export type AuthAction = {
   login: (user: string, password: string) => Promise<void>;
-  registerUser: (user: IUser) => Promise<void>;
+  registerUser: (user: IRegisterUser) => Promise<void>;
   logout: () => Promise<void>;
   refreshToken: (authData: IRefreshTokenPayload) => Promise<void>;
   lockUser: (userId: UserId, doLock: boolean) => Promise<void>;

@@ -1,3 +1,4 @@
+import cn from 'classnames';
 import { Outlet } from 'react-router-dom';
 import { Navbar } from 'widgets/Navbar';
 import { Layout } from 'antd';
@@ -10,7 +11,7 @@ const { Header, Content } = Layout;
 
 export const AppLayout = ({ className }: IAppLayoutProps) => {
   return (
-    <Layout className={className}>
+    <Layout className={cn(styles.Root, className)}>
       <Header className={styles.Header}>
         <Navbar className={styles.Navbar} />
       </Header>

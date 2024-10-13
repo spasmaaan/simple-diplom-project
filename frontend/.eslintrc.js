@@ -49,6 +49,7 @@ module.exports = {
     '@typescript-eslint/no-unused-vars': ['warn', { argsIgnorePattern: '_' }],
     '@typescript-eslint/naming-convention': 'off',
     'no-underscore-dangle': 'off',
+    'no-void': 'off',
     'no-console': ['warn', { allow: ['warn', 'error'] }],
   },
 };

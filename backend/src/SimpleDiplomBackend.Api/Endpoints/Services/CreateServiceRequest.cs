@@ -4,7 +4,7 @@
     {
         public string Name { get; set; } = string.Empty;
         public string Description { get; set; } = string.Empty;
-        public byte[]? PreviewImage { get; set; }
+        public string PreviewImage { get; set; } = string.Empty;
         public decimal Price { get; set; }
     }
 }

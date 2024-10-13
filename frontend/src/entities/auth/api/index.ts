@@ -1,7 +1,7 @@
 import { UserId } from 'shared/types';
 import { backendGet, backendPost, backendPut } from 'shared/api';
 import { AuthBackendUrl } from 'shared/config';
-import { IAuthData, IRefreshTokenPayload, IUser, RoleId } from '../lib';
+import { IAuthData, IRefreshTokenPayload, IRegisterUser, IUser, RoleId } from '../lib';
 import { UserRole } from '../lib/constants';
 import { MOCK_AUTH_DATA, MOCK_LOGIN, MOCK_ROLES, MOCK_USERS } from './mock';
 
@@ -23,8 +23,8 @@ export const logout = async (): Promise<boolean> => {
   return (await backendPost(null, getAuthPath('/logout'))).json();
 };
 
-export const registerUser = async (user: IUser): Promise<boolean> => {
-  return (await backendPost(null, getAuthPath('/register'))).json();
+export const registerUser = async (user: IRegisterUser): Promise<boolean> => {
+  return (await backendPost(null, getAuthPath('/register'), user)).json();
 };
 
 export const lockUser = async (userId: UserId): Promise<boolean> => {

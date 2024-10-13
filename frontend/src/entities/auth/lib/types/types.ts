@@ -26,6 +26,12 @@ export interface IToken {
   revoked: Date | null;
 }
 
+export interface IRegisterUser {
+  user: UserId;
+  password: string;
+  email: string;
+}
+
 export interface ILoginResult {
   user: IUser;
   token: IToken;

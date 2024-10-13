@@ -1,4 +1,4 @@
-import { IPhoto, PhotoId } from './types';
+import { IPhoto, IPhotoData, PhotoId } from './types';
 
 export type PhotosState = {
   photosLoading: boolean;
@@ -8,7 +8,7 @@ export type PhotosState = {
 
 export type PhotosAction = {
   load: () => Promise<void>;
-  add: (photo: IPhoto) => Promise<void>;
+  add: (photoData: IPhotoData) => Promise<void>;
   edit: (photo: IPhoto) => Promise<void>;
   remove: (photoId: PhotoId) => Promise<void>;
 };

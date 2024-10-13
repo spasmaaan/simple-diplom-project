@@ -1,2 +1,2 @@
 export { useReviewsStore } from './hooks';
-export type { TemplateId, ReviewsState, ReviewsAction } from './lib';
+export type { ReviewsState, ReviewsAction } from './lib';

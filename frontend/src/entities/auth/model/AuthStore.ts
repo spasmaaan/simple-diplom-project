@@ -1,16 +1,17 @@
 import { create } from 'zustand';
 import { getItemById, setElementWithId } from 'shared/helpers';
-import { AuthAction, AuthState, IRefreshTokenPayload, IUser, UserId } from '../lib';
+import { AuthAction, AuthState, IRefreshTokenPayload, IRegisterUser, IUser, UserId } from '../lib';
 import { loadRoles, loadUsers, lockUser, login, logout, refreshToken, registerUser } from '../api';
 
 export const useAuthStoreBase = create<AuthState & AuthAction>()((set, get) => ({
   authLoading: false,
-  authenticated: false,
+  authenticated: true, // false,
   user: null,
   token: null,
   usersLoading: false,
   usersLoaded: false,
   users: [],
+  isAdmin: true, // false,
   rolesLoaded: false,
   rolesLoading: false,
   roles: {},
@@ -38,6 +39,10 @@ export const useAuthStoreBase = create<AuthState & AuthAction>()((set, get) => (
       return;
     }
     set(() => ({ authenticated: false, authLoading: true }));
+
+    // eslint-disable-next-line no-debugger
+    debugger;
+
     const token = await login(userId, password);
     set(() => ({ authenticated: true, authLoading: false, token }));
   },
@@ -64,11 +69,15 @@ export const useAuthStoreBase = create<AuthState & AuthAction>()((set, get) => (
       set(() => ({ authLoading: false }));
     }
   },
-  registerUser: async (user: IUser) => {
+  registerUser: async (user: IRegisterUser) => {
     const { authenticated, authLoading } = get();
     if (authenticated || authLoading) {
       return;
     }
+
+    // eslint-disable-next-line no-debugger
+    debugger;
+
     set(() => ({ authenticated: false, authLoading: true }));
     const isUserRegisterReady = await registerUser(user);
     set(() => ({ authenticated: false, authLoading: false, user: null, token: null }));

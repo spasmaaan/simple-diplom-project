@@ -1,0 +1,15 @@
+.Button {
+    border: 0;
+    background: none;
+    cursor: pointer;
+
+    &:hover,
+    &:active,
+    &:focus {
+        border: 0;
+        background: none;
+    }
+}
+.Title {
+    margin-top: 0.5rem;
+}

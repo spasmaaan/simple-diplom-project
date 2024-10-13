@@ -180,8 +180,8 @@ Select the .NET Web API Solution template you want to install and follow the ins
 ### Database Setup
 To setup the SQL Server database following the instructions below:
 1. Reveiw the connection string in appsettings.Development.json and update the database name.
-2. Run `dotnet ef migrations add Initial --context <ProjectName>DbContext` to add migation with EF Core 
-3. Run `dotnet ef database update Initial` to create application database.
+2. Run `dotnet ef migrations add InitialCreate --context SimpleDiplomBackendDbContext` to add migation with EF Core 
+3. Run `dotnet ef database update InitialCreate` to create application database.
 
 
 ## Third Party Libraries

@@ -4,8 +4,6 @@ using Microsoft.AspNetCore.Mvc;
 using SimpleDiplomBackend.Api.Endpoints.Faqs;
 using SimpleDiplomBackend.Application.Features.Faqs.Commands.DeleteFaq;
 using SimpleDiplomBackend.Application.Features.Faqs.Commands.UpdateFaq;
-using SimpleDiplomBackend.Application.Features.Faqs.Commands.CreateFaq;
-using SimpleDiplomBackend.Application.Features.Faqs.Commands;
 using SimpleDiplomBackend.Application.Features.Faqs.Queries.GetAllFaqs;
 using SimpleDiplomBackend.Booking.Features.Faqs.Commands.CreateFaq;
 
@@ -26,17 +24,17 @@ namespace SimpleDiplomBackend.Api.Endpoints.Faq
         ///  Retrieves all FAQ information.
         /// </summary>
         /// <returns></returns>
-        [HttpPost]
+        [HttpGet]
         [ApiVersion("1.0")]
         [Route("api/v{version:apiVersion}/faqs")]
         [ProducesResponseType(StatusCodes.Status200OK)]
-        public async Task<IActionResult> GetAll(FaqRequest request)
+        public async Task<IActionResult> GetAll()
         {
             var query = new GetAllFaqsQuery()
             {
-                SearchTerm = request.SearchTerm,
-                Offset = request.Offset,
-                Limit = request.Limit,
+                SearchTerm = "",
+                Offset = 0,
+                Limit = 10000,
             };
             var result = await _mediator.Send(query);
 

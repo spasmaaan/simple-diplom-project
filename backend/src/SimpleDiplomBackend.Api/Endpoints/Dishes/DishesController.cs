@@ -42,7 +42,7 @@ namespace SimpleDiplomBackend.Api.Endpoints.Dishes
                 Name = request.Name,
                 Description = request.Description,
                 Price = request.Price,
-                PreviewImage = request.PreviewImage,
+                PreviewImage = Convert.FromBase64String(request.PreviewImage),
                 CategoryId = request.CategoryId,
             };
             var result = await _mediator.Send(command);
@@ -62,7 +62,7 @@ namespace SimpleDiplomBackend.Api.Endpoints.Dishes
                 Name = request.Name,
                 Description = request.Description,
                 Price = request.Price,
-                PreviewImage = request.PreviewImage,
+                PreviewImage = Convert.FromBase64String(request.PreviewImage),
                 CategoryId = request.CategoryId,
             };
             var result = await _mediator.Send(command);
@@ -110,7 +110,7 @@ namespace SimpleDiplomBackend.Api.Endpoints.Dishes
                 
                 Name = request.Name,
                 Description = request.Description,
-                PreviewImage = request.PreviewImage,
+                PreviewImage = Convert.FromBase64String(request.PreviewImage),
             };
             var result = await _mediator.Send(command);
 
@@ -128,7 +128,7 @@ namespace SimpleDiplomBackend.Api.Endpoints.Dishes
                 Id = request.Id,
                 Name = request.Name,
                 Description = request.Description,
-                PreviewImage = request.PreviewImage,
+                PreviewImage = Convert.FromBase64String(request.PreviewImage),
             };
             var result = await _mediator.Send(command);
 

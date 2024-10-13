@@ -1,4 +1,5 @@
 ﻿using MediatR;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using SimpleDiplomBackend.Application.Features.Dishes.Commands;
 using SimpleDiplomBackend.Application.Features.Dishes.Commands.DeleteDish;
@@ -30,6 +31,7 @@ namespace SimpleDiplomBackend.Api.Endpoints.Services
             return Ok(result);
         }
 
+        //[Authorize(Policy = "ByUserKeyPolicy")]
         [HttpPost]
         [ApiVersion("1.0")]
         [Route("api/v{version:apiVersion}/services")]
@@ -40,7 +42,7 @@ namespace SimpleDiplomBackend.Api.Endpoints.Services
             {
                 Name = request.Name,
                 Description = request.Description,
-                PreviewImage = request.PreviewImage,
+                PreviewImage = Convert.FromBase64String(request.PreviewImage),
                 Price = request.Price
             };
             var result = await _mediator.Send(command);
@@ -59,7 +61,7 @@ namespace SimpleDiplomBackend.Api.Endpoints.Services
                 Id = request.Id,
                 Name = request.Name,
                 Description = request.Description,
-                PreviewImage = request.PreviewImage,
+                PreviewImage = Convert.FromBase64String(request.PreviewImage),
                 Price = request.Price
             };
             var result = await _mediator.Send(command);

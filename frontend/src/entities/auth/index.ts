@@ -1,2 +1,2 @@
 export { useAuthStore } from './hooks';
-export type { TemplateId, AuthState, AuthAction } from './lib';
+export type { AuthState, AuthAction } from './lib';

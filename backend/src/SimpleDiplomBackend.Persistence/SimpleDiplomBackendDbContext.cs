@@ -30,7 +30,6 @@ namespace SimpleDiplomBackend.Persistence
         public SimpleDiplomBackendDbContext(DbContextOptions<SimpleDiplomBackendDbContext> options)
             : base(options)
         {
-
         }
 
         public SimpleDiplomBackendDbContext(DbContextOptions<SimpleDiplomBackendDbContext> options,

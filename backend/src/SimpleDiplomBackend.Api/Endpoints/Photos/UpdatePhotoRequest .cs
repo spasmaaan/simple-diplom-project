@@ -3,6 +3,6 @@
     public class UpdatePhotoRequest
     {
         public int Id { get; set; }
-        public byte[]? Image { get; set; }
+        public string Image { get; set; } = string.Empty;
     }
 }

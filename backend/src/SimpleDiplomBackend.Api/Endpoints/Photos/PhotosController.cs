@@ -32,13 +32,13 @@ namespace SimpleDiplomBackend.Api.Endpoints.Photos
 
         [HttpPost]
         [ApiVersion("1.0")]
-        [Route("api/v{version:apiVersion}/bookings")]
+        [Route("api/v{version:apiVersion}/photos")]
         [ProducesResponseType(StatusCodes.Status200OK)]
         public async Task<IActionResult> Create([FromBody] CreatePhotoRequest request)
         {
             var command = new CreatePhotoCommand()
             {
-                Image = request.Image
+                Image = Convert.FromBase64String(request.Image)
             };
             var result = await _mediator.Send(command);
 
@@ -54,7 +54,7 @@ namespace SimpleDiplomBackend.Api.Endpoints.Photos
             var command = new UpdatePhotoCommand()
             {
                 Id = request.Id,
-                Image = request.Image,
+                Image = Convert.FromBase64String(request.Image),
             };
             var result = await _mediator.Send(command);
 
