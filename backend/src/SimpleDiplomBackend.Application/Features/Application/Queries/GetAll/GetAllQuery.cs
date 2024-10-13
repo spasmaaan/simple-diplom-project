@@ -23,18 +23,14 @@ namespace SimpleDiplomBackend.Application.Features.Application.Queries.GetAll
 
         public async ValueTask<PaginatedList<ApplicationOptionDto>> Handle(GetAllQuery request, CancellationToken cancellationToken)
         {
-            var products = await _dbContext.Application
+            var products = await _dbContext.ApplicationOptions
                 .AsNoTracking()
                 .Select(p => new ApplicationOptionDto
                 {
                     Id = p.Id,
-                    Name = p.Name,
-                    Description = p.Description,
-                    PreviewImage = p.PreviewImage,
-                    Price = p.Price,
-                    CategoryId = p.CategoryId                   
+                    Value = p.Value
                 })
-                .OrderBy(p => p.Name)
+                .OrderBy(p => p.Id)
                 .PaginatedListAsync(request.Offset, request.Limit, cancellationToken);
 
             return products;

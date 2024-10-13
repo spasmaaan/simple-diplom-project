@@ -6,10 +6,8 @@ namespace SimpleDiplomBackend.Application.Features.Application.Commands.UpdateAp
 {
     public record UpdateApplicationOptionCommand : IRequest
     {
-        public long Id { get; set; }
-        public string Name { get; set; } = string.Empty;
-        public string Description { get; set; } = string.Empty;
-        public decimal Price { get; set; }
+        public required string Id { get; set; }
+        public string? Value { get; set; } = string.Empty;
     }
 
     public class UpdateApplicationOptionCommandHandler : IRequestHandler<UpdateApplicationOptionCommand>
@@ -28,7 +26,12 @@ namespace SimpleDiplomBackend.Application.Features.Application.Commands.UpdateAp
             // check if dish was found.
             if (entity == null)
             {
-                throw new NotFoundException(nameof(Dishes), request.Id);
+                throw new NotFoundException(nameof(Application), request.Id);
+            }
+
+            if (request.Value != null)
+            {
+                entity.Value = request.Value;
             }
 
             // update dish record

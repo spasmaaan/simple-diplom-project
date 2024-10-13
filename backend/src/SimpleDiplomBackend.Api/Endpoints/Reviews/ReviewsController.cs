@@ -1,9 +1,9 @@
 ﻿using MediatR;
 using Microsoft.AspNetCore.Mvc;
+using SimpleDiplomBackend.Application.Features.Review.Commands.CreateReview;
 using SimpleDiplomBackend.Application.Features.Review.Commands.DeleteReview;
 using SimpleDiplomBackend.Application.Features.Review.Commands.UpdateReview;
 using SimpleDiplomBackend.Application.Features.Review.Queries.GetAll;
-using SimpleDiplomBackend.Booking.Features.Review.Commands.CreateReview;
 
 namespace SimpleDiplomBackend.Api.Endpoints.Reviews
 {

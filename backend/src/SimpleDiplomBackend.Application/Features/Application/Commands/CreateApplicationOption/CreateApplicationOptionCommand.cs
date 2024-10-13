@@ -2,13 +2,12 @@
 using SimpleDiplomBackend.Application.Shared.Interface;
 using SimpleDiplomBackend.Domain.Entities;
 
-namespace SimpleDiplomBackend.Application.Features.Dishes.Commands
+namespace SimpleDiplomBackend.Application.Features.Application.Commands
 {
     public record CreateApplicationOptionCommand : IRequest
     {
-        public string Name { get; set; } = string.Empty;
-        public string Description { get; set; } = string.Empty;
-        public decimal Price { get; set; }
+        public required string Id { get; set; }
+        public string Values { get; set; } = string.Empty;
     }
 
     public class CreateApplicationOptionCommandHandler : IRequestHandler<CreateApplicationOptionCommand>
@@ -25,12 +24,11 @@ namespace SimpleDiplomBackend.Application.Features.Dishes.Commands
 
             var entity = new ApplicationOption
             {
-                Name = request.Name,
-                Description = request.Description,
-                Price = request.Price
+                Id = request.Id,
+                Value = request.Values,
             };
 
-            _dbContext.Dishes.Add(entity);
+            _dbContext.ApplicationOptions.Add(entity);
 
             await _dbContext.SaveChangesAsync(cancellationToken);
 

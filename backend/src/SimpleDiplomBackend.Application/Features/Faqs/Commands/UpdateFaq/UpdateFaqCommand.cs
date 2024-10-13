@@ -27,7 +27,7 @@ namespace SimpleDiplomBackend.Application.Features.Faqs.Commands.UpdateFaq
             // check if dish was found.
             if (entity == null)
             {
-                throw new NotFoundException(nameof(Faq), request.Id);
+                throw new NotFoundException(nameof(Faqs), request.Id);
             }
 
             if (request.Question != null)

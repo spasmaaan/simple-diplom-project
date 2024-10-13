@@ -1,5 +1,4 @@
 ﻿using Mediator;
-using Microsoft.IdentityModel.Tokens;
 using SimpleDiplomBackend.Application.Features.Dishes.Interfaces;
 using SimpleDiplomBackend.Application.Shared.Exceptions;
 

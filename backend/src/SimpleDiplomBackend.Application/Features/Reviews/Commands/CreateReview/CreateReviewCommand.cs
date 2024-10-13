@@ -1,8 +1,7 @@
 ﻿using Mediator;
 using SimpleDiplomBackend.Application.Shared.Interface;
-using SimpleDiplomBackend.Domain.Entities;
 
-namespace SimpleDiplomBackend.Booking.Features.Review.Commands.CreateReview
+namespace SimpleDiplomBackend.Application.Features.Review.Commands.CreateReview
 {
     public record CreateReviewCommand : IRequest
     {
