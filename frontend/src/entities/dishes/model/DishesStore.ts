@@ -1,6 +1,15 @@
 import { create } from 'zustand';
 import { deleteElementWithId, getItemById, setElementWithId } from 'shared/helpers';
-import { DishCategoryId, DishesAction, DishesState, DishId, IDish, IDishCategory } from '../lib';
+import {
+  DishCategoryId,
+  DishesAction,
+  DishesState,
+  DishId,
+  IDish,
+  IDishCategory,
+  IDishCategoryData,
+  IDishData,
+} from '../lib';
 import {
   addDish,
   addDishCategory,
@@ -28,16 +37,16 @@ export const useDishesStoreBase = create<DishesState & DishesAction>()((set, get
     const dishes = await loadDishes();
     set(() => ({ dishesLoaded: true, dishesLoading: false, dishes }));
   },
-  addDish: async (dish: IDish) => {
+  addDish: async (dishData: IDishData) => {
     if (!get().dishesLoaded) {
       await get().loadDish();
     }
-    const { dishesLoading, dishes } = get();
-    if (dishesLoading || getItemById(dishes, dish.id)) {
+    const { dishesLoading } = get();
+    if (dishesLoading) {
       return;
     }
     set(() => ({ dishesLoading: true }));
-    const addedDish = await addDish(dish);
+    const addedDish = await addDish(dishData);
     set((state) => ({ dishesLoading: false, dishes: [...state.dishes, addedDish] }));
   },
   editDish: async (dish: IDish) => {
@@ -77,16 +86,16 @@ export const useDishesStoreBase = create<DishesState & DishesAction>()((set, get
     const categories = await loadDishCategories();
     set(() => ({ categoriesLoaded: true, categoriesLoading: false, categories }));
   },
-  addCategory: async (dishCategory: IDishCategory) => {
+  addCategory: async (dishCategoryData: IDishCategoryData) => {
     if (!get().categoriesLoaded) {
       await get().loadCategories();
     }
-    const { categoriesLoading, categories } = get();
-    if (categoriesLoading || getItemById(categories, dishCategory.id)) {
+    const { categoriesLoading } = get();
+    if (categoriesLoading) {
       return;
     }
     set(() => ({ categoriesLoading: true }));
-    const addedCategory = await addDishCategory(dishCategory);
+    const addedCategory = await addDishCategory(dishCategoryData);
     set((state) => ({
       categoriesLoading: false,
       categories: [...state.categories, addedCategory],

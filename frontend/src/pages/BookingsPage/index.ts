@@ -1,1 +1,1 @@
-export { BookingsPage as BookingPage } from './ui/BookingsPage';
+export { BookingsPage } from './ui/BookingsPage';

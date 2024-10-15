@@ -4,8 +4,7 @@ import { BookingStatus } from '../constants';
 
 export type BookingId = number;
 
-export interface IBooking {
-  id: BookingId;
+export interface IBookingData {
   userId?: string;
   creationDate: Date;
   startDate: Date;
@@ -13,4 +12,8 @@ export interface IBooking {
   statusId: BookingStatus;
   dishes: Record<DishId, number>;
   services: Record<ServiceId, number>;
+}
+
+export interface IBooking extends IBookingData {
+  id: BookingId;
 }

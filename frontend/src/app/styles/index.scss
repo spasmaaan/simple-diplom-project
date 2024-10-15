@@ -1,6 +1,9 @@
 @import 'reset';
 @import 'variables/global';
 
+html,
+body,
+#root,
 .app {
-  height: 100vh;
+  height: 100%;
 }

@@ -1,4 +1,4 @@
-import { FaqId, IFaq } from './types';
+import { FaqId, IFaq, IFaqData } from './types';
 
 export type FaqsState = {
   faqsLoading: boolean;
@@ -8,7 +8,7 @@ export type FaqsState = {
 
 export type FaqsAction = {
   load: () => Promise<void>;
-  add: (faq: IFaq) => Promise<void>;
+  add: (faqData: IFaqData) => Promise<void>;
   edit: (faq: IFaq) => Promise<void>;
   remove: (faqId: FaqId) => Promise<void>;
 };

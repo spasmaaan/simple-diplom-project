@@ -2,7 +2,7 @@ import { create } from 'zustand';
 import { DishId } from 'entities/dishes/lib';
 import { ServiceId } from 'entities/services/lib';
 import { getItemById, setElementWithId } from 'shared/helpers';
-import { BookingAction, BookingId, BookingState, IBooking } from '../lib';
+import { BookingAction, BookingId, BookingState, IBooking, IBookingData } from '../lib';
 import { addBooking, loadBookings, updateBooking } from '../api';
 import { BookingStatus } from '../lib/constants';
 
@@ -19,16 +19,16 @@ export const useBookingStoreBase = create<BookingState & BookingAction>()((set, 
     const bookings = await loadBookings();
     set(() => ({ bookingsLoaded: true, bookingsLoading: false, bookings }));
   },
-  add: async (booking: IBooking) => {
+  add: async (bookingData: IBookingData) => {
     if (!get().bookingsLoaded) {
       await get().load();
     }
-    const { bookingsLoading, bookings } = get();
-    if (bookingsLoading || getItemById(bookings, booking.id)) {
+    const { bookingsLoading } = get();
+    if (bookingsLoading) {
       return;
     }
     set(() => ({ bookingsLoading: true }));
-    const createdBooking = await addBooking(booking);
+    const createdBooking = await addBooking(bookingData);
     set((state) => ({
       bookingsLoading: false,
       bookings: [...state.bookings, createdBooking],

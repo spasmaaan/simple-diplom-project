@@ -18,7 +18,7 @@ export const Navbar = ({ className }: INavbarProps) => {
           <Button className={styles.BookingButton} onClick={() => navigateTo('/bookings')}>
             Забронировать
           </Button>
-          <Button onClick={() => navigateTo('/dishes')}>Кухня</Button>
+          <Button onClick={() => navigateTo('/cuisine')}>Кухня</Button>
           <Button onClick={() => navigateTo('/services')}>Сервисы</Button>
         </Space>
         <Space size="small" direction="horizontal">

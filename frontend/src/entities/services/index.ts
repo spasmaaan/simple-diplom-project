@@ -1,2 +1,2 @@
-export { useServiceStore as useSheetStore } from './hooks';
-export type { IService, ServiceId, ServiceState, ServiceAction } from './lib';
+export { useServiceStore } from './hooks';
+export type { IService, ServiceId, ServiceState, ServiceAction, IServiceData } from './lib';

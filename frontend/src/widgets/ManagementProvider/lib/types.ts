@@ -9,7 +9,7 @@ export interface IManagementProviderProps<
   removeTitle: string;
   renderDialog: (
     bindings: IManagementProviderDialogState<TId, TItemData, TItem>
-  ) => React.ReactElement;
+  ) => React.ReactElement | null;
   renderContent: (
     onAdd: () => void,
     onEdit: (id: TId) => void,

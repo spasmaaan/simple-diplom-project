@@ -13,6 +13,7 @@
   display: flex;
   height: calc(100% - var(--navbar-height));
   flex-direction: column;
+  overflow: auto;
 }
 
 .PageWrapper {

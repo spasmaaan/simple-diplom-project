@@ -1,9 +1,11 @@
-export { useDishesStore as useAuthStore } from './hooks';
+export { useDishesStore } from './hooks';
 export type {
-  DishCategoryId as DishCaterogyId,
+  DishCategoryId,
   DishId,
   IDish,
   IDishCategory,
   DishesState,
   DishesAction,
+  IDishCategoryData,
+  IDishData,
 } from './lib';

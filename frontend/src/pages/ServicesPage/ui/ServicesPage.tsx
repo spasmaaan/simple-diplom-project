@@ -1,8 +1,66 @@
 import cn from 'classnames';
+import { useServiceStore, ServiceId, IService, IServiceData } from 'entities/services';
+import { ServiceDialog } from 'features/ServiceDialog';
+import { useCallback, useEffect } from 'react';
+import { ManagementProvider } from 'widgets/ManagementProvider';
+import { ServicesPanel } from 'widgets/ServicesPanel';
 import { IServicesPageProps } from '../lib';
 
 import * as styles from './ServicesPage.module.scss';
 
 export const ServicesPage = ({ className }: IServicesPageProps) => {
-  return <div className={cn(className, styles.ServicesPage)}>ServicesPage</div>;
+  const { services, servicesLoaded, add, edit, remove, load } = useServiceStore();
+
+  const createDialogOkHandler = useCallback(
+    (id: ServiceId | undefined, handleOk: (item: IService | IServiceData) => void) =>
+      (data: IServiceData) => {
+        handleOk({
+          ...data,
+          ...(id ? { id } : {}),
+        });
+      },
+    []
+  );
+
+  useEffect(() => {
+    if (!servicesLoaded) {
+      load();
+    }
+  }, [load, servicesLoaded]);
+
+  return (
+    <ManagementProvider
+      className={cn(styles.ServicesPage, className)}
+      addTitle="Новый сервис"
+      editTitle="Изменить сервис"
+      removeTitle="Удалить сервис?"
+      renderDialog={({ open, id, title, okText, onOk, onClose }) => (
+        <ServiceDialog
+          open={open}
+          title={title}
+          defaults={services.find((service) => service.id === id)}
+          okText={okText}
+          onOk={createDialogOkHandler(id, onOk)}
+          onClose={onClose}
+        />
+      )}
+      renderContent={(onAdd, onEdit, onRemove) =>
+        servicesLoaded ? (
+          <ServicesPanel
+            services={services}
+            pricePostfix="₽"
+            showCounts
+            counts={{}}
+            onChangeCount={() => {}}
+            onAdd={onAdd}
+            onEdit={onEdit}
+            onRemove={onRemove}
+          />
+        ) : null
+      }
+      add={add}
+      edit={edit}
+      remove={remove}
+    />
+  );
 };

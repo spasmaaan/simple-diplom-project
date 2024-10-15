@@ -1,4 +1,4 @@
-import { IReview, ReviewId } from './types';
+import { IReview, IReviewData, ReviewId } from './types';
 
 export type ReviewsState = {
   reviewsLoading: boolean;
@@ -8,7 +8,7 @@ export type ReviewsState = {
 
 export type ReviewsAction = {
   load: () => Promise<void>;
-  add: (review: IReview) => Promise<void>;
+  add: (reviewData: IReviewData) => Promise<void>;
   edit: (review: IReview) => Promise<void>;
   remove: (reviewId: ReviewId) => Promise<void>;
 };

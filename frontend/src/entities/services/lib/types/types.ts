@@ -1,9 +1,13 @@
 export type ServiceId = number;
 
-export interface IService {
-  id: ServiceId;
+export interface IServiceData {
   name: string;
   description: string;
   previewImage: string;
   price: number;
+  maxCount?: number;
+}
+
+export interface IService extends IServiceData {
+  id: ServiceId;
 }

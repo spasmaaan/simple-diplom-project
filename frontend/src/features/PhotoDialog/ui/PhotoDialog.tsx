@@ -1,35 +1,40 @@
 import cn from 'classnames';
 import { Modal, Space } from 'antd';
-import { useCallback, useState } from 'react';
+import { useCallback, useEffect, useState } from 'react';
 import { UploadImageCard } from 'shared/components/UploadImageCard';
-import { IPhotoDialogProps, PhotoDialogWidth } from '../lib';
+import { IPhotoDialogProps, DialogWidth } from '../lib';
 
 import * as styles from './PhotoDialog.module.scss';
 
 export const PhotoDialog = ({
   className,
   okText,
-  onClose,
-  onOk,
   open,
   title,
+  defaults,
+  onClose,
+  onOk,
 }: IPhotoDialogProps) => {
-  const [uploadingImageBase64, setUploadingImageBase64] = useState<string>('');
+  const [image, setImage] = useState<string>('');
 
   const onImageUploaded = useCallback((imageBase64: string) => {
-    setUploadingImageBase64(imageBase64);
+    setImage(imageBase64);
   }, []);
 
-  const closePhotoDialog = useCallback(() => {
-    setUploadingImageBase64('');
+  const closeDialog = useCallback(() => {
+    setImage('');
     onClose();
   }, [onClose]);
 
   const handleOk = useCallback(() => {
     onOk({
-      image: uploadingImageBase64,
+      image,
     });
-  }, [uploadingImageBase64, onOk]);
+  }, [image, onOk]);
+
+  useEffect(() => {
+    setImage(defaults?.image || '');
+  }, [defaults]);
 
   return (
     <Modal
@@ -38,15 +43,15 @@ export const PhotoDialog = ({
       title={title}
       okText={okText}
       cancelText="Отмена"
-      width={PhotoDialogWidth}
+      width={DialogWidth}
       onOk={handleOk}
-      onCancel={closePhotoDialog}
-      onClose={closePhotoDialog}
+      onCancel={closeDialog}
+      onClose={closeDialog}
     >
       <Space className={styles.Content} direction="vertical" size="middle">
         <UploadImageCard
           text="Изображение"
-          previewLoadedImage={uploadingImageBase64}
+          previewLoadedImage={image}
           onImageEndLoading={onImageUploaded}
         />
       </Space>

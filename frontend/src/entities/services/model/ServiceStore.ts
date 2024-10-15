@@ -1,6 +1,6 @@
 import { create } from 'zustand';
 import { deleteElementWithId, setElementWithId } from 'shared/helpers';
-import { IService, ServiceAction, ServiceId, ServiceState } from '../lib';
+import { IService, IServiceData, ServiceAction, ServiceId, ServiceState } from '../lib';
 import { addService, editService, loadServices, removeService } from '../api';
 
 export const useServiceStoreBase = create<ServiceState & ServiceAction>()((set, get) => ({
@@ -14,18 +14,18 @@ export const useServiceStoreBase = create<ServiceState & ServiceAction>()((set, 
     }
     set(() => ({ servicesLoaded: false, servicesLoading: true }));
     const services = await loadServices();
-    set(() => ({ servicesLoaded: true, servicesLoading: false, options: services }));
+    set(() => ({ servicesLoaded: true, servicesLoading: false, services }));
   },
-  add: async (service: IService) => {
+  add: async (serviceData: IServiceData) => {
     if (!get().servicesLoaded) {
       await get().load();
     }
-    const { servicesLoading, services } = get();
-    if (servicesLoading || services.find((currentDish) => currentDish.id === service.id)) {
+    const { servicesLoading } = get();
+    if (servicesLoading) {
       return;
     }
     set(() => ({ servicesLoading: true }));
-    const addedDish = await addService(service);
+    const addedDish = await addService(serviceData);
     set((state) => ({ servicesLoading: false, services: [...state.services, addedDish] }));
   },
   edit: async (service: IService) => {

@@ -1,6 +1,6 @@
 import { create } from 'zustand';
 import { deleteElementWithId, setElementWithId } from 'shared/helpers';
-import { FaqId, FaqsAction, FaqsState, IFaq } from '../lib';
+import { FaqId, FaqsAction, FaqsState, IFaq, IFaqData } from '../lib';
 import { addFaq, editFaq, loadFaqs, removeFaq } from '../api';
 
 export const useFaqsStoreBase = create<FaqsState & FaqsAction>()((set, get) => ({
@@ -14,18 +14,17 @@ export const useFaqsStoreBase = create<FaqsState & FaqsAction>()((set, get) => (
     }
     set(() => ({ faqsLoaded: false, faqsLoading: true }));
     const faqs = await loadFaqs();
-    set(() => ({ faqsLoaded: true, faqsLoading: false, options: faqs }));
+    set(() => ({ faqsLoaded: true, faqsLoading: false, faqs }));
   },
-  add: async (faq: IFaq) => {
+  add: async (faqData: IFaqData) => {
     if (!get().faqsLoaded) {
       await get().load();
     }
-    const { faqsLoading, faqs } = get();
-    if (faqsLoading || faqs.find((currentDish) => currentDish.id === faq.id)) {
+    if (get().faqsLoading) {
       return;
     }
     set(() => ({ faqsLoading: true }));
-    const addedFaq = await addFaq(faq);
+    const addedFaq = await addFaq(faqData);
     set((state) => ({ faqsLoading: false, faqs: [...state.faqs, addedFaq] }));
   },
   edit: async (faq: IFaq) => {

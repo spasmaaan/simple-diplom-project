@@ -1,6 +1,6 @@
 import { create } from 'zustand';
 import { deleteElementWithId, setElementWithId } from 'shared/helpers';
-import { IReview, ReviewId, ReviewsAction, ReviewsState } from '../lib';
+import { IReview, IReviewData, ReviewId, ReviewsAction, ReviewsState } from '../lib';
 import { addReview, editReview, loadReviews, removeReview } from '../api';
 
 export const useReviewsStoreBase = create<ReviewsState & ReviewsAction>()((set, get) => ({
@@ -14,18 +14,18 @@ export const useReviewsStoreBase = create<ReviewsState & ReviewsAction>()((set, 
     }
     set(() => ({ reviewsLoaded: false, reviewsLoading: true }));
     const reviews = await loadReviews();
-    set(() => ({ reviewsLoaded: true, reviewsLoading: false, options: reviews }));
+    set(() => ({ reviewsLoaded: true, reviewsLoading: false, reviews }));
   },
-  add: async (review: IReview) => {
+  add: async (reviewData: IReviewData) => {
     if (!get().reviewsLoaded) {
       await get().load();
     }
-    const { reviewsLoading, reviews } = get();
-    if (reviewsLoading || reviews.find((currentDish) => currentDish.id === review.id)) {
+    const { reviewsLoading } = get();
+    if (reviewsLoading) {
       return;
     }
     set(() => ({ reviewsLoading: true }));
-    const addedReview = await addReview(review);
+    const addedReview = await addReview(reviewData);
     set((state) => ({ reviewsLoading: false, reviews: [...state.reviews, addedReview] }));
   },
   edit: async (review: IReview) => {

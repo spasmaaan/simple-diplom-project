@@ -1,12 +1,14 @@
-import { UserId } from 'shared/types';
-
 export type ReviewId = number;
 
-export interface IReview {
-  id: ReviewId;
-  userId: UserId;
-  userName: string;
+export interface IReviewData {
+  fullName: string;
+  shortName: string;
   message: string;
-  rating: number;
+  rating?: number;
   creationDate: Date;
+  me: boolean;
+}
+
+export interface IReview extends IReviewData {
+  id: ReviewId;
 }

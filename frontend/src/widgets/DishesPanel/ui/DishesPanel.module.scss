@@ -1,0 +1,31 @@
+.TopControls {
+  align-items: flex-start;
+  margin-bottom: 1rem;
+}
+
+.Back {
+  margin-right: 1rem;
+}
+
+.Category {
+  flex-grow: 1;
+  text-align: center;
+  color: black !important;
+}
+
+.Services {
+  gap: 0.5rem;
+}
+
+.Controls {
+  width: 100%;
+}
+
+.Item {
+  width: 100%;
+  padding: 0.5rem;
+}
+
+.PriceControls {
+  align-items: end;
+}
