@@ -1,4 +1,4 @@
-﻿using Mediator;
+﻿using MediatR;
 using SimpleDiplomBackend.Application.Features.Authentication.Interfaces;
 using SimpleDiplomBackend.Application.Shared.Exceptions;
 
@@ -20,7 +20,7 @@ namespace SimpleDiplomBackend.Application.Features.Authentication.Commands.Login
             _jwtTokenService = jwtTokenService;
         }
 
-        public async ValueTask<AuthenticationResult> Handle(LoginCommand request, CancellationToken cancellationToken)
+        public async Task<AuthenticationResult> Handle(LoginCommand request, CancellationToken cancellationToken)
         {
             // validate email and password
             var result = await _authenticationService.PasswordSignInAsync(request.Email, request.Password, false);
@@ -33,7 +33,6 @@ namespace SimpleDiplomBackend.Application.Features.Authentication.Commands.Login
 
             // Generate JWT token response if validation is successful
             var response = await _jwtTokenService.GenerateClaimsTokenAsync(request.Email, cancellationToken);
-
             return new AuthenticationResult
             {
                 AccessToken = response.AccessToken,

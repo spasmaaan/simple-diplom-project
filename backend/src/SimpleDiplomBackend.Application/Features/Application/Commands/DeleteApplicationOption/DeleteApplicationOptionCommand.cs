@@ -1,4 +1,4 @@
-﻿using Mediator;
+﻿using MediatR;
 using SimpleDiplomBackend.Application.Shared.Exceptions;
 using SimpleDiplomBackend.Application.Shared.Interface;
 
@@ -18,7 +18,7 @@ namespace SimpleDiplomBackend.Application.Features.Application.Commands.DeleteAp
             _dbContext = dbContext;
         }
 
-        public async ValueTask<Unit> Handle(DeleteApplicationOptionCommand request, CancellationToken cancellationToken)
+        public async Task Handle(DeleteApplicationOptionCommand request, CancellationToken cancellationToken)
         {
             var entity = _dbContext.Dishes.FirstOrDefault(p => p.Id == request.Id);
 
@@ -29,8 +29,6 @@ namespace SimpleDiplomBackend.Application.Features.Application.Commands.DeleteAp
 
             _dbContext.Dishes.Remove(entity);
             await _dbContext.SaveChangesAsync(cancellationToken);
-
-            return Unit.Value;
 
         }
     }

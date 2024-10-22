@@ -1,4 +1,4 @@
-﻿using Mediator;
+﻿using MediatR;
 using Microsoft.EntityFrameworkCore;
 using SimpleDiplomBackend.Application.Shared.Extensions;
 using SimpleDiplomBackend.Application.Shared.Interface;
@@ -21,7 +21,7 @@ namespace SimpleDiplomBackend.Application.Features.Booking.Queries.GetAll
             _dbContext = dbContext;
         }
 
-        public async ValueTask<PaginatedList<BookingDto>> Handle(GetAllQuery request, CancellationToken cancellationToken)
+        public async Task<PaginatedList<BookingDto>> Handle(GetAllQuery request, CancellationToken cancellationToken)
         {
             return await _dbContext.Bookings
                 .AsNoTracking()

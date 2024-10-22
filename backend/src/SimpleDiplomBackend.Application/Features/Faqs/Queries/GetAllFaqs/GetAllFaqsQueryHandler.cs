@@ -1,4 +1,4 @@
-﻿using Mediator;
+﻿using MediatR;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
 using SimpleDiplomBackend.Application.Shared.Extensions;
@@ -18,7 +18,7 @@ namespace SimpleDiplomBackend.Application.Features.Faqs.Queries.GetAllFaqs
             _logger = logger;
         }
 
-        public async ValueTask<PaginatedList<GetFaqDto>> Handle(GetAllFaqsQuery request, CancellationToken cancellationToken)
+        public async Task<PaginatedList<GetFaqDto>> Handle(GetAllFaqsQuery request, CancellationToken cancellationToken)
         {
             var faqQuery = _dbContext.Faqs.AsQueryable();
 

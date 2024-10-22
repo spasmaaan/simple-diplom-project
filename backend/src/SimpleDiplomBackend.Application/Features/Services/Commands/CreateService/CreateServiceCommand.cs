@@ -1,10 +1,10 @@
-﻿using Mediator;
+﻿using MediatR;
 using SimpleDiplomBackend.Application.Shared.Interface;
 using SimpleDiplomBackend.Domain.Entities;
 
 namespace SimpleDiplomBackend.Booking.Features.Service.Commands.CreateService
 {
-    public record CreateServiceCommand : IRequest
+    public record CreateServiceCommand : IRequest<CommercialService>
     {
         public string Name { get; set; } = string.Empty;
         public string Description { get; set; } = string.Empty;
@@ -12,7 +12,7 @@ namespace SimpleDiplomBackend.Booking.Features.Service.Commands.CreateService
         public decimal Price { get; set; }
     }
 
-    public class CreateServiceCommandHandler : IRequestHandler<CreateServiceCommand>
+    public class CreateServiceCommandHandler : IRequestHandler<CreateServiceCommand, CommercialService>
     {
         private readonly ISimpleDiplomBackendDbContext _dbContext;
 
@@ -21,9 +21,8 @@ namespace SimpleDiplomBackend.Booking.Features.Service.Commands.CreateService
             _dbContext = dbContext;
         }
 
-        public async ValueTask<Unit> Handle(CreateServiceCommand request, CancellationToken cancellationToken)
+        public async Task<CommercialService> Handle(CreateServiceCommand request, CancellationToken cancellationToken)
         {
-
             var entity = new CommercialService
             {
                 Name = request.Name,
@@ -32,12 +31,11 @@ namespace SimpleDiplomBackend.Booking.Features.Service.Commands.CreateService
                 Price = request.Price
             };
 
-            _dbContext.CommercialServices.Add(entity);
+            var added = _dbContext.CommercialServices.Add(entity);
 
             await _dbContext.SaveChangesAsync(cancellationToken);
 
-            return Unit.Value;
+            return added.Entity;
         }
     }
-
 }

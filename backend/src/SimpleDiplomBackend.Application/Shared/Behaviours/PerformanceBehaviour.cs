@@ -1,11 +1,11 @@
-﻿using Mediator;
+﻿using MediatR;
 using Microsoft.Extensions.Logging;
 using System.Diagnostics;
 
 namespace SimpleDiplomBackend.Application.Shared.Behaviours
 {
     public class PerformanceBehaviour<TRequest, TResponse> : IPipelineBehavior<TRequest, TResponse>
-        where TRequest : IRequest<TResponse>
+        where TRequest : notnull
     {
         private readonly Stopwatch _timer;
         private readonly ILogger<TRequest> _logger;
@@ -16,11 +16,11 @@ namespace SimpleDiplomBackend.Application.Shared.Behaviours
             _logger = logger;
         }
 
-        public async ValueTask<TResponse> Handle(TRequest message, CancellationToken cancellationToken, MessageHandlerDelegate<TRequest, TResponse> next)
+        public async Task<TResponse> Handle(TRequest message, RequestHandlerDelegate<TResponse> next, CancellationToken cancellationToken)
         {
             _timer.Start();
 
-            var response = await next(message, cancellationToken);
+            var response = await next();
             var elapsedMilliseconds = _timer.ElapsedMilliseconds;
 
             // any request taking longer than 2 seconds should be reported

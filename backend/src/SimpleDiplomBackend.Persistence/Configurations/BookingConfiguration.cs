@@ -7,8 +7,9 @@ namespace SimpleDiplomBackend.Persistence.Configurations
     {
         public void Configure(EntityTypeBuilder<Domain.Entities.Booking> builder)
         {
-            builder.HasKey(e => e.Id)
-                .HasName("booking");
+            builder.ToTable("bookings");
+
+            builder.HasKey(e => e.Id);
 
             builder.Property(e => e.Id)
                 .HasColumnName("id")

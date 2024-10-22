@@ -9,8 +9,9 @@ namespace SimpleDiplomBackend.Persistence.Configurations
     {
         public void Configure(EntityTypeBuilder<ApplicationOption> builder)
         {
-            builder.HasKey(e => e.Id)
-                .HasName("application");
+            builder.ToTable("application-options");
+
+            builder.HasKey(e => e.Id);
 
             builder.Property(e => e.Id)
                 .HasColumnName("id")

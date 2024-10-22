@@ -8,33 +8,33 @@ namespace SimpleDiplomBackend.Persistence.Configurations
     {
         public void Configure(EntityTypeBuilder<Dish> builder)
         {
-            builder.HasKey(e => e.Id)
-                .HasName("dishes");
+            builder.ToTable("dishes");
+
+            builder.HasKey(e => e.Id);
 
             builder.Property(e => e.Id)
                 .HasColumnName("id")
                 .ValueGeneratedOnAdd();
 
             builder.Property(e => e.Name)
-                .HasColumnType("name")
+                .HasColumnName("name")
                 .HasMaxLength(100)
                 .IsRequired();
 
             builder.Property(e => e.Description)
-                .HasColumnType("description")
+                .HasColumnName("description")
                 .HasMaxLength(500)
                 .IsRequired();
 
             builder.Property(e => e.PreviewImage)
-                .HasColumnType("previewImage")
-                .IsRequired();
+                .HasColumnName("previewImage");
 
             builder.Property(e => e.Price)
-                .HasColumnType("price")
+                .HasColumnName("price")
                 .IsRequired();
 
             //builder.Property(e => e.Catergory)
-            //    .HasColumnType("categoryId")
+            //    .HasColumnName("categoryId")
             //    .IsRequired();
         }
     }

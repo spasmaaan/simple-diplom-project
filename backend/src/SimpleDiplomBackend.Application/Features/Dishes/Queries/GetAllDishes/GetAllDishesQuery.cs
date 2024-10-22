@@ -1,4 +1,4 @@
-﻿using Mediator;
+﻿using MediatR;
 using Microsoft.EntityFrameworkCore;
 using SimpleDiplomBackend.Application.Shared.Extensions;
 using SimpleDiplomBackend.Application.Shared.Interface;
@@ -21,7 +21,7 @@ namespace SimpleDiplomBackend.Application.Features.Dishes.Queries.GetAllDishes
             _dbContext = dbContext;
         }
 
-        public async ValueTask<PaginatedList<DishDto>> Handle(GetAllDishesQuery request, CancellationToken cancellationToken)
+        public async Task<PaginatedList<DishDto>> Handle(GetAllDishesQuery request, CancellationToken cancellationToken)
         {
             return await _dbContext.Dishes
                 .AsNoTracking()

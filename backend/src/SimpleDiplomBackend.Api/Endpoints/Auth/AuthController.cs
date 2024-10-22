@@ -43,8 +43,8 @@ namespace SimpleDiplomBackend.Api.Endpoints.Auth
             };
 
             var result = await _mediator.Send(command);
-
             return Ok(result);
+
         }
 
         /// <summary>

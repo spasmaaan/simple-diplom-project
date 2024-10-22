@@ -1,12 +1,12 @@
 ﻿
 
-using Mediator;
+using MediatR;
 using Microsoft.Extensions.Logging;
 
 namespace SimpleDiplomBackend.Application.Shared.Behaviours
 {
     public class UnhandledExceptionBehaviour<TRequest, TResponse> : IPipelineBehavior<TRequest, TResponse>
-        where TRequest : IRequest<TResponse>
+        where TRequest : notnull
     {
         private readonly ILogger<TRequest> _logger;
 
@@ -15,11 +15,11 @@ namespace SimpleDiplomBackend.Application.Shared.Behaviours
             _logger = logger;
         }
 
-        public async ValueTask<TResponse> Handle(TRequest message, CancellationToken cancellationToken, MessageHandlerDelegate<TRequest, TResponse> next)
+        public async Task<TResponse> Handle(TRequest message, RequestHandlerDelegate<TResponse> next, CancellationToken cancellationToken)
         {
             try
             {
-                return await next(message, cancellationToken);
+                return await next();
             }
             catch (Exception ex)
             {

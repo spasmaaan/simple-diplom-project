@@ -12,7 +12,8 @@ namespace SimpleDiplomBackend.Persistence
         public SimpleDiplomBackendDbContext CreateDbContext(string[] args)
         {
             var optionsBuilder = new DbContextOptionsBuilder<SimpleDiplomBackendDbContext>();
-            optionsBuilder.UseSqlite(GetConnectionString());
+            optionsBuilder.UseNpgsql(GetConnectionString());
+            //optionsBuilder.UseSqlite(GetConnectionString());
 
             return new SimpleDiplomBackendDbContext(optionsBuilder.Options);
         }

@@ -1,4 +1,4 @@
-﻿using Mediator;
+﻿using MediatR;
 using SimpleDiplomBackend.Application.Features.Authentication.Interfaces;
 
 namespace SimpleDiplomBackend.Application.Features.Authentication.Commands.AddUserToRole
@@ -18,11 +18,9 @@ namespace SimpleDiplomBackend.Application.Features.Authentication.Commands.AddUs
             _authenticationService = authenticationService;
         }
 
-        public async ValueTask<Unit> Handle(AddUserToRoleCommand request, CancellationToken cancellationToken)
+        public async Task Handle(AddUserToRoleCommand request, CancellationToken cancellationToken)
         {
             await _authenticationService.AddUserToRoleAsync(request.Email, request.RoleName);
-
-            return Unit.Value;
         }
     }
 }

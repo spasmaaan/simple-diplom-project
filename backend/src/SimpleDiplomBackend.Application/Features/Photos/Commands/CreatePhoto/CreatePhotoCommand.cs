@@ -1,14 +1,14 @@
-﻿using Mediator;
+﻿using MediatR;
 using SimpleDiplomBackend.Application.Shared.Interface;
 
 namespace SimpleDiplomBackend.Booking.Features.Photo.Commands.CreatePhoto
 {
-    public record CreatePhotoCommand : IRequest
+    public record CreatePhotoCommand : IRequest<Domain.Entities.Photo>
     {
         public byte[]? Image { get; set; }
     }
 
-    public class CreatePhotoCommandHandler : IRequestHandler<CreatePhotoCommand>
+    public class CreatePhotoCommandHandler : IRequestHandler<CreatePhotoCommand, Domain.Entities.Photo>
     {
         private readonly ISimpleDiplomBackendDbContext _dbContext;
 
@@ -17,9 +17,8 @@ namespace SimpleDiplomBackend.Booking.Features.Photo.Commands.CreatePhoto
             _dbContext = dbContext;
         }
 
-        public async ValueTask<Unit> Handle(CreatePhotoCommand request, CancellationToken cancellationToken)
+        public async Task<Domain.Entities.Photo> Handle(CreatePhotoCommand request, CancellationToken cancellationToken)
         {
-
             var entity = new Domain.Entities.Photo
             {
                 Image = request.Image
@@ -29,7 +28,7 @@ namespace SimpleDiplomBackend.Booking.Features.Photo.Commands.CreatePhoto
 
             await _dbContext.SaveChangesAsync(cancellationToken);
 
-            return Unit.Value;
+            return entity;
         }
     }
 

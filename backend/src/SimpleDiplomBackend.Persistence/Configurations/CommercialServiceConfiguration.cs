@@ -8,8 +8,9 @@ namespace SimpleDiplomBackend.Persistence.Configurations
     {
         public void Configure(EntityTypeBuilder<CommercialService> builder)
         {
-            builder.HasKey(e => e.Id)
-                .HasName("commercial-service");
+            builder.ToTable("commercial-services");
+
+            builder.HasKey(e => e.Id);
 
             builder.Property(e => e.Id)
                 .HasColumnName("id")
@@ -26,8 +27,7 @@ namespace SimpleDiplomBackend.Persistence.Configurations
                 .IsRequired();
 
             builder.Property(e => e.PreviewImage)
-                .HasColumnName("previewImage")
-                .IsRequired();
+                .HasColumnName("previewImage");
 
             builder.Property(e => e.Price)
                 .HasColumnName("price")

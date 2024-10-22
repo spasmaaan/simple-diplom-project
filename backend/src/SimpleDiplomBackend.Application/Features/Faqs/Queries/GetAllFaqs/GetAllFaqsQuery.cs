@@ -1,4 +1,4 @@
-﻿using Mediator;
+﻿using MediatR;
 using SimpleDiplomBackend.Application.Shared.Models;
 
 namespace SimpleDiplomBackend.Application.Features.Faqs.Queries.GetAllFaqs

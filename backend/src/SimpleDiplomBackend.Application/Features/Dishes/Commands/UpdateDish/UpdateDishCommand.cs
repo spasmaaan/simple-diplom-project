@@ -1,10 +1,11 @@
-﻿using Mediator;
+﻿using MediatR;
 using SimpleDiplomBackend.Application.Features.Dishes.Interfaces;
 using SimpleDiplomBackend.Application.Shared.Exceptions;
+using SimpleDiplomBackend.Domain.Entities;
 
 namespace SimpleDiplomBackend.Application.Features.Dishes.Commands.UpdateDish
 {
-    public record UpdateDishCommand : IRequest
+    public record UpdateDishCommand : IRequest<Dish>
     {
         public int Id { get; set; }
         public string? Name { get; set; }
@@ -14,7 +15,7 @@ namespace SimpleDiplomBackend.Application.Features.Dishes.Commands.UpdateDish
         public int? CategoryId { get; set; }
     }
 
-    public class UpdateProductCommandHandler : IRequestHandler<UpdateDishCommand>
+    public class UpdateProductCommandHandler : IRequestHandler<UpdateDishCommand, Dish>
     {
         private readonly IDishRepository _dishReporsitory;
 
@@ -23,7 +24,7 @@ namespace SimpleDiplomBackend.Application.Features.Dishes.Commands.UpdateDish
             _dishReporsitory = dishRepository;
         }
 
-        public async ValueTask<Unit> Handle(UpdateDishCommand request, CancellationToken cancellationToken)
+        public async Task<Dish> Handle(UpdateDishCommand request, CancellationToken cancellationToken)
         {
 
             var entity = await _dishReporsitory.GetById(request.Id);
@@ -56,8 +57,7 @@ namespace SimpleDiplomBackend.Application.Features.Dishes.Commands.UpdateDish
             // update dish record
             await _dishReporsitory.Update(entity);
 
-            return Unit.Value;
-
+            return entity;
         }
     }
 }

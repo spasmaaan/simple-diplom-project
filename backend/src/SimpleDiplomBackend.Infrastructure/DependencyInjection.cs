@@ -109,11 +109,11 @@ namespace SimpleDiplomBackend.Infrastructure
             services.AddSingleton(tokenValidationParameters);
 
             services.AddAuthentication(options =>
-            {
-                options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
-                options.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
-                options.DefaultScheme = JwtBearerDefaults.AuthenticationScheme;
-            })
+                {
+                    options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
+                    options.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
+                    options.DefaultScheme = JwtBearerDefaults.AuthenticationScheme;
+                })
                 .AddJwtBearer(options =>
                 {
                     options.SaveToken = true;
@@ -125,24 +125,37 @@ namespace SimpleDiplomBackend.Infrastructure
             //            policy.Requirements.Add(new HttpHeaderRequirement("User-Key")));
             //});
 
+
             // Register Identity DbContext and Server
             services.AddDbContext<ApplicationIdentityDbContext>(options =>
-                options.UseSqlite(configuration.GetConnectionString("DatabaseConnection")));
+                options.UseNpgsql(configuration.GetConnectionString("DatabaseConnection")));
+                //options.UseSqlite(configuration.GetConnectionString("DatabaseConnection")));
 
-            var identityOptionsConfig = new IdentityOptionsConfig();
+            var identityOptionsConfig = new IdentityOptionsConfig { 
+                RequireLowercase= false,
+                RequiredDigit = false,
+                RequiredLength = 5,
+                RequireUppercase = false
+            };
             configuration.GetSection(nameof(IdentityOptions)).Bind(identityOptionsConfig);
 
             services.AddIdentity<ApplicationUser, IdentityRole>(options =>
+                {
+                    options.Password.RequiredLength = identityOptionsConfig.RequiredLength;
+                    options.Password.RequireDigit = identityOptionsConfig.RequiredDigit;
+                    options.Password.RequireLowercase = identityOptionsConfig.RequireLowercase;
+                    options.Password.RequiredUniqueChars = identityOptionsConfig.RequiredUniqueChars;
+                    options.Password.RequireUppercase = identityOptionsConfig.RequireUppercase;
+                    options.Lockout.MaxFailedAccessAttempts = identityOptionsConfig.MaxFailedAttempts;
+                    options.Lockout.DefaultLockoutTimeSpan = TimeSpan.FromDays(identityOptionsConfig.LockoutTimeSpanInDays);
+                })
+                .AddEntityFrameworkStores<ApplicationIdentityDbContext>();
+
+            services.Configure<IdentityOptions>(options =>
             {
-                options.Password.RequiredLength = identityOptionsConfig.RequiredLength;
-                options.Password.RequireDigit = identityOptionsConfig.RequiredDigit;
-                options.Password.RequireLowercase = identityOptionsConfig.RequireLowercase;
-                options.Password.RequiredUniqueChars = identityOptionsConfig.RequiredUniqueChars;
-                options.Password.RequireUppercase = identityOptionsConfig.RequireUppercase;
-                options.Lockout.MaxFailedAccessAttempts = identityOptionsConfig.MaxFailedAttempts;
-                options.Lockout.DefaultLockoutTimeSpan = TimeSpan.FromDays(identityOptionsConfig.LockoutTimeSpanInDays);
-            })
-            .AddEntityFrameworkStores<ApplicationIdentityDbContext>();
+                options.SignIn.RequireConfirmedEmail = false;
+                options.SignIn.RequireConfirmedPhoneNumber = false;
+            });
 
             // register Outbox Service
             services.AddScoped<IOutboxService, OutboxService>();

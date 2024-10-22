@@ -1,4 +1,4 @@
-﻿using Mediator;
+﻿using MediatR;
 using Microsoft.EntityFrameworkCore;
 using SimpleDiplomBackend.Application.Shared.Extensions;
 using SimpleDiplomBackend.Application.Shared.Interface;
@@ -21,7 +21,7 @@ namespace SimpleDiplomBackend.Application.Features.Service.Queries.GetAll
             _dbContext = dbContext;
         }
 
-        public async ValueTask<PaginatedList<CommercialServiceDto>> Handle(GetAllQuery request, CancellationToken cancellationToken)
+        public async Task<PaginatedList<CommercialServiceDto>> Handle(GetAllQuery request, CancellationToken cancellationToken)
         {
             return await _dbContext.CommercialServices
                 .AsNoTracking()

@@ -1,4 +1,4 @@
-﻿using Mediator;
+﻿using MediatR;
 using SimpleDiplomBackend.Application.Features.Authentication.Interfaces;
 
 namespace SimpleDiplomBackend.Application.Features.Authentication.Commands.CreateRole
@@ -17,10 +17,9 @@ namespace SimpleDiplomBackend.Application.Features.Authentication.Commands.Creat
             _authenticationService = authenticationService;
         }
 
-        public async ValueTask<Unit> Handle(CreateRoleCommand request, CancellationToken cancellationToken)
+        public async Task Handle(CreateRoleCommand request, CancellationToken cancellationToken)
         {
             await _authenticationService.CreateRoleAsync(request.RoleName);
-            return Unit.Value;
         }
     }
 }

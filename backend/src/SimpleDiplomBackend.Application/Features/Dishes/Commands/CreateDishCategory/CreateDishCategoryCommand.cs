@@ -1,10 +1,10 @@
-﻿using Mediator;
+﻿using MediatR;
 using SimpleDiplomBackend.Application.Shared.Interface;
 using SimpleDiplomBackend.Domain.Entities;
 
 namespace SimpleDiplomBackend.Application.Features.Dishes.Commands
 {
-    public record CreateDishCategoryCommand : IRequest
+    public record CreateDishCategoryCommand : IRequest<DishCategory>
     {
         public int Id { get; set; }
         public string Name { get; set; } = string.Empty;
@@ -12,7 +12,7 @@ namespace SimpleDiplomBackend.Application.Features.Dishes.Commands
         public byte[]? PreviewImage { get; set; }
     }
 
-    public class CreateDishCategoryCommandHandler : IRequestHandler<CreateDishCategoryCommand>
+    public class CreateDishCategoryCommandHandler : IRequestHandler<CreateDishCategoryCommand, DishCategory>
     {
         private readonly ISimpleDiplomBackendDbContext _dbContext;
 
@@ -21,7 +21,7 @@ namespace SimpleDiplomBackend.Application.Features.Dishes.Commands
             _dbContext = dbContext;
         }
 
-        public async ValueTask<Unit> Handle(CreateDishCategoryCommand request, CancellationToken cancellationToken)
+        public async Task<DishCategory> Handle(CreateDishCategoryCommand request, CancellationToken cancellationToken)
         {
 
             var entity = new DishCategory
@@ -31,11 +31,11 @@ namespace SimpleDiplomBackend.Application.Features.Dishes.Commands
                 PreviewImage = request.PreviewImage,
             };
 
-            _dbContext.DishCategories.Add(entity);
+            var added = _dbContext.DishCategories.Add(entity);
 
             await _dbContext.SaveChangesAsync(cancellationToken);
 
-            return Unit.Value;
+            return added.Entity;
         }
     }
 

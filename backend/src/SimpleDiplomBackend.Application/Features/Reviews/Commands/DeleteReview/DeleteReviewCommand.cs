@@ -1,15 +1,15 @@
-﻿using Mediator;
+﻿using MediatR;
 using SimpleDiplomBackend.Application.Shared.Exceptions;
 using SimpleDiplomBackend.Application.Shared.Interface;
 
 namespace SimpleDiplomBackend.Application.Features.Review.Commands.DeleteReview
 {
-    public record DeleteReviewCommand : IRequest
+    public record DeleteReviewCommand : IRequest<Domain.Entities.Review>
     {
         public long Id { get; set; }
     }
 
-    public class DeleteReviewCommandHandler : IRequestHandler<DeleteReviewCommand>
+    public class DeleteReviewCommandHandler : IRequestHandler<DeleteReviewCommand, Domain.Entities.Review>
     {
         private readonly ISimpleDiplomBackendDbContext _dbContext;
 
@@ -18,7 +18,7 @@ namespace SimpleDiplomBackend.Application.Features.Review.Commands.DeleteReview
             _dbContext = dbContext;
         }
 
-        public async ValueTask<Unit> Handle(DeleteReviewCommand request, CancellationToken cancellationToken)
+        public async Task<Domain.Entities.Review> Handle(DeleteReviewCommand request, CancellationToken cancellationToken)
         {
             var entity = _dbContext.Reviews.FirstOrDefault(p => p.Id == request.Id);
 
@@ -27,11 +27,10 @@ namespace SimpleDiplomBackend.Application.Features.Review.Commands.DeleteReview
                 throw new NotFoundException();
             }
 
-            _dbContext.Reviews.Remove(entity);
+            var removed = _dbContext.Reviews.Remove(entity);
             await _dbContext.SaveChangesAsync(cancellationToken);
 
-            return Unit.Value;
-
+            return removed.Entity;
         }
     }
 }

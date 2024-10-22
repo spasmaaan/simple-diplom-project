@@ -1,15 +1,15 @@
-﻿using Mediator;
+﻿using MediatR;
 using SimpleDiplomBackend.Application.Shared.Exceptions;
 using SimpleDiplomBackend.Application.Shared.Interface;
 
 namespace SimpleDiplomBackend.Application.Features.Photo.Commands.DeletePhoto
 {
-    public record DeletePhotoCommand : IRequest
+    public record DeletePhotoCommand : IRequest<Domain.Entities.Photo>
     {
         public int Id { get; set; }
     }
 
-    public class DeletePhotoCommandHandler : IRequestHandler<DeletePhotoCommand>
+    public class DeletePhotoCommandHandler : IRequestHandler<DeletePhotoCommand, Domain.Entities.Photo>
     {
         private readonly ISimpleDiplomBackendDbContext _dbContext;
 
@@ -18,7 +18,7 @@ namespace SimpleDiplomBackend.Application.Features.Photo.Commands.DeletePhoto
             _dbContext = dbContext;
         }
 
-        public async ValueTask<Unit> Handle(DeletePhotoCommand request, CancellationToken cancellationToken)
+        public async Task<Domain.Entities.Photo> Handle(DeletePhotoCommand request, CancellationToken cancellationToken)
         {
             var entity = _dbContext.Photos.FirstOrDefault(p => p.Id == request.Id);
 
@@ -30,8 +30,7 @@ namespace SimpleDiplomBackend.Application.Features.Photo.Commands.DeletePhoto
             _dbContext.Photos.Remove(entity);
             await _dbContext.SaveChangesAsync(cancellationToken);
 
-            return Unit.Value;
-
+            return entity;
         }
     }
 }

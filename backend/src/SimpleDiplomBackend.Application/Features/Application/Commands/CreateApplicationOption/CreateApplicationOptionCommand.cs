@@ -1,4 +1,4 @@
-﻿using Mediator;
+﻿using MediatR;
 using SimpleDiplomBackend.Application.Shared.Interface;
 using SimpleDiplomBackend.Domain.Entities;
 
@@ -19,9 +19,8 @@ namespace SimpleDiplomBackend.Application.Features.Application.Commands
             _dbContext = dbContext;
         }
 
-        public async ValueTask<Unit> Handle(CreateApplicationOptionCommand request, CancellationToken cancellationToken)
+        public async Task Handle(CreateApplicationOptionCommand request, CancellationToken cancellationToken)
         {
-
             var entity = new ApplicationOption
             {
                 Id = request.Id,
@@ -31,8 +30,6 @@ namespace SimpleDiplomBackend.Application.Features.Application.Commands
             _dbContext.ApplicationOptions.Add(entity);
 
             await _dbContext.SaveChangesAsync(cancellationToken);
-
-            return Unit.Value;
         }
     }
 

@@ -8,8 +8,9 @@ namespace SimpleDiplomBackend.Persistence.Configurations
     {
         public void Configure(EntityTypeBuilder<OutboxMessage> builder)
         {
+            builder.ToTable("outbox-message");
+
             builder.HasKey(e => e.Id)
-                .HasName("outbox-message")
                 .IsClustered(false);
 
             builder.Property(e => e.Id)

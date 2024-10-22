@@ -9,8 +9,9 @@ namespace SimpleDiplomBackend.Persistence.Configurations
     {
         public void Configure(EntityTypeBuilder<Photo> builder)
         {
-            builder.HasKey(e => e.Id)
-                .HasName("photos");
+            builder.ToTable("photos");
+
+            builder.HasKey(e => e.Id);
 
             builder.Property(e => e.Id)
                 .HasColumnName("id")

@@ -1,4 +1,4 @@
-﻿using Mediator;
+﻿using MediatR;
 using SimpleDiplomBackend.Application.Features.Authentication.Interfaces;
 
 namespace SimpleDiplomBackend.Application.Features.Authentication.Queries.GetUserRoles
@@ -17,7 +17,7 @@ namespace SimpleDiplomBackend.Application.Features.Authentication.Queries.GetUse
             _authenticationService = authenticationService;
         }
 
-        public async ValueTask<IList<string>> Handle(GetUserRolesQuery request, CancellationToken cancellationToken)
+        public async Task<IList<string>> Handle(GetUserRolesQuery request, CancellationToken cancellationToken)
         {
             var roles = await _authenticationService.GetUserRolesAsync(request.Email);
 

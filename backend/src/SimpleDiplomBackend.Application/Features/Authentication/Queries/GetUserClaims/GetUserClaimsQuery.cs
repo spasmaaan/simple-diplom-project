@@ -1,4 +1,4 @@
-﻿using Mediator;
+﻿using MediatR;
 using SimpleDiplomBackend.Application.Features.Authentication.Interfaces;
 
 namespace SimpleDiplomBackend.Application.Features.Authentication.Queries.GetUserClaims
@@ -17,7 +17,7 @@ namespace SimpleDiplomBackend.Application.Features.Authentication.Queries.GetUse
             _authenticationService = authenticationService;
         }
 
-        public async ValueTask<List<string>> Handle(GetUserClaimsQuery request, CancellationToken cancellationToken)
+        public async Task<List<string>> Handle(GetUserClaimsQuery request, CancellationToken cancellationToken)
         {
             var userClaims = await _authenticationService.GetUserClaimsAsync(request.Email);
 

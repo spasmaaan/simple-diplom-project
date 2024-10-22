@@ -27,12 +27,14 @@ namespace SimpleDiplomBackend.Persistence
             if (environment.IsProduction())
             {
                 services.AddDbContext<SimpleDiplomBackendDbContext>(options =>
-                    options.UseSqlite(configuration.GetConnectionString("DatabaseConnection")));
+                    options.UseNpgsql(configuration.GetConnectionString("DatabaseConnection")));
+                    //options.UseSqlite(configuration.GetConnectionString("DatabaseConnection")));
             }
             else
             {
                 services.AddDbContext<SimpleDiplomBackendDbContext>(options =>
-                    options.UseSqlite(configuration.GetConnectionString("DatabaseConnection"))
+                    options.UseNpgsql(configuration.GetConnectionString("DatabaseConnection"))
+                    //options.UseSqlite(configuration.GetConnectionString("DatabaseConnection"))
                         .LogTo(Console.WriteLine, LogLevel.Information));
             }
 

@@ -1,15 +1,16 @@
-﻿using Mediator;
+﻿using MediatR;
 using SimpleDiplomBackend.Application.Shared.Interface;
+using SimpleDiplomBackend.Domain.Entities;
 
 namespace SimpleDiplomBackend.Booking.Features.Faqs.Commands.CreateFaq
 {
-    public record CreateFaqCommand : IRequest
+    public record CreateFaqCommand : IRequest<Faq>
     {
         public string Question { get; set; } = string.Empty;
         public string Answer { get; set; } = string.Empty;
     }
 
-    public class CreateFaqCommandHandler : IRequestHandler<CreateFaqCommand>
+    public class CreateFaqCommandHandler : IRequestHandler<CreateFaqCommand, Faq>
     {
         private readonly ISimpleDiplomBackendDbContext _dbContext;
 
@@ -18,20 +19,20 @@ namespace SimpleDiplomBackend.Booking.Features.Faqs.Commands.CreateFaq
             _dbContext = dbContext;
         }
 
-        public async ValueTask<Unit> Handle(CreateFaqCommand request, CancellationToken cancellationToken)
+        public async Task<Faq> Handle(CreateFaqCommand request, CancellationToken cancellationToken)
         {
 
-            var entity = new Domain.Entities.Faq
+            var entity = new Faq
             {
                 Question = request.Question,
                 Answer = request.Answer,
             };
 
-            _dbContext.Faqs.Add(entity);
+            var added = _dbContext.Faqs.Add(entity);
 
             await _dbContext.SaveChangesAsync(cancellationToken);
 
-            return Unit.Value;
+            return added.Entity;
         }
     }
 

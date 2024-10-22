@@ -1,4 +1,4 @@
-﻿using Mediator;
+﻿using MediatR;
 using SimpleDiplomBackend.Application.Features.Authentication.Interfaces;
 using SimpleDiplomBackend.Application.Shared.Exceptions;
 
@@ -19,7 +19,7 @@ namespace SimpleDiplomBackend.Application.Features.Authentication.Commands.Refre
             _jwtTokenService = jwtTokenService;
         }
 
-        public async ValueTask<AuthenticationResult> Handle(RefreshTokenCommand request, CancellationToken cancellationToken)
+        public async Task<AuthenticationResult> Handle(RefreshTokenCommand request, CancellationToken cancellationToken)
         {
             var result = await _jwtTokenService.RefreshTokenAsync(request.AccessToken, request.RefreshToken, cancellationToken);
 

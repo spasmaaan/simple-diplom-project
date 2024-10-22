@@ -1,10 +1,10 @@
-﻿using Mediator;
+﻿using MediatR;
 using SimpleDiplomBackend.Application.Shared.Exceptions;
 using SimpleDiplomBackend.Application.Shared.Interface;
 
 namespace SimpleDiplomBackend.Application.Features.Booking.Commands.CreateBooking
 {
-    public record CreateBookingCommand : IRequest
+    public record CreateBookingCommand : IRequest<Domain.Entities.Booking>
     {
         public string UserId { get; set; } = string.Empty;
         public DateTime CreationDate { get; private set; }
@@ -18,7 +18,7 @@ namespace SimpleDiplomBackend.Application.Features.Booking.Commands.CreateBookin
 
     }
 
-    public class CreateBookingCommandHandler : IRequestHandler<CreateBookingCommand>
+    public class CreateBookingCommandHandler : IRequestHandler<CreateBookingCommand, Domain.Entities.Booking>
     {
         private readonly ISimpleDiplomBackendDbContext _dbContext;
 
@@ -27,9 +27,8 @@ namespace SimpleDiplomBackend.Application.Features.Booking.Commands.CreateBookin
             _dbContext = dbContext;
         }
 
-        public async ValueTask<Unit> Handle(CreateBookingCommand request, CancellationToken cancellationToken)
+        public async Task<Domain.Entities.Booking> Handle(CreateBookingCommand request, CancellationToken cancellationToken)
         {
-
             var entity = new Domain.Entities.Booking
             {
                 UserId = request.UserId,
@@ -39,11 +38,11 @@ namespace SimpleDiplomBackend.Application.Features.Booking.Commands.CreateBookin
                 StatusId = 0,
             };
 
-            _dbContext.Bookings.Add(entity);
+            var added = _dbContext.Bookings.Add(entity);
 
             await _dbContext.SaveChangesAsync(cancellationToken);
 
-            return Unit.Value;
+            return added.Entity;
         }
     }
 

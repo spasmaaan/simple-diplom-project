@@ -1,4 +1,4 @@
-﻿using Mediator;
+﻿using MediatR;
 using Microsoft.EntityFrameworkCore;
 using SimpleDiplomBackend.Application.Shared.Extensions;
 using SimpleDiplomBackend.Application.Shared.Interface;
@@ -21,7 +21,7 @@ namespace SimpleDiplomBackend.Application.Features.Review.Queries.GetAll
             _dbContext = dbContext;
         }
 
-        public async ValueTask<PaginatedList<ReviewDto>> Handle(GetAllQuery request, CancellationToken cancellationToken)
+        public async Task<PaginatedList<ReviewDto>> Handle(GetAllQuery request, CancellationToken cancellationToken)
         {
             var products = await _dbContext.Reviews
                 .AsNoTracking()

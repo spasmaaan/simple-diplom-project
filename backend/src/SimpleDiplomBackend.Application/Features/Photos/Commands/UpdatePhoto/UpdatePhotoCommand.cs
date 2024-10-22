@@ -1,16 +1,16 @@
-﻿using Mediator;
+﻿using MediatR;
 using SimpleDiplomBackend.Application.Features.Photos.Interfaces;
 using SimpleDiplomBackend.Application.Shared.Exceptions;
 
 namespace SimpleDiplomBackend.Application.Features.Photo.Commands.UpdatePhoto
 {
-    public record UpdatePhotoCommand : IRequest
+    public record UpdatePhotoCommand : IRequest<Domain.Entities.Photo>
     {
         public int Id { get; set; }
         public byte[]? Image { get; set; }
     }
 
-    public class UpdatePhotoCommandHandler : IRequestHandler<UpdatePhotoCommand>
+    public class UpdatePhotoCommandHandler : IRequestHandler<UpdatePhotoCommand, Domain.Entities.Photo>
     {
         private readonly IPhotosRepository _photosReporsitory;
 
@@ -19,11 +19,9 @@ namespace SimpleDiplomBackend.Application.Features.Photo.Commands.UpdatePhoto
             _photosReporsitory = dishRepository;
         }
 
-        public async ValueTask<Unit> Handle(UpdatePhotoCommand request, CancellationToken cancellationToken)
+        public async Task<Domain.Entities.Photo> Handle(UpdatePhotoCommand request, CancellationToken cancellationToken)
         {
-
             var entity = await _photosReporsitory.GetById(request.Id);
-            // check if dish was found.
             if (entity == null)
             {
                 throw new NotFoundException(nameof(Dishes), request.Id);
@@ -34,11 +32,9 @@ namespace SimpleDiplomBackend.Application.Features.Photo.Commands.UpdatePhoto
                 entity.Image = request.Image;
             }
 
-            // update dish record
             await _photosReporsitory.Update(entity);
 
-            return Unit.Value;
-
+            return entity;
         }
     }
 }

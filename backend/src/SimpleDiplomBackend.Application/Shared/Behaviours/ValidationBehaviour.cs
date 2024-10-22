@@ -1,11 +1,11 @@
 ﻿using FluentValidation;
-using Mediator;
+using MediatR;
 using ValidationException = SimpleDiplomBackend.Application.Shared.Exceptions.ValidationException;
 
 namespace SimpleDiplomBackend.Application.Shared.Behaviours
 {
     public class ValidationBehaviour<TRequest, TResponse> : IPipelineBehavior<TRequest, TResponse>
-        where TRequest : IRequest<TResponse>
+        where TRequest : notnull
     {
         private readonly IEnumerable<IValidator<TRequest>> _validators;
 
@@ -14,7 +14,7 @@ namespace SimpleDiplomBackend.Application.Shared.Behaviours
             _validators = validators;
         }
 
-        public async ValueTask<TResponse> Handle(TRequest message, CancellationToken cancellationToken, MessageHandlerDelegate<TRequest, TResponse> next)
+        public async Task<TResponse> Handle(TRequest message, RequestHandlerDelegate<TResponse> next, CancellationToken cancellationToken)
         {
             if (_validators.Any())
             {
@@ -29,7 +29,7 @@ namespace SimpleDiplomBackend.Application.Shared.Behaviours
 
             }
 
-            return await next(message, cancellationToken);
+            return await next();
         }
     }
 }

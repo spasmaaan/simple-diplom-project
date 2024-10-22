@@ -1,11 +1,11 @@
-﻿using Mediator;
+﻿using MediatR;
 using SimpleDiplomBackend.Application.Features.Services.Interfaces;
 using SimpleDiplomBackend.Application.Shared.Exceptions;
 using SimpleDiplomBackend.Domain.Entities;
 
 namespace SimpleDiplomBackend.Application.Features.Service.Commands.UpdateService
 {
-    public record UpdateServiceCommand : IRequest
+    public record UpdateServiceCommand : IRequest<CommercialService>
     {
         public int Id { get; set; }
         public string? Name { get; set; }
@@ -14,7 +14,7 @@ namespace SimpleDiplomBackend.Application.Features.Service.Commands.UpdateServic
         public decimal? Price { get; set; }
     }
 
-    public class UpdateServiceCommandHandler : IRequestHandler<UpdateServiceCommand>
+    public class UpdateServiceCommandHandler : IRequestHandler<UpdateServiceCommand, CommercialService>
     {
         private readonly IServicesRepository _servicesReporsitory;
 
@@ -23,9 +23,8 @@ namespace SimpleDiplomBackend.Application.Features.Service.Commands.UpdateServic
             _servicesReporsitory = dishRepository;
         }
 
-        public async ValueTask<Unit> Handle(UpdateServiceCommand request, CancellationToken cancellationToken)
+        public async Task<CommercialService> Handle(UpdateServiceCommand request, CancellationToken cancellationToken)
         {
-
             var entity = await _servicesReporsitory.GetById(request.Id);
             // check if dish was found.
             if (entity == null)
@@ -53,8 +52,7 @@ namespace SimpleDiplomBackend.Application.Features.Service.Commands.UpdateServic
             // update dish record
             await _servicesReporsitory.Update(entity);
 
-            return Unit.Value;
-
+            return entity;
         }
     }
 }

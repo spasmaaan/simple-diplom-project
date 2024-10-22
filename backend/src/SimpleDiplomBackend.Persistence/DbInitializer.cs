@@ -12,7 +12,7 @@ namespace SimpleDiplomBackend.Persistence
             var dbContext = serviceScope.ServiceProvider.GetService<SimpleDiplomBackendDbContext>();
 
             // only call this method when there are pending migrations
-            if (dbContext != null && false)
+            if (dbContext != null && true)
             {
                 dbContext.Database.EnsureDeleted();
                 dbContext.Database.EnsureCreated();

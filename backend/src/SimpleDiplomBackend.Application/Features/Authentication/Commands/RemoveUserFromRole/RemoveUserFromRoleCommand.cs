@@ -1,4 +1,4 @@
-﻿using Mediator;
+﻿using MediatR;
 using SimpleDiplomBackend.Application.Features.Authentication.Interfaces;
 
 namespace SimpleDiplomBackend.Application.Features.Authentication.Commands.RemoveUserFromRole
@@ -18,11 +18,9 @@ namespace SimpleDiplomBackend.Application.Features.Authentication.Commands.Remov
             _authenticationService = authenticationService;
         }
 
-        public async ValueTask<Unit> Handle(RemoveUserFromRoleCommand request, CancellationToken cancellationToken)
+        public async Task Handle(RemoveUserFromRoleCommand request, CancellationToken cancellationToken)
         {
             await _authenticationService.RemoveUserFromRoleAsync(request.Email, request.RoleName);
-
-            return Unit.Value;
         }
     }
 }

@@ -1,4 +1,4 @@
-﻿using Mediator;
+﻿using MediatR;
 using SimpleDiplomBackend.Application.Features.Application.Interfaces;
 using SimpleDiplomBackend.Application.Shared.Exceptions;
 
@@ -19,7 +19,7 @@ namespace SimpleDiplomBackend.Application.Features.Application.Commands.UpdateAp
             _applicationReporsitory = dishRepository;
         }
 
-        public async ValueTask<Unit> Handle(UpdateApplicationOptionCommand request, CancellationToken cancellationToken)
+        public async Task Handle(UpdateApplicationOptionCommand request, CancellationToken cancellationToken)
         {
 
             var entity = await _applicationReporsitory.GetById(request.Id);
@@ -36,9 +36,6 @@ namespace SimpleDiplomBackend.Application.Features.Application.Commands.UpdateAp
 
             // update dish record
             await _applicationReporsitory.Update(entity);
-
-            return Unit.Value;
-
         }
     }
 }

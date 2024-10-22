@@ -1,15 +1,16 @@
-﻿using Mediator;
+﻿using MediatR;
 using SimpleDiplomBackend.Application.Shared.Exceptions;
 using SimpleDiplomBackend.Application.Shared.Interface;
+using SimpleDiplomBackend.Domain.Entities;
 
 namespace SimpleDiplomBackend.Application.Features.Faqs.Commands.DeleteFaq
 {
-    public record DeleteFaqCommand : IRequest
+    public record DeleteFaqCommand : IRequest<Faq>
     {
         public int Id { get; set; }
     }
 
-    public class DeleteFaqCommandHandler : IRequestHandler<DeleteFaqCommand>
+    public class DeleteFaqCommandHandler : IRequestHandler<DeleteFaqCommand, Faq>
     {
         private readonly ISimpleDiplomBackendDbContext _dbContext;
 
@@ -18,7 +19,7 @@ namespace SimpleDiplomBackend.Application.Features.Faqs.Commands.DeleteFaq
             _dbContext = dbContext;
         }
 
-        public async ValueTask<Unit> Handle(DeleteFaqCommand request, CancellationToken cancellationToken)
+        public async Task<Faq> Handle(DeleteFaqCommand request, CancellationToken cancellationToken)
         {
             var entity = _dbContext.Faqs.FirstOrDefault(p => p.Id == request.Id);
 
@@ -27,11 +28,10 @@ namespace SimpleDiplomBackend.Application.Features.Faqs.Commands.DeleteFaq
                 throw new NotFoundException();
             }
 
-            _dbContext.Faqs.Remove(entity);
+            var removed = _dbContext.Faqs.Remove(entity);
             await _dbContext.SaveChangesAsync(cancellationToken);
 
-            return Unit.Value;
-
+            return removed.Entity;
         }
     }
 }

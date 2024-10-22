@@ -4,12 +4,13 @@ using SimpleDiplomBackend.Domain.Entities;
 
 namespace SimpleDiplomBackend.Persistence.Configurations
 {
-    public class RewievConfiguration : IEntityTypeConfiguration<Review>
+    public class ReviewConfiguration : IEntityTypeConfiguration<Review>
     {
         public void Configure(EntityTypeBuilder<Review> builder)
         {
-            builder.HasKey(e => e.Id)
-                .HasName("reviews");
+            builder.ToTable("reviews");
+
+            builder.HasKey(e => e.Id);
 
             builder.Property(e => e.Id)
                 .HasColumnName("id")

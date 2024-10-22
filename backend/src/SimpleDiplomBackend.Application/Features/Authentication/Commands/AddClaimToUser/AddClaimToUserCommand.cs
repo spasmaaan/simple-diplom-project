@@ -1,4 +1,4 @@
-﻿using Mediator;
+﻿using MediatR;
 using SimpleDiplomBackend.Application.Features.Authentication.Interfaces;
 
 namespace SimpleDiplomBackend.Application.Features.Authentication.Commands.AddClaimToUser
@@ -19,10 +19,9 @@ namespace SimpleDiplomBackend.Application.Features.Authentication.Commands.AddCl
             _authenticationService = authenticationService;
         }
 
-        public async ValueTask<Unit> Handle(AddClaimToUserCommand request, CancellationToken cancellationToken)
+        public async Task Handle(AddClaimToUserCommand request, CancellationToken cancellationToken)
         {
             await _authenticationService.AddClaimToUser(request.Email, request.ClaimName, request.ClaimValue);
-            return Unit.Value;
         }
     }
 }

@@ -1,10 +1,10 @@
-﻿using Mediator;
+﻿using MediatR;
 using SimpleDiplomBackend.Application.Features.Booking.Interfaces;
 using SimpleDiplomBackend.Application.Shared.Exceptions;
 
 namespace SimpleDiplomBackend.Application.Features.Booking.Commands.UpdateBooking
 {
-    public record UpdateBookingCommand : IRequest
+    public record UpdateBookingCommand : IRequest<Domain.Entities.Booking>
     {
         public int Id { get; set; }
         public DateTime? StartDate { get; set; }
@@ -14,7 +14,7 @@ namespace SimpleDiplomBackend.Application.Features.Booking.Commands.UpdateBookin
         public Dictionary<int, int>? Services { get; set; }
     }
 
-    public class UpdateBookingCommandHandler : IRequestHandler<UpdateBookingCommand>
+    public class UpdateBookingCommandHandler : IRequestHandler<UpdateBookingCommand, Domain.Entities.Booking>
     {
         private readonly IBookingRepository _bookingReporsitory;
 
@@ -23,11 +23,9 @@ namespace SimpleDiplomBackend.Application.Features.Booking.Commands.UpdateBookin
             _bookingReporsitory = bookingRepository;
         }
 
-        public async ValueTask<Unit> Handle(UpdateBookingCommand request, CancellationToken cancellationToken)
+        public async Task<Domain.Entities.Booking> Handle(UpdateBookingCommand request, CancellationToken cancellationToken)
         {
-
             var entity = await _bookingReporsitory.GetById(request.Id);
-            // check if dish was found.
             if (entity == null)
             {
                 throw new NotFoundException(nameof(Dishes), request.Id);
@@ -56,9 +54,7 @@ namespace SimpleDiplomBackend.Application.Features.Booking.Commands.UpdateBookin
 
             // update dish record
             await _bookingReporsitory.Update(entity);
-
-            return Unit.Value;
-
+            return entity;
         }
     }
 }

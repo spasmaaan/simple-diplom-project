@@ -1,17 +1,17 @@
-﻿using Mediator;
+﻿using MediatR;
 using SimpleDiplomBackend.Application.Features.Photos.Interfaces;
 using SimpleDiplomBackend.Application.Shared.Exceptions;
 
 namespace SimpleDiplomBackend.Application.Features.Review.Commands.UpdateReview
 {
-    public record UpdateReviewCommand : IRequest
+    public record UpdateReviewCommand : IRequest<Domain.Entities.Review>
     {
         public int Id { get; set; }
         public string Message { get; set; } = string.Empty;
         public short? Rating { get; set; }
     }
 
-    public class UpdateReviewCommandHandler : IRequestHandler<UpdateReviewCommand>
+    public class UpdateReviewCommandHandler : IRequestHandler<UpdateReviewCommand, Domain.Entities.Review>
     {
         private readonly IReviewsRepository _reviewsReporsitory;
 
@@ -20,9 +20,8 @@ namespace SimpleDiplomBackend.Application.Features.Review.Commands.UpdateReview
             _reviewsReporsitory = dishRepository;
         }
 
-        public async ValueTask<Unit> Handle(UpdateReviewCommand request, CancellationToken cancellationToken)
+        public async Task<Domain.Entities.Review> Handle(UpdateReviewCommand request, CancellationToken cancellationToken)
         {
-
             var entity = await _reviewsReporsitory.GetById(request.Id);
             // check if dish was found.
             if (entity == null)
@@ -41,8 +40,7 @@ namespace SimpleDiplomBackend.Application.Features.Review.Commands.UpdateReview
             // update dish record
             await _reviewsReporsitory.Update(entity);
 
-            return Unit.Value;
-
+            return entity;
         }
     }
 }
