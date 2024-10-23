@@ -31,11 +31,11 @@ namespace SimpleDiplomBackend.Api.Endpoints.Services
             return Ok(result);
         }
 
-        //[Authorize(Policy = "ByUserKeyPolicy")]
         [HttpPost]
         [ApiVersion("1.0")]
         [Route("api/v{version:apiVersion}/services")]
         [ProducesResponseType(StatusCodes.Status200OK)]
+        [Authorize]
         public async Task<IActionResult> Create([FromBody] CreateServiceRequest request)
         {
             var command = new CreateDishCommand()
@@ -54,6 +54,7 @@ namespace SimpleDiplomBackend.Api.Endpoints.Services
         [ApiVersion("1.0")]
         [Route("api/v{version:apiVersion}/services")]
         [ProducesResponseType(StatusCodes.Status200OK)]
+        [Authorize]
         public async Task<IActionResult> Update([FromBody] UpdateServiceRequest request)
         {
             var command = new UpdateDishCommand()
@@ -74,6 +75,7 @@ namespace SimpleDiplomBackend.Api.Endpoints.Services
         [Route("api/v{version:apiVersion}/services/{id}")]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
+        [Authorize]
         public async Task<IActionResult> Delete(int id)
         {
             var command = new DeleteDishCommand()
@@ -85,6 +87,5 @@ namespace SimpleDiplomBackend.Api.Endpoints.Services
 
             return Ok();
         }
-
     }
 }

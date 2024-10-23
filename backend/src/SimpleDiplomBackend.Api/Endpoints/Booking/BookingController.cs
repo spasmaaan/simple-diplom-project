@@ -4,6 +4,7 @@ using SimpleDiplomBackend.Application.Features.Booking.Commands.DeleteBooking;
 using SimpleDiplomBackend.Application.Features.Booking.Commands.UpdateBooking;
 using SimpleDiplomBackend.Application.Features.Booking.Queries.GetAll;
 using SimpleDiplomBackend.Application.Features.Booking.Commands.CreateBooking;
+using Microsoft.AspNetCore.Authorization;
 
 namespace SimpleDiplomBackend.Api.Endpoints.Bookings
 {
@@ -18,10 +19,13 @@ namespace SimpleDiplomBackend.Api.Endpoints.Bookings
             _mediator = mediator;
         }
 
+        // Нужен метод для получения свободного расписания.
+
         [HttpGet]
         [ApiVersion("1.0")]
         [Route("api/v{version:apiVersion}/bookings")]
         [ProducesResponseType(StatusCodes.Status200OK)]
+        [Authorize]
         public async Task<IActionResult> GetAll()
         {
             var query = new GetAllQuery();
@@ -34,6 +38,7 @@ namespace SimpleDiplomBackend.Api.Endpoints.Bookings
         [ApiVersion("1.0")]
         [Route("api/v{version:apiVersion}/bookings")]
         [ProducesResponseType(StatusCodes.Status200OK)]
+        [Authorize]
         public async Task<IActionResult> Create([FromBody] CreateBookingRequest request)
         {
             var command = new CreateBookingCommand()
@@ -52,6 +57,7 @@ namespace SimpleDiplomBackend.Api.Endpoints.Bookings
         [ApiVersion("1.0")]
         [Route("api/v{version:apiVersion}/bookings")]
         [ProducesResponseType(StatusCodes.Status200OK)]
+        [Authorize]
         public async Task<IActionResult> Update([FromBody] UpdateBookingRequest request)
         {
             var command = new UpdateBookingCommand()
@@ -73,6 +79,7 @@ namespace SimpleDiplomBackend.Api.Endpoints.Bookings
         [Route("api/v{version:apiVersion}/bookings/{id}")]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
+        [Authorize]
         public async Task<IActionResult> Delete(int id)
         {
             var command = new DeleteBookingCommand()

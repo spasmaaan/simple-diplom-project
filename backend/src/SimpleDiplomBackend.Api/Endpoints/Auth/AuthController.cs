@@ -1,5 +1,6 @@
 ﻿
 using MediatR;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using SimpleDiplomBackend.Application.Features.Authentication.Commands.AddClaimToUser;
 using SimpleDiplomBackend.Application.Features.Authentication.Commands.AddUserToRole;
@@ -56,6 +57,7 @@ namespace SimpleDiplomBackend.Api.Endpoints.Auth
         [ApiVersion("1.0")]
         [Route("api/v{version:apiVersion}/auth/refresh")]
         [ProducesResponseType(StatusCodes.Status200OK)]
+        [Authorize]
         public async Task<IActionResult> Refresh(RefreshTokenRequest request)
         {
             var command = new RefreshTokenCommand()
@@ -100,6 +102,7 @@ namespace SimpleDiplomBackend.Api.Endpoints.Auth
         [ApiVersion("1.0")]
         [Route("api/v{version:apiVersion}/auth/roles")]
         [ProducesResponseType(StatusCodes.Status200OK)]
+        [Authorize]
         public async Task<IActionResult> GetAllRoles()
         {
             var query = new GetAllRolesQuery();
@@ -117,6 +120,7 @@ namespace SimpleDiplomBackend.Api.Endpoints.Auth
         [ApiVersion("1.0")]
         [Route("api/v{version:apiVersion}/auth/roles")]
         [ProducesResponseType(StatusCodes.Status200OK)]
+        [Authorize]
         public async Task<IActionResult> CreateRole([FromBody] string roleName)
         {
             var command = new CreateRoleCommand
@@ -139,6 +143,7 @@ namespace SimpleDiplomBackend.Api.Endpoints.Auth
         [ApiVersion("1.0")]
         [Route("api/v{version:apiVersion}/auth/roles/users")]
         [ProducesResponseType(StatusCodes.Status200OK)]
+        [Authorize]
         public async Task<IActionResult> AddUserToRole(string email, string roleName)
         {
             var command = new AddUserToRoleCommand
@@ -160,6 +165,7 @@ namespace SimpleDiplomBackend.Api.Endpoints.Auth
         [ApiVersion("1.0")]
         [Route("api/v{version:apiVersion}/auth/roles/users")]
         [ProducesResponseType(StatusCodes.Status200OK)]
+        [Authorize]
         public async Task<IActionResult> GetUserRoles(string email)
         {
             var query = new GetUserRolesQuery
@@ -181,6 +187,7 @@ namespace SimpleDiplomBackend.Api.Endpoints.Auth
         [ApiVersion("1.0")]
         [Route("api/v{version:apiVersion}/auth/roles/users")]
         [ProducesResponseType(StatusCodes.Status200OK)]
+        [Authorize]
         public async Task<IActionResult> RemoveUserFromRole(string email, string roleName)
         {
             var command = new RemoveUserFromRoleCommand
@@ -202,6 +209,7 @@ namespace SimpleDiplomBackend.Api.Endpoints.Auth
         [ApiVersion("1.0")]
         [Route("api/v{version:apiVersion}/auth/claims/users")]
         [ProducesResponseType(StatusCodes.Status200OK)]
+        [Authorize]
         public async Task<IActionResult> GetUserClaims(string email)
         {
             var query = new GetUserClaimsQuery
@@ -224,6 +232,7 @@ namespace SimpleDiplomBackend.Api.Endpoints.Auth
         [ApiVersion("1.0")]
         [Route("api/v{version:apiVersion}/auth/claims/users")]
         [ProducesResponseType(StatusCodes.Status200OK)]
+        [Authorize]
         public async Task<IActionResult> AddClaimToUser(string email, string claimName, string claimValue)
         {
             var command = new AddClaimToUserCommand

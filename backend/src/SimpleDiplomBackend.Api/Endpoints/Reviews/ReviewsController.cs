@@ -1,4 +1,5 @@
 ﻿using MediatR;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using SimpleDiplomBackend.Application.Features.Review.Commands.CreateReview;
 using SimpleDiplomBackend.Application.Features.Review.Commands.DeleteReview;
@@ -34,6 +35,7 @@ namespace SimpleDiplomBackend.Api.Endpoints.Reviews
         [ApiVersion("1.0")]
         [Route("api/v{version:apiVersion}/reviews")]
         [ProducesResponseType(StatusCodes.Status200OK)]
+        [Authorize]
         public async Task<IActionResult> Create([FromBody] CreateReviewRequest request)
         {
             var command = new CreateReviewCommand()
@@ -50,6 +52,7 @@ namespace SimpleDiplomBackend.Api.Endpoints.Reviews
         [ApiVersion("1.0")]
         [Route("api/v{version:apiVersion}/reviews")]
         [ProducesResponseType(StatusCodes.Status200OK)]
+        [Authorize]
         public async Task<IActionResult> Update([FromBody] UpdateReviewRequest request)
         {
             var command = new UpdateReviewCommand()
@@ -68,6 +71,7 @@ namespace SimpleDiplomBackend.Api.Endpoints.Reviews
         [Route("api/v{version:apiVersion}/reviews/{id}")]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
+        [Authorize]
         public async Task<IActionResult> Delete(int id)
         {
             var command = new DeleteReviewCommand()

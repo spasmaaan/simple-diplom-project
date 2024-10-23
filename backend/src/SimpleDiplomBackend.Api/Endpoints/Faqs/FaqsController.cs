@@ -1,5 +1,6 @@
 ﻿
 using MediatR;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using SimpleDiplomBackend.Api.Endpoints.Faqs;
 using SimpleDiplomBackend.Application.Features.Faqs.Commands.DeleteFaq;
@@ -45,6 +46,7 @@ namespace SimpleDiplomBackend.Api.Endpoints.Faq
         [ApiVersion("1.0")]
         [Route("api/v{version:apiVersion}/faqs")]
         [ProducesResponseType(StatusCodes.Status200OK)]
+        [Authorize]
         public async Task<IActionResult> Create([FromBody] CreateFaqRequest request)
         {
             var command = new CreateFaqCommand()
@@ -61,6 +63,7 @@ namespace SimpleDiplomBackend.Api.Endpoints.Faq
         [ApiVersion("1.0")]
         [Route("api/v{version:apiVersion}/faqs")]
         [ProducesResponseType(StatusCodes.Status200OK)]
+        [Authorize]
         public async Task<IActionResult> Update([FromBody] UpdateFaqRequest request)
         {
             var command = new UpdateFaqCommand()
@@ -79,6 +82,7 @@ namespace SimpleDiplomBackend.Api.Endpoints.Faq
         [Route("api/v{version:apiVersion}/faqs/{id}")]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
+        [Authorize]
         public async Task<IActionResult> Delete(int id)
         {
             var command = new DeleteFaqCommand()

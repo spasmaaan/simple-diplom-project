@@ -1,4 +1,5 @@
 ﻿using MediatR;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using SimpleDiplomBackend.Application.Features.Photo.Commands.DeletePhoto;
 using SimpleDiplomBackend.Application.Features.Photo.Commands.UpdatePhoto;
@@ -34,6 +35,7 @@ namespace SimpleDiplomBackend.Api.Endpoints.Photos
         [ApiVersion("1.0")]
         [Route("api/v{version:apiVersion}/photos")]
         [ProducesResponseType(StatusCodes.Status200OK)]
+        [Authorize]
         public async Task<IActionResult> Create([FromBody] CreatePhotoRequest request)
         {
             var command = new CreatePhotoCommand()
@@ -49,6 +51,7 @@ namespace SimpleDiplomBackend.Api.Endpoints.Photos
         [ApiVersion("1.0")]
         [Route("api/v{version:apiVersion}/photos")]
         [ProducesResponseType(StatusCodes.Status200OK)]
+        [Authorize]
         public async Task<IActionResult> Update([FromBody] UpdatePhotoRequest request)
         {
             var command = new UpdatePhotoCommand()
@@ -66,6 +69,7 @@ namespace SimpleDiplomBackend.Api.Endpoints.Photos
         [Route("api/v{version:apiVersion}/photos/{id}")]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
+        [Authorize]
         public async Task<IActionResult> Delete(int id)
         {
             var command = new DeletePhotoCommand()

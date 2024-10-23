@@ -119,12 +119,6 @@ namespace SimpleDiplomBackend.Infrastructure
                     options.SaveToken = true;
                     options.TokenValidationParameters = tokenValidationParameters;
                 });
-            //services.AddAuthorization(options =>
-            //{
-            //    options.AddPolicy("ByUserKeyPolicy", policy =>
-            //            policy.Requirements.Add(new HttpHeaderRequirement("User-Key")));
-            //});
-
 
             // Register Identity DbContext and Server
             services.AddDbContext<ApplicationIdentityDbContext>(options =>

@@ -1,4 +1,5 @@
 ﻿using MediatR;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using SimpleDiplomBackend.Application.Features.Dishes.Commands;
 using SimpleDiplomBackend.Application.Features.Dishes.Commands.DeleteDish;
@@ -35,6 +36,7 @@ namespace SimpleDiplomBackend.Api.Endpoints.Dishes
         [ApiVersion("1.0")]
         [Route("api/v{version:apiVersion}/dishes")]
         [ProducesResponseType(StatusCodes.Status200OK)]
+        [Authorize]
         public async Task<IActionResult> CreateDish([FromBody] CreateDishRequest request)
         {
             var command = new CreateDishCommand()
@@ -54,6 +56,7 @@ namespace SimpleDiplomBackend.Api.Endpoints.Dishes
         [ApiVersion("1.0")]
         [Route("api/v{version:apiVersion}/dishes")]
         [ProducesResponseType(StatusCodes.Status200OK)]
+        [Authorize]
         public async Task<IActionResult> UpdateDish([FromBody] UpdateDishRequest request)
         {
             var command = new UpdateDishCommand()
@@ -75,6 +78,7 @@ namespace SimpleDiplomBackend.Api.Endpoints.Dishes
         [Route("api/v{version:apiVersion}/dishes/{id}")]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
+        [Authorize]
         public async Task<IActionResult> DeleteDish(int id)
         {
             var command = new DeleteDishCommand()
@@ -103,6 +107,7 @@ namespace SimpleDiplomBackend.Api.Endpoints.Dishes
         [ApiVersion("1.0")]
         [Route("api/v{version:apiVersion}/dishes/categories")]
         [ProducesResponseType(StatusCodes.Status200OK)]
+        [Authorize]
         public async Task<IActionResult> CreateCategory([FromBody] CreateDishCategoryRequest request)
         {
             var command = new CreateDishCategoryCommand()
@@ -121,6 +126,7 @@ namespace SimpleDiplomBackend.Api.Endpoints.Dishes
         [ApiVersion("1.0")]
         [Route("api/v{version:apiVersion}/dishes/categories")]
         [ProducesResponseType(StatusCodes.Status200OK)]
+        [Authorize]
         public async Task<IActionResult> UpdateCategory([FromBody] UpdateDishCategoryRequest request)
         {
             var command = new UpdateDishCategoryCommand()
@@ -140,6 +146,7 @@ namespace SimpleDiplomBackend.Api.Endpoints.Dishes
         [Route("api/v{version:apiVersion}/dishes/categories/{id}")]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
+        [Authorize]
         public async Task<IActionResult> DeleteCategory(int id)
         {
             var command = new DeleteDishCategoryCommand()

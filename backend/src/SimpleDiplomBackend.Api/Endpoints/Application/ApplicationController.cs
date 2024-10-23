@@ -1,4 +1,5 @@
 ﻿using MediatR;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using SimpleDiplomBackend.Api.Endpoints.Application;
 using SimpleDiplomBackend.Application.Features.Application.Queries.GetAll;
@@ -20,6 +21,7 @@ namespace SimpleDiplomBackend.Api.Endpoints.Bookings
         [ApiVersion("1.0")]
         [Route("api/v{version:apiVersion}/application")]
         [ProducesResponseType(StatusCodes.Status200OK)]
+        [Authorize]
         public async Task<IActionResult> GetAll()
         {
             var query = new GetAllQuery();
@@ -32,6 +34,7 @@ namespace SimpleDiplomBackend.Api.Endpoints.Bookings
         [ApiVersion("1.0")]
         [Route("api/v{version:apiVersion}/application")]
         [ProducesResponseType(StatusCodes.Status200OK)]
+        [Authorize]
         public async Task<IActionResult> Update([FromBody] UpdateApplicationOptionRequest request)
         {
             var command = new UpdateApplicationOptionRequest()
