@@ -157,6 +157,7 @@ namespace SimpleDiplomBackend.Infrastructure
                 options.SignIn.RequireConfirmedPhoneNumber = false;
             });
 
+
             // register Outbox Service
             services.AddScoped<IOutboxService, OutboxService>();
 

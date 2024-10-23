@@ -128,9 +128,11 @@ namespace SimpleDiplomBackend.Infrastructure.Auth
             return roles;
         }
 
-        public async Task<Result> PasswordSignInAsync(string email, string password, bool LockoutOnFailure)
+        public async Task<Result> PasswordSignInAsync(string email, string password, bool lockoutOnFailure)
         {
-            var result = await _signInManager.PasswordSignInAsync(email, password, false, LockoutOnFailure);
+            var user = await _userManager.FindByNameAsync(email);
+
+            var result = await _signInManager.PasswordSignInAsync(email, password, false, lockoutOnFailure);
 
             if (result.IsLockedOut)
             {

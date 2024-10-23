@@ -1,27 +1,36 @@
 ﻿using Microsoft.AspNetCore.Builder;
-using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Storage;
 using Microsoft.Extensions.DependencyInjection;
 
 namespace SimpleDiplomBackend.Persistence
 {
     public static class DbInitializer
     {
-        public static IApplicationBuilder UseInitializePersistanceDatabase(this IApplicationBuilder application)
+        public static IApplicationBuilder UseInitializePersistanceDatabase(this IApplicationBuilder application, bool doReinitDatabase)
         {
             using var serviceScope = application.ApplicationServices.CreateScope();
             var dbContext = serviceScope.ServiceProvider.GetService<SimpleDiplomBackendDbContext>();
 
-            // only call this method when there are pending migrations
-            if (dbContext != null && true)
+            if (dbContext != null && doReinitDatabase)
             {
-                dbContext.Database.EnsureDeleted();
-                dbContext.Database.EnsureCreated();
+                ReinitDatabase(serviceScope, dbContext).Wait();
             }
 
-            // TODO: Add method for database seeding
-            // SeedData(dbContext);
-
             return application;
+        }
+
+        public static async Task ReinitDatabase(IServiceScope serviceScope, SimpleDiplomBackendDbContext dbContext)
+        {
+            var databaseCreator = dbContext.GetService<IRelationalDatabaseCreator>();
+            await databaseCreator.CreateTablesAsync();
+
+            await SeedData(serviceScope, dbContext);
+        }
+
+        public static async Task SeedData(IServiceScope serviceScope, SimpleDiplomBackendDbContext dbContext)
+        {
+            
         }
     }
 }

@@ -63,6 +63,7 @@ namespace SimpleDiplomBackend.Persistence
         {
             // applies all configurations defined within the configurations folder
             modelBuilder.ApplyConfigurationsFromAssembly(typeof(SimpleDiplomBackendDbContext).Assembly);
+            modelBuilder.HasDefaultSchema("data");
             base.OnModelCreating(modelBuilder);
         }
     }

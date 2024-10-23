@@ -1,5 +1,7 @@
 ﻿using MediatR;
+using Microsoft.Extensions.DependencyInjection;
 using SimpleDiplomBackend.Application.Features.Authentication.Interfaces;
+using SimpleDiplomBackend.Application.Features.Authentication.Models;
 using SimpleDiplomBackend.Application.Shared.Exceptions;
 
 namespace SimpleDiplomBackend.Application.Features.Authentication.Commands.Login
@@ -22,7 +24,6 @@ namespace SimpleDiplomBackend.Application.Features.Authentication.Commands.Login
 
         public async Task<AuthenticationResult> Handle(LoginCommand request, CancellationToken cancellationToken)
         {
-            // validate email and password
             var result = await _authenticationService.PasswordSignInAsync(request.Email, request.Password, false);
 
             // throw unauthorized exception if credentials validation fails

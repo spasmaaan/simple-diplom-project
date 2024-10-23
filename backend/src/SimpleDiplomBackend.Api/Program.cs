@@ -14,6 +14,9 @@ using Quartz;
 using Serilog;
 using Swashbuckle.AspNetCore.SwaggerGen;
 using System.Reflection;
+using Microsoft.AspNetCore.Identity;
+using Microsoft.Extensions.DependencyInjection;
+using SimpleDiplomBackend.Infrastructure.Auth;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -212,8 +215,9 @@ app.Use(async (context, next) =>
 // Apply pending database migrations
 if (builder.Configuration.GetValue<bool>("UseDatabaseInitializer"))
 {
-    app.UseInitializeInfrastructureDatabase();
-    app.UseInitializePersistanceDatabase();
+    bool doReinitDatabase = true; // builder.Configuration.GetValue<bool>("ReinitDatabase");
+    app.UseInitializeInfrastructureDatabase(doReinitDatabase);
+    app.UseInitializePersistanceDatabase(doReinitDatabase);
 }
 
 // Enable IP Rate Limiting Middleware
