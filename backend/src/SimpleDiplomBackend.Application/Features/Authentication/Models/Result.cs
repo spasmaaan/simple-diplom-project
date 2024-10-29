@@ -12,7 +12,7 @@
         }
         public static Result Success()
         {
-            return new Result(true, System.Array.Empty<string>());
+            return new Result(true, Array.Empty<string>());
         }
 
         public static Result Failure(IEnumerable<string> errors)

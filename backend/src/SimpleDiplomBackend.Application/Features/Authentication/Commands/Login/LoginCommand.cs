@@ -1,7 +1,5 @@
 ﻿using MediatR;
-using Microsoft.Extensions.DependencyInjection;
 using SimpleDiplomBackend.Application.Features.Authentication.Interfaces;
-using SimpleDiplomBackend.Application.Features.Authentication.Models;
 using SimpleDiplomBackend.Application.Shared.Exceptions;
 
 namespace SimpleDiplomBackend.Application.Features.Authentication.Commands.Login

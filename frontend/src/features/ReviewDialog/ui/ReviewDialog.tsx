@@ -1,7 +1,5 @@
-import cn from 'classnames';
-import { Input, Modal, Rate, Space } from 'antd';
+import { Modal, Rate, Space } from 'antd';
 import { ChangeEvent, useCallback, useEffect, useState } from 'react';
-import { IReviewData } from 'entities/reviews';
 import TextArea from 'antd/es/input/TextArea';
 import { IReviewDialogProps, DialogWidth } from '../lib';
 
@@ -38,7 +36,7 @@ export const ReviewDialog = ({
 
   const handleOk = useCallback(() => {
     const { creationDate, me, shortName, fullName } = defaults || {
-      creationDate: new Date(Date.now()),
+      creationDate: new Date(Date.now()).toUTCString(),
       shortName: '',
       fullName: '',
       me: true,

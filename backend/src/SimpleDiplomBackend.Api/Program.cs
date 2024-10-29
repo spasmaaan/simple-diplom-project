@@ -196,7 +196,7 @@ if (app.Environment.IsDevelopment() || app.Environment.IsEnvironment("Local") ||
 else
 {
     // Enable HTTP Strict Transport Security Protocol (HSTS)
-    app.UseHsts();
+     app.UseHsts();
 }
 
 // Enable NWebSec Security Response Headers
@@ -223,7 +223,7 @@ if (builder.Configuration.GetValue<bool>("UseDatabaseInitializer"))
 // Enable IP Rate Limiting Middleware
 app.UseIpRateLimiting();
 
-app.UseHttpsRedirection();
+// app.UseHttpsRedirection();
 
 app.UseAuthentication();
 

@@ -6,13 +6,11 @@ using SimpleDiplomBackend.Application.Shared.Models;
 
 namespace SimpleDiplomBackend.Application.Features.Application.Queries.GetAll
 {
-    public record GetAllQuery : IRequest<PaginatedList<ApplicationOptionDto>>
+    public record GetAllQuery : IRequest<Dictionary<string, string>>
     {
-        public int Offset { get; set; }
-        public int Limit { get; set; }
     }
 
-    public class GetAllQueryHandler : IRequestHandler<GetAllQuery, PaginatedList<ApplicationOptionDto>>
+    public class GetAllQueryHandler : IRequestHandler<GetAllQuery, Dictionary<string, string>>
     {
         private readonly ISimpleDiplomBackendDbContext _dbContext;
 
@@ -21,19 +19,12 @@ namespace SimpleDiplomBackend.Application.Features.Application.Queries.GetAll
             _dbContext = dbContext;
         }
 
-        public async Task<PaginatedList<ApplicationOptionDto>> Handle(GetAllQuery request, CancellationToken cancellationToken)
+        public async Task<Dictionary<string, string>> Handle(GetAllQuery request, CancellationToken cancellationToken)
         {
-            var products = await _dbContext.ApplicationOptions
-                .AsNoTracking()
-                .Select(p => new ApplicationOptionDto
-                {
-                    Id = p.Id,
-                    Value = p.Value
-                })
-                .OrderBy(p => p.Id)
-                .PaginatedListAsync(request.Offset, request.Limit, cancellationToken);
+            var options = await _dbContext.ApplicationOptions
+                .AsNoTracking().ToDictionaryAsync(x => x.Id, y => y.Value);
 
-            return products;
+            return options;
         }
     }
 }

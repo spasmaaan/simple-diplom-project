@@ -1,3 +1,5 @@
+import { IImageItem } from 'shared/types';
+
 export type ServiceId = number;
 
 export interface IServiceData {
@@ -11,3 +13,5 @@ export interface IServiceData {
 export interface IService extends IServiceData {
   id: ServiceId;
 }
+
+export interface IServiceState extends IService, IImageItem {}

@@ -1,8 +1,4 @@
-import { IApplicationOptions, IOutboxMessage } from '../lib';
-
-export const MOCK_OPTIONS: IApplicationOptions = {
-  option1: 'value1',
-};
+import { IOutboxMessage } from '../lib';
 
 export const MOCK_NOTIFICATIONS: IOutboxMessage[] = [
   {

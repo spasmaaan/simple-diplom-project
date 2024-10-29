@@ -13,8 +13,8 @@ export const useFaqsStoreBase = create<FaqsState & FaqsAction>()((set, get) => (
       return;
     }
     set(() => ({ faqsLoaded: false, faqsLoading: true }));
-    const faqs = await loadFaqs();
-    set(() => ({ faqsLoaded: true, faqsLoading: false, faqs }));
+    const result = (await loadFaqs()) || [];
+    set(() => ({ faqsLoaded: true, faqsLoading: false, faqs: result.items }));
   },
   add: async (faqData: IFaqData) => {
     if (!get().faqsLoaded) {

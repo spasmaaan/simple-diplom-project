@@ -3,10 +3,11 @@
     public class ReviewDto
     {
         public int Id { get; set; }
-        public string UserId { get; set; } = string.Empty;
-        public string UserName { get; set; } = string.Empty;
+        public string ShortName { get; set; } = string.Empty;
+        public string FullName { get; set; } = string.Empty;
         public string Message { get; set; } = string.Empty;
         public short? Rating { get; set; }
         public DateTime CreationDate { get; set; }
+        public bool Me { get; set; }
     }
 }

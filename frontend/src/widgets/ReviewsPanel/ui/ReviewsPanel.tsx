@@ -1,9 +1,9 @@
 import { Typography, Flex, Card, Space, Avatar, Rate, Button } from 'antd';
 import { useAuthStore } from 'entities/auth';
 import { DeleteOutlined, EditOutlined } from '@ant-design/icons';
-import React, { useCallback, useMemo, useState } from 'react';
-import { AddItemCard } from 'shared/components/AddItemCard';
+import { useMemo } from 'react';
 import cn from 'classnames';
+import { UserRole } from 'entities/auth/lib/constants';
 import { IReviewsPanelProps } from '../lib';
 
 import * as styles from './ReviewsPanel.module.scss';
@@ -17,7 +17,9 @@ export const ReviewsPanel = ({
   onEdit,
   onRemove,
 }: IReviewsPanelProps) => {
-  const { isAdmin } = useAuthStore();
+  const { userInfo } = useAuthStore();
+  const isAdmin = useMemo(() => Boolean(userInfo?.roles.includes(UserRole.Admin)), [userInfo]);
+
   return (
     <Flex className={cn(styles.Container, className)} justify="center">
       <Flex className={styles.Reviews} vertical>
@@ -33,7 +35,7 @@ export const ReviewsPanel = ({
                 <Avatar>{review.shortName}</Avatar>
                 <Flex vertical className={styles.Info}>
                   <Text strong>{review.fullName}</Text>
-                  <Text>{review.creationDate.toLocaleDateString()}</Text>
+                  <Text>{new Date(review.creationDate).toLocaleDateString()}</Text>
                 </Flex>
                 <Space direction="horizontal">
                   {review.me && (

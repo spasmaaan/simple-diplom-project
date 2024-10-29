@@ -18,12 +18,12 @@ namespace SimpleDiplomBackend.Persistence.Configurations
 
             builder.Property(e => e.Question)
                 .HasColumnName("question")
-                .HasMaxLength(300)
+                .HasMaxLength(500)
                 .IsRequired();
 
             builder.Property(e => e.Answer)
                 .HasColumnName("answer")
-                .HasMaxLength(500)
+                .HasMaxLength(5000)
                 .IsRequired();
         }
     }

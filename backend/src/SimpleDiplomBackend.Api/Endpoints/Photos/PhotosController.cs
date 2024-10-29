@@ -4,6 +4,7 @@ using Microsoft.AspNetCore.Mvc;
 using SimpleDiplomBackend.Application.Features.Photo.Commands.DeletePhoto;
 using SimpleDiplomBackend.Application.Features.Photo.Commands.UpdatePhoto;
 using SimpleDiplomBackend.Application.Features.Photo.Queries.GetAll;
+using SimpleDiplomBackend.Application.Features.Photos.Queries.GetImage;
 using SimpleDiplomBackend.Booking.Features.Photo.Commands.CreatePhoto;
 
 namespace SimpleDiplomBackend.Api.Endpoints.Photos
@@ -25,10 +26,35 @@ namespace SimpleDiplomBackend.Api.Endpoints.Photos
         [ProducesResponseType(StatusCodes.Status200OK)]
         public async Task<IActionResult> GetAll()
         {
-            var query = new GetAllQuery();
+            var query = new GetAllQuery {
+                Offset = 1,
+                Limit = 10000,
+            };
             var result = await _mediator.Send(query);
 
             return Ok(result);
+        }
+
+        [HttpGet]
+        [ApiVersion("1.0")]
+        [Route("api/v{version:apiVersion}/photos/{id}")]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        public async Task<IActionResult> GetImage(int id)
+        {
+            var query = new GetImageQuery
+            {
+                Id = id
+            };
+            var result = await _mediator.Send(query);
+
+            if (result == null)
+            {
+                return Ok();
+            }
+            
+            return new FileStreamResult(
+                new MemoryStream(result.Data), result.MimeType
+            );
         }
 
         [HttpPost]
@@ -40,7 +66,7 @@ namespace SimpleDiplomBackend.Api.Endpoints.Photos
         {
             var command = new CreatePhotoCommand()
             {
-                Image = Convert.FromBase64String(request.Image)
+                ImageBase64 = request.Image
             };
             var result = await _mediator.Send(command);
 
@@ -57,7 +83,7 @@ namespace SimpleDiplomBackend.Api.Endpoints.Photos
             var command = new UpdatePhotoCommand()
             {
                 Id = request.Id,
-                Image = Convert.FromBase64String(request.Image),
+                ImageBase64 = request.Image
             };
             var result = await _mediator.Send(command);
 

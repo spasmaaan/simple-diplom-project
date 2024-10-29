@@ -1,12 +1,11 @@
 export { useAuthStore } from './hooks';
+export { useAuthStoreBase as authStore } from './model/AuthStore';
 export type {
   AuthState,
   AuthAction,
   IAuthData,
-  ILoginResult,
   IRefreshTokenPayload,
   IRegisterUser,
-  IToken,
   IUser,
   RoleId,
   Token,

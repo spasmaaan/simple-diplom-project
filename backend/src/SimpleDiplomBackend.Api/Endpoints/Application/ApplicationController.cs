@@ -19,9 +19,8 @@ namespace SimpleDiplomBackend.Api.Endpoints.Bookings
 
         [HttpGet]
         [ApiVersion("1.0")]
-        [Route("api/v{version:apiVersion}/application")]
+        [Route("api/v{version:apiVersion}/application/options")]
         [ProducesResponseType(StatusCodes.Status200OK)]
-        [Authorize]
         public async Task<IActionResult> GetAll()
         {
             var query = new GetAllQuery();
@@ -32,7 +31,7 @@ namespace SimpleDiplomBackend.Api.Endpoints.Bookings
 
         [HttpPut]
         [ApiVersion("1.0")]
-        [Route("api/v{version:apiVersion}/application")]
+        [Route("api/v{version:apiVersion}/application/options")]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [Authorize]
         public async Task<IActionResult> Update([FromBody] UpdateApplicationOptionRequest request)

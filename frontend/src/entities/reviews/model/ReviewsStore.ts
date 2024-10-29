@@ -13,8 +13,8 @@ export const useReviewsStoreBase = create<ReviewsState & ReviewsAction>()((set, 
       return;
     }
     set(() => ({ reviewsLoaded: false, reviewsLoading: true }));
-    const reviews = await loadReviews();
-    set(() => ({ reviewsLoaded: true, reviewsLoading: false, reviews }));
+    const result = await loadReviews();
+    set(() => ({ reviewsLoaded: true, reviewsLoading: false, reviews: result.items }));
   },
   add: async (reviewData: IReviewData) => {
     if (!get().reviewsLoaded) {

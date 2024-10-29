@@ -3,16 +3,18 @@ import { useCallback, useMemo, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useAuthStore } from 'entities/auth';
 import { LoginDialog } from 'features/LoginDialog';
+import { UserRole } from 'entities/auth/lib/constants';
 import { getAvatarText, getUserFullName, IProfileButtonProps } from '../lib';
 
 import * as styles from './ProfileButton.module.scss';
 
 export const ProfileButton = ({ className }: IProfileButtonProps) => {
-  const { user, isAdmin, authenticated, login, registerUser, logout } = useAuthStore();
+  const { userInfo, authenticated, login, registerUser, logout } = useAuthStore();
   const navigateTo = useNavigate();
   const [loginDialogOpened, setLoginDialogOpened] = useState(false);
 
-  const avatarText = useMemo(() => getAvatarText(user), [user]);
+  const isAdmin = useMemo(() => Boolean(userInfo?.roles.includes(UserRole.Admin)), [userInfo]);
+  const avatarText = useMemo(() => getAvatarText(userInfo), [userInfo]);
 
   const openLoginDialog = useCallback(() => {
     setLoginDialogOpened(true);
@@ -35,11 +37,12 @@ export const ProfileButton = ({ className }: IProfileButtonProps) => {
   );
 
   const startRegister = useCallback(
-    (loginName: string, password: string, email: string) => {
+    (email: string, firstName: string, lastName: string, password: string) => {
       void registerUser({
-        user: loginName,
-        password,
         email,
+        firstName,
+        lastName,
+        password,
       });
       closeLoginDialog();
     },
@@ -61,7 +64,7 @@ export const ProfileButton = ({ className }: IProfileButtonProps) => {
     return [
       {
         key: 'userName',
-        label: getUserFullName(user),
+        label: getUserFullName(userInfo),
         disabled: true,
       },
       {
@@ -79,7 +82,7 @@ export const ProfileButton = ({ className }: IProfileButtonProps) => {
         onClick: logout,
       },
     ];
-  }, [authenticated, isAdmin, logout, navigateTo, toProfile, user]);
+  }, [authenticated, isAdmin, userInfo, toProfile, logout, navigateTo]);
 
   return (
     <div className={styles.Wrapper}>

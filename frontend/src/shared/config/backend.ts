@@ -1,4 +1,4 @@
-export const BackendUrl = 'api/v1/';
+export const BackendUrl = 'api/';
 
 export const ApplicationBackendUrl = 'application';
 export const AuthBackendUrl = 'auth';

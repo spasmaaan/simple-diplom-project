@@ -1,11 +1,12 @@
 import { Typography, Flex, Card, Space, Button } from 'antd';
 import { useAuthStore } from 'entities/auth';
 import { DeleteOutlined, EditOutlined } from '@ant-design/icons';
-import React, { useCallback, useState } from 'react';
+import React, { useCallback, useMemo, useState } from 'react';
 import { AddItemCard } from 'shared/components/AddItemCard';
 import cn from 'classnames';
 import { useNavigate } from 'react-router-dom';
 import { DishCategoryId } from 'entities/dishes';
+import { UserRole } from 'entities/auth/lib/constants';
 import { IDishCategoriesPanelProps, ItemCartWidth, ItemImageHeight } from '../lib';
 
 import * as styles from './DishCategoriesPanel.module.scss';
@@ -19,8 +20,10 @@ export const DishCategoriesPanel = ({
   onEdit,
   onRemove,
 }: IDishCategoriesPanelProps) => {
-  const { isAdmin } = useAuthStore();
+  const { userInfo } = useAuthStore();
   const navigateTo = useNavigate();
+
+  const isAdmin = useMemo(() => Boolean(userInfo?.roles.includes(UserRole.Admin)), [userInfo]);
 
   const toDishes = useCallback(
     (dishCategory: DishCategoryId) => {
@@ -57,10 +60,11 @@ export const DishCategoriesPanel = ({
         {dishCategories.map((dishCategory) => (
           <Card
             key={dishCategory.id}
+            loading={dishCategory.loading}
             style={{
               width: ItemCartWidth,
               height: ItemImageHeight,
-              backgroundImage: `linear-gradient(to bottom, rgba(255,255,255,.2), rgba(255,255,255,.8)), url(${dishCategory.previewImage})`,
+              backgroundImage: `linear-gradient(to bottom, rgba(255,255,255,.2), rgba(255,255,255,.8))${dishCategory.url ? `, url(${dishCategory.url})` : ''}`,
             }}
             className={styles.Item}
             classNames={{

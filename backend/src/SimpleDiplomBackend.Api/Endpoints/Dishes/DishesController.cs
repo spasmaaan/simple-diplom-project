@@ -6,6 +6,8 @@ using SimpleDiplomBackend.Application.Features.Dishes.Commands.DeleteDish;
 using SimpleDiplomBackend.Application.Features.Dishes.Commands.UpdateDish;
 using SimpleDiplomBackend.Application.Features.Dishes.Queries.GetAllDishCategories;
 using SimpleDiplomBackend.Application.Features.Dishes.Queries.GetAllDishes;
+using SimpleDiplomBackend.Application.Features.Dishes.Queries.GetCategoryImage;
+using SimpleDiplomBackend.Application.Features.Dishes.Queries.GetDishImage;
 
 namespace SimpleDiplomBackend.Api.Endpoints.Dishes
 {
@@ -26,10 +28,37 @@ namespace SimpleDiplomBackend.Api.Endpoints.Dishes
         [ProducesResponseType(StatusCodes.Status200OK)]
         public async Task<IActionResult> GetAllDishes()
         {
-            var query = new GetAllDishesQuery();
+            var query = new GetAllDishesQuery
+            {
+                Offset = 1,
+                Limit = 10000,
+            };
             var result = await _mediator.Send(query);
 
             return Ok(result);
+        }
+
+
+        [HttpGet]
+        [ApiVersion("1.0")]
+        [Route("api/v{version:apiVersion}/dishes/{id}")]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        public async Task<IActionResult> GetDishImage(int id)
+        {
+            var query = new GetDishImageQuery
+            {
+                Id = id
+            };
+            var result = await _mediator.Send(query);
+
+            if (result == null)
+            {
+                return Ok();
+            }
+
+            return new FileStreamResult(
+                new MemoryStream(result.Data), result.MimeType
+            );
         }
 
         [HttpPost]
@@ -97,10 +126,36 @@ namespace SimpleDiplomBackend.Api.Endpoints.Dishes
         [ProducesResponseType(StatusCodes.Status200OK)]
         public async Task<IActionResult> GetAllCategories()
         {
-            var query = new GetAllDishCategoriesQuery();
+            var query = new GetAllDishCategoriesQuery
+            {
+                Offset = 1,
+                Limit = 10000,
+            };
             var result = await _mediator.Send(query);
 
             return Ok(result);
+        }
+
+        [HttpGet]
+        [ApiVersion("1.0")]
+        [Route("api/v{version:apiVersion}/dishes/categories/{id}")]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        public async Task<IActionResult> GetCategoryImage(int id)
+        {
+            var query = new GetDishCategoryImageQuery
+            {
+                Id = id
+            };
+            var result = await _mediator.Send(query);
+
+            if (result == null)
+            {
+                return Ok();
+            }
+
+            return new FileStreamResult(
+                new MemoryStream(result.Data), result.MimeType
+            );
         }
 
         [HttpPost]

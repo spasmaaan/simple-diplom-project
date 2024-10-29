@@ -80,14 +80,21 @@ namespace SimpleDiplomBackend.Infrastructure.Auth
             }
         }
 
-        public async Task<List<AppUser>> GetAllUsersAsync()
+        public async Task<List<UserInfo>> GetUsersAsync(Func<string, bool>? emailFilter = null)
         {
-            var users = await _userManager.Users.ToListAsync();
-            var usrs = users.Select(u => new AppUser
+            IQueryable<ApplicationUser> query = _userManager.Users;
+            if (emailFilter != null) {
+                query = query.Where(user => user.Email != null && emailFilter(user.Email)).AsQueryable();
+            }
+            List<ApplicationUser> users = await query.ToListAsync();
+            List<UserInfo> usrs = users.Select(user => new UserInfo
             {
-                Email = u.Email ?? string.Empty,
-                FirstName = u.FirstName,
-                LastName = u.LastName
+                Id = user.Id,
+                Email = user.Email ?? string.Empty,
+                FirstName = user.FirstName,
+                LastName = user.LastName,
+                Roles = { },
+                Locked = false,
             }).ToList();
 
             return usrs;

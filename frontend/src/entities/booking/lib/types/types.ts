@@ -6,9 +6,9 @@ export type BookingId = number;
 
 export interface IBookingData {
   userId?: string;
-  creationDate: Date;
-  startDate: Date;
-  endDate: Date;
+  creationDate: string;
+  startDate: string;
+  endDate: string;
   statusId: BookingStatus;
   dishes: Record<DishId, number>;
   services: Record<ServiceId, number>;

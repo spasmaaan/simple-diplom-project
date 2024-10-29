@@ -1,11 +1,13 @@
 ﻿using MediatR;
 using SimpleDiplomBackend.Application.Shared.Interface;
+using SimpleDiplomBackend.Application.Shared.Utilities;
+using SimpleDiplomBackend.Domain.Entities;
 
 namespace SimpleDiplomBackend.Booking.Features.Photo.Commands.CreatePhoto
 {
     public record CreatePhotoCommand : IRequest<Domain.Entities.Photo>
     {
-        public byte[]? Image { get; set; }
+        public string ImageBase64 { get; set; } = string.Empty;
     }
 
     public class CreatePhotoCommandHandler : IRequestHandler<CreatePhotoCommand, Domain.Entities.Photo>
@@ -19,9 +21,11 @@ namespace SimpleDiplomBackend.Booking.Features.Photo.Commands.CreatePhoto
 
         public async Task<Domain.Entities.Photo> Handle(CreatePhotoCommand request, CancellationToken cancellationToken)
         {
+            var image = new Base64FileInfo(request.ImageBase64);
             var entity = new Domain.Entities.Photo
             {
-                Image = request.Image
+                MimeType = image.MimeType,
+                Image = image.Data,
             };
 
             _dbContext.Photos.Add(entity);

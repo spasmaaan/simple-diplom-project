@@ -1,3 +1,4 @@
+import { authStore } from 'entities/auth';
 import { BackendUrl } from 'shared/config';
 import { FetchBody, FetchHeaders, UserId } from 'shared/types';
 
@@ -14,11 +15,10 @@ const bodyIsObject = (body: FetchBody | undefined) =>
 
 const getApplicationUrl = () => {
   const { host, protocol } = window.location;
-  return `${protocol}//${process.env.BACKEND_HOST_PATH || host}`;
+  return `${protocol}//${process.env.BACKEND_HOST || host}/${process.env.BACKEND_PATH || BackendUrl}`;
 };
 
-export const getBackendUrl = (backendUrl: string) =>
-  `${getApplicationUrl()}/${BackendUrl}${backendUrl}`;
+export const getBackendUrl = (backendUrl: string) => `${getApplicationUrl()}${backendUrl}`;
 
 export const backendFetch = async (
   userId: UserId | null,
@@ -27,12 +27,16 @@ export const backendFetch = async (
   body?: FetchBody,
   rawHeaders?: FetchHeaders
 ) => {
+  const { authenticated, token } = authStore.getState();
+
   const url = getBackendUrl(backendUrl);
   const doUseJson = bodyIsObject(body);
   const headers: FetchHeaders = {
     ...(rawHeaders || {}),
-    'User-Key': userId != null ? userId.toString() : '',
   };
+  if (authenticated && token) {
+    headers.Authorization = `${token.tokenType} ${token.accessToken}`;
+  }
   if (doUseJson) {
     headers['Content-Type'] = 'application/json';
   }

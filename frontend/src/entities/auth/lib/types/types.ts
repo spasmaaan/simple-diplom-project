@@ -10,31 +10,16 @@ export interface IUser {
   firstName: string;
   lastName: string;
   eMail: string;
-  roleId: UserRole;
+  roles: UserRole[];
   creationDate: Date;
-  revoked: Date;
   locked: boolean;
 }
 
-export interface IToken {
-  id: TokenId;
-  userId: UserId;
-  jwtId: string;
-  token: Token;
-  creationDate: Date;
-  expirationDate: Date;
-  revoked: Date | null;
-}
-
 export interface IRegisterUser {
-  user: UserId;
-  password: string;
   email: string;
-}
-
-export interface ILoginResult {
-  user: IUser;
-  token: IToken;
+  firstName: string;
+  lastName: string;
+  password: string;
 }
 
 export interface IRefreshTokenPayload {
@@ -42,9 +27,37 @@ export interface IRefreshTokenPayload {
   refreshToken: Token;
 }
 
+export interface IRefreshTokenResult {
+  accessToken: Token;
+  refreshToken: Token;
+  succeeded: boolean;
+  expiresId: number;
+  error: string;
+}
+
 export interface IAuthData {
   accessToken: Token;
   tokenType: string;
   expiresId: number;
   refreshToken: Token;
+}
+
+export interface IAuthErrors {
+  Email?: string;
+  Password?: string;
+}
+
+export interface IAuthDataResult extends IAuthData {
+  errors?: IAuthErrors;
+}
+
+export interface IRegisterUserErrors {
+  Email?: string;
+  FirstName?: string;
+  LastName?: string;
+  Password?: string;
+}
+
+export interface IRegisterUserResult {
+  errors?: IRegisterUserErrors;
 }

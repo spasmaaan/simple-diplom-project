@@ -1,12 +1,12 @@
 import { backendDelete, backendGet, backendPost, backendPut } from 'shared/api';
 import { FaqsBackendUrl } from 'shared/config';
+import { IPaginationResult } from 'shared/types';
 import { FaqId, IFaq, IFaqData } from '../lib';
-import { MOCK_FAQS } from './mock';
 
 const getFaqsPath = (url: string = '') => `${FaqsBackendUrl}${url}`;
 
-export const loadFaqs = async (): Promise<IFaq[]> => {
-  return MOCK_FAQS; // (await backendGet(null, getFaqsPath())).json();
+export const loadFaqs = async (): Promise<IPaginationResult<IFaq>> => {
+  return (await backendGet(null, getFaqsPath())).json();
 };
 export const addFaq = async (faqData: IFaqData): Promise<IFaq> => {
   return (await backendPost(null, getFaqsPath(), faqData)).json();

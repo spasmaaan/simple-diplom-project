@@ -30,7 +30,6 @@ namespace SimpleDiplomBackend.Application.Features.Dishes.Queries.GetAllDishes
                     Id = p.Id,
                     Name = p.Name,
                     Description = p.Description,
-                    PreviewImage = p.PreviewImage,
                     Price = p.Price,
                     CategoryId = p.CategoryId                   
                 })

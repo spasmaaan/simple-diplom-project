@@ -169,7 +169,7 @@ namespace SimpleDiplomBackend.Infrastructure.Auth
             var expirationDateTimeUtc = new DateTime(1970, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc)
                 .AddSeconds(expirationDate);
 
-            if (expirationDateTimeUtc > DateTime.UtcNow)
+            if (expirationDateTimeUtc < DateTime.UtcNow)
             {
                 return new TokenResult { Succeeded = false, Error = "This access token hasn't expired" };
             }
@@ -202,9 +202,67 @@ namespace SimpleDiplomBackend.Infrastructure.Auth
 
             await _dbContext.SaveChangesAsync(cancellationToken);
 
-            var tokenResult = await GenerateClaimsTokenAsync(validatedToken.Claims.Single(x => x.Type == ClaimTypes.Email).Value, cancellationToken);
+            TokenResult tokenResult = await GenerateClaimsTokenAsync(validatedToken.Claims.Single(x => x.Type == ClaimTypes.Email).Value, cancellationToken);
 
             return tokenResult;
+        }
+
+        public async Task<TokenResult> RevokeTokenAsync(string token, string refreshToken,  CancellationToken cancellationToken)
+        {
+            var validatedToken = await GetPrincipFromTokenAsync(token);
+
+            if (validatedToken == null)
+            {
+                return new TokenResult { Succeeded = false, Error = "Invalid token" };
+            }
+
+            var expirationDate = long.Parse(validatedToken.Claims.Single(x => x.Type == JwtRegisteredClaimNames.Exp).Value);
+            var expirationDateTimeUtc = new DateTime(1970, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc)
+                .AddSeconds(expirationDate);
+
+            if (expirationDateTimeUtc < DateTime.UtcNow)
+            {
+                return new TokenResult { Succeeded = false, Error = "This access token hasn't expired" };
+            }
+
+            var jti = validatedToken.Claims.Single(x => x.Type == JwtRegisteredClaimNames.Jti).Value;
+            var storedRefreshToken = await _dbContext.RefreshTokens.SingleOrDefaultAsync(x => x.JwtId == jti);
+            if (storedRefreshToken != null)
+            {
+                storedRefreshToken.Revoked = DateTime.UtcNow;
+                _dbContext.RefreshTokens.Update(storedRefreshToken);
+
+                await _dbContext.SaveChangesAsync(cancellationToken);
+            }
+
+            return new TokenResult
+            {
+                Succeeded = true
+            };
+        }
+
+        public async Task<UserInfo?> GetUserByTokenAsync(string token, CancellationToken cancellationToken)
+        {
+            ClaimsPrincipal? validatedToken = await GetPrincipFromTokenAsync(token);
+            if (validatedToken == null)
+            {
+                return null;
+            }
+            var user = await _userManager.GetUserAsync(validatedToken);
+            if (user ==  null)
+            {
+                return null;
+            }
+            var roles = await _userManager.GetRolesAsync(user);
+            return new UserInfo
+            {
+                Id = user.Id,
+                Email = user.Email ?? string.Empty,
+                FirstName = user.FirstName,
+                LastName = user.LastName,
+                Locked = false,
+                Roles = roles?.ToArray() ?? Array.Empty<string>()
+            };
         }
     }
 }

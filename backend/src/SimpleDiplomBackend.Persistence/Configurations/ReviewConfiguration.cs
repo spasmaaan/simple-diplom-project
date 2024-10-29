@@ -26,8 +26,7 @@ namespace SimpleDiplomBackend.Persistence.Configurations
                 .IsRequired();
 
             builder.Property(e => e.Rating)
-                .HasColumnName("rating")
-                .IsRequired();
+                .HasColumnName("rating");
 
             builder.Property(e => e.CreationDate)
                 .HasColumnName("creationDate")

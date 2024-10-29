@@ -8,5 +8,7 @@ namespace SimpleDiplomBackend.Application.Features.Authentication.Interfaces
         Task<TokenResult> GenerateClaimsTokenAsync(string username, CancellationToken cancellationToken);
         Task<ClaimsPrincipal?> GetPrincipFromTokenAsync(string token);
         Task<TokenResult> RefreshTokenAsync(string token, string refreshToken, CancellationToken cancellationToken);
+        Task<TokenResult> RevokeTokenAsync(string token, string refreshToken, CancellationToken cancellationToken);
+        Task<UserInfo?> GetUserByTokenAsync(string token, CancellationToken cancellationToken);
     }
 }

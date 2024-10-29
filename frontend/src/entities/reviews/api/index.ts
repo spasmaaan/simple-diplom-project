@@ -1,12 +1,12 @@
 import { backendDelete, backendGet, backendPost, backendPut } from 'shared/api';
 import { ReviewsBackendUrl } from 'shared/config';
+import { IPaginationResult } from 'shared/types';
 import { IReview, IReviewData, ReviewId } from '../lib';
-import { MOCK_REVIEWS } from './mock';
 
 const getReviewsPath = (url: string = '') => `${ReviewsBackendUrl}${url}`;
 
-export const loadReviews = async (): Promise<IReview[]> => {
-  return MOCK_REVIEWS; // (await backendGet(null, getReviewsPath())).json();
+export const loadReviews = async (): Promise<IPaginationResult<IReview>> => {
+  return (await backendGet(null, getReviewsPath())).json();
 };
 export const addReview = async (reviewData: IReviewData): Promise<IReview> => {
   return (await backendPost(null, getReviewsPath(), reviewData)).json();

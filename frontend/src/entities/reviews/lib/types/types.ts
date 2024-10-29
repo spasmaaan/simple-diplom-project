@@ -5,7 +5,7 @@ export interface IReviewData {
   shortName: string;
   message: string;
   rating?: number;
-  creationDate: Date;
+  creationDate: string;
   me: boolean;
 }
 

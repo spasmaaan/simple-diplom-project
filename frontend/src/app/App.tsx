@@ -5,19 +5,27 @@ import { AdminPage } from 'pages/AdminPage';
 import { BookingsPage } from 'pages/BookingsPage';
 import { BookingPage } from 'pages/BookingPage';
 import { DishesPage } from 'pages/DishesPage';
-import { DishPage } from 'pages/DishPage';
 import { FaqPage } from 'pages/FaqPage';
 import { ProfilePage } from 'pages/ProfilePage';
 import { ReviewsPage } from 'pages/ReviewsPage';
 import { ServicesPage } from 'pages/ServicesPage';
-import { ServicePage } from 'pages/ServicePage';
 import { StatisticsPage } from 'pages/StatisticsPage';
 import { PhotosPage } from 'pages/PhotosPage';
 import { DishCategoriesPage } from 'pages/DishCategoriesPage';
+import { useEffect } from 'react';
+import { useApplicationStore } from 'entities/application';
 
 import './styles/index.scss';
 
 export const App = () => {
+  const { optionsLoaded, loadOptions } = useApplicationStore();
+
+  useEffect(() => {
+    if (!optionsLoaded) {
+      loadOptions();
+    }
+  }, [loadOptions, optionsLoaded]);
+
   return (
     <Routes>
       <Route path="/" element={<AppLayout className="app" />}>

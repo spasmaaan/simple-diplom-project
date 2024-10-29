@@ -4,6 +4,7 @@ import { DeleteOutlined, EditOutlined, PlusOutlined } from '@ant-design/icons';
 import { useCallback, useMemo } from 'react';
 import cn from 'classnames';
 import { IFaq } from 'entities/faqs';
+import { UserRole } from 'entities/auth/lib/constants';
 import { IFaqsPanelProps } from '../lib';
 
 import * as styles from './FaqsPanel.module.scss';
@@ -11,7 +12,8 @@ import * as styles from './FaqsPanel.module.scss';
 const { Text } = Typography;
 
 export const FaqsPanel = ({ className, faqs, onAdd, onEdit, onRemove }: IFaqsPanelProps) => {
-  const { isAdmin } = useAuthStore();
+  const { userInfo } = useAuthStore();
+  const isAdmin = useMemo(() => Boolean(userInfo?.roles.includes(UserRole.Admin)), [userInfo]);
 
   const renderLabel = useCallback(
     (faq: IFaq) => {

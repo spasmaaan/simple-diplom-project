@@ -16,8 +16,8 @@ export const useBookingStoreBase = create<BookingState & BookingAction>()((set, 
       return;
     }
     set(() => ({ bookingsLoaded: false, bookingsLoading: true }));
-    const bookings = await loadBookings();
-    set(() => ({ bookingsLoaded: true, bookingsLoading: false, bookings }));
+    const result = await loadBookings();
+    set(() => ({ bookingsLoaded: true, bookingsLoading: false, bookings: result.items }));
   },
   add: async (bookingData: IBookingData) => {
     if (!get().bookingsLoaded) {

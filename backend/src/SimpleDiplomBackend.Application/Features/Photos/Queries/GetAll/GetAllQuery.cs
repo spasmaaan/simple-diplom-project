@@ -27,8 +27,7 @@ namespace SimpleDiplomBackend.Application.Features.Photo.Queries.GetAll
                 .AsNoTracking()
                 .Select(p => new PhotoDto
                 {
-                    Id = p.Id,
-                    Image = p.Image               
+                    Id = p.Id            
                 })
                 .OrderByDescending(p => p.Id)
                 .PaginatedListAsync(request.Offset, request.Limit, cancellationToken);

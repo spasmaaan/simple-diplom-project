@@ -1,9 +1,10 @@
-import { Typography, Flex, Card, Space, Statistic, Button, InputNumber } from 'antd';
+import { Typography, Flex, Card, Space, Statistic, Button, InputNumber, Spin } from 'antd';
 import { useAuthStore } from 'entities/auth';
 import { DeleteOutlined, EditOutlined, MinusOutlined, PlusOutlined } from '@ant-design/icons';
-import React, { useCallback, useState } from 'react';
+import React, { useCallback, useMemo, useState } from 'react';
 import { AddItemCard } from 'shared/components/AddItemCard';
 import cn from 'classnames';
+import { UserRole } from 'entities/auth/lib/constants';
 import { IServicesPanelProps, ItemCartWidth, ItemImageHeight, MinItemsCount } from '../lib';
 
 import * as styles from './ServicesPanel.module.scss';
@@ -21,7 +22,8 @@ export const ServicesPanel = ({
   onRemove,
   onChangeCount,
 }: IServicesPanelProps) => {
-  const { isAdmin } = useAuthStore();
+  const { userInfo } = useAuthStore();
+  const isAdmin = useMemo(() => Boolean(userInfo?.roles.includes(UserRole.Admin)), [userInfo]);
 
   return (
     <Flex className={cn(styles.Services, className)} wrap>
@@ -34,7 +36,11 @@ export const ServicesPanel = ({
         return (
           <Card key={service.id} style={{ width: ItemCartWidth }}>
             <Space className={styles.Item} direction="vertical">
-              <img src={service.previewImage} alt="Service" width={ItemImageHeight} />
+              {service.loading || !service.url ? (
+                <Spin style={{ width: ItemCartWidth, height: ItemCartWidth }} />
+              ) : (
+                <img src={service.url} alt="Service" width={ItemImageHeight} />
+              )}
               {isAdmin && (
                 <Space className={styles.Controls} direction="horizontal" size="small" align="end">
                   <Button icon={<EditOutlined />} onClick={() => onEdit(service.id)} />

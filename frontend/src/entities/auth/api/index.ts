@@ -1,36 +1,54 @@
 import { UserId } from 'shared/types';
 import { backendGet, backendPost, backendPut } from 'shared/api';
 import { AuthBackendUrl } from 'shared/config';
-import { IAuthData, IRefreshTokenPayload, IRegisterUser, IUser, RoleId } from '../lib';
+import {
+  IAuthDataResult,
+  IRefreshTokenPayload,
+  IRefreshTokenResult,
+  IRegisterUser,
+  IRegisterUserResult,
+  IUser,
+  RoleId,
+} from '../lib';
 import { UserRole } from '../lib/constants';
-import { MOCK_AUTH_DATA, MOCK_LOGIN, MOCK_ROLES, MOCK_USERS } from './mock';
 
 const getAuthPath = (url: string = '') => `${AuthBackendUrl}${url}`;
 
 export const loadUsers = async (): Promise<IUser[]> => {
-  return MOCK_USERS; // (await backendGet(null, getAuthPath('/users'))).json();
+  return (await backendGet(null, getAuthPath('/users'))).json();
+};
+
+export const loadUserInfo = async (): Promise<IUser> => {
+  return (await backendGet(null, getAuthPath('/profile'))).json();
+};
+
+export const updateUserInfo = async (user: IUser): Promise<IUser> => {
+  return (await backendPut(null, getAuthPath('/profile'))).json();
 };
 
 export const loadRoles = async (): Promise<Record<RoleId, UserRole>> => {
-  return MOCK_ROLES; // (await backendGet(null, getAuthPath('/roles'))).json();
+  return (await backendGet(null, getAuthPath('/roles'))).json();
 };
 
-export const login = async (user: UserId, password: string): Promise<IAuthData> => {
-  return MOCK_AUTH_DATA; // (await backendPost(null, getAuthPath('/login'), { user, password })).json();
+export const login = async (email: UserId, password: string): Promise<IAuthDataResult> => {
+  const result = await backendPost(null, getAuthPath('/login'), { email, password });
+  return result.json();
 };
 
-export const logout = async (): Promise<boolean> => {
-  return (await backendPost(null, getAuthPath('/logout'))).json();
+export const logout = async (refreshData: IRefreshTokenPayload): Promise<void> => {
+  await backendPost(null, getAuthPath('/logout'), refreshData);
 };
 
-export const registerUser = async (user: IRegisterUser): Promise<boolean> => {
+export const registerUser = async (user: IRegisterUser): Promise<IRegisterUserResult> => {
   return (await backendPost(null, getAuthPath('/register'), user)).json();
 };
 
-export const lockUser = async (userId: UserId): Promise<boolean> => {
-  return (await backendPut(null, getAuthPath(`/lock/${userId}`))).json();
+export const lockUser = async (userId: UserId): Promise<void> => {
+  await backendPut(null, getAuthPath(`/lock/${userId}`));
 };
 
-export const refreshToken = async (refreshData: IRefreshTokenPayload): Promise<IAuthData> => {
+export const getNewToken = async (
+  refreshData: IRefreshTokenPayload
+): Promise<IRefreshTokenResult> => {
   return (await backendPost(null, getAuthPath('/refresh'), refreshData)).json();
 };

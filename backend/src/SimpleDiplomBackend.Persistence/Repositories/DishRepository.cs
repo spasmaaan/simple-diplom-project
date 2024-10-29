@@ -36,7 +36,7 @@ namespace SimpleDiplomBackend.Persistence.Repositories
             var entity = await sqlconnection.QueryAsync<Dish, DishCategory, Dish>
                 (sql, (product, productCategory) =>
                 {
-                    product.Catergory = productCategory;
+                    // product.Catergory = productCategory;
                     return product;
                 },
                 splitOn: "ID");

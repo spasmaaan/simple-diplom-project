@@ -5,6 +5,7 @@ namespace SimpleDiplomBackend.Application.Features.Review.Commands.CreateReview
 {
     public record CreateReviewCommand : IRequest<Domain.Entities.Review>
     {
+        public string AccessToken { get; set; } = string.Empty;
         public string Message { get; set; } = string.Empty;
         public short? Rating { get; set; }
     }

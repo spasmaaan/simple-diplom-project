@@ -9,7 +9,7 @@ import { IServicesPageProps } from '../lib';
 import * as styles from './ServicesPage.module.scss';
 
 export const ServicesPage = ({ className }: IServicesPageProps) => {
-  const { services, servicesLoaded, add, edit, remove, load } = useServiceStore();
+  const { services, servicesLoaded, add, edit, remove, load, loadImage } = useServiceStore();
 
   const createDialogOkHandler = useCallback(
     (id: ServiceId | undefined, handleOk: (item: IService | IServiceData) => void) =>
@@ -25,8 +25,12 @@ export const ServicesPage = ({ className }: IServicesPageProps) => {
   useEffect(() => {
     if (!servicesLoaded) {
       load();
+    } else {
+      services.forEach(({ id }) => {
+        loadImage(id);
+      });
     }
-  }, [load, servicesLoaded]);
+  }, [load, loadImage, services, servicesLoaded]);
 
   return (
     <ManagementProvider

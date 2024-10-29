@@ -1,13 +1,14 @@
 ﻿using MediatR;
 using SimpleDiplomBackend.Application.Features.Photos.Interfaces;
 using SimpleDiplomBackend.Application.Shared.Exceptions;
+using SimpleDiplomBackend.Application.Shared.Utilities;
 
 namespace SimpleDiplomBackend.Application.Features.Photo.Commands.UpdatePhoto
 {
     public record UpdatePhotoCommand : IRequest<Domain.Entities.Photo>
     {
         public int Id { get; set; }
-        public byte[]? Image { get; set; }
+        public string ImageBase64 { get; set; } = string.Empty;
     }
 
     public class UpdatePhotoCommandHandler : IRequestHandler<UpdatePhotoCommand, Domain.Entities.Photo>
@@ -27,9 +28,12 @@ namespace SimpleDiplomBackend.Application.Features.Photo.Commands.UpdatePhoto
                 throw new NotFoundException(nameof(Dishes), request.Id);
             }
 
-            if (request.Image != null)
+            var image = new Base64FileInfo(request.ImageBase64);
+            if (request.ImageBase64 != null)
             {
-                entity.Image = request.Image;
+
+                entity.MimeType = image.MimeType;
+                entity.Image = image.Data;
             }
 
             await _photosReporsitory.Update(entity);

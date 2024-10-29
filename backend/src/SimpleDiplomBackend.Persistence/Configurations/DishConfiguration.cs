@@ -16,6 +16,10 @@ namespace SimpleDiplomBackend.Persistence.Configurations
                 .HasColumnName("id")
                 .ValueGeneratedOnAdd();
 
+            builder.Property(e => e.CategoryId)
+                .HasColumnName("categoryId")
+                .IsRequired();
+
             builder.Property(e => e.Name)
                 .HasColumnName("name")
                 .HasMaxLength(100)
@@ -25,6 +29,9 @@ namespace SimpleDiplomBackend.Persistence.Configurations
                 .HasColumnName("description")
                 .HasMaxLength(500)
                 .IsRequired();
+
+            builder.Property(e => e.PreviewMimeType)
+                .HasColumnName("previewMimeType");
 
             builder.Property(e => e.PreviewImage)
                 .HasColumnName("previewImage");

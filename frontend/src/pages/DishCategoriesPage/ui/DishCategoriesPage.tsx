@@ -1,14 +1,12 @@
 import cn from 'classnames';
 import { useDishesStore, IDishCategoryData, IDishCategory, DishCategoryId } from 'entities/dishes';
-import { useCallback, useEffect, useMemo } from 'react';
+import { useCallback, useEffect } from 'react';
 import { ManagementProvider } from 'widgets/ManagementProvider';
 import { DishCategoriesPanel } from 'widgets/DishCategoriesPanel';
 import { DishCategoryDialog } from 'features/DishCategoryDialog';
 import { IDishCategoriesPageProps } from '../lib';
 
 import * as styles from './DishCategoriesPage.module.scss';
-
-// Не хватает страницы с кухнями.
 
 export const DishCategoriesPage = ({ className }: IDishCategoriesPageProps) => {
   const {
@@ -18,6 +16,7 @@ export const DishCategoriesPage = ({ className }: IDishCategoriesPageProps) => {
     editCategory,
     removeCategory,
     loadCategories,
+    loadCategoryImage,
   } = useDishesStore();
 
   const createDialogOkHandler = useCallback(
@@ -34,8 +33,12 @@ export const DishCategoriesPage = ({ className }: IDishCategoriesPageProps) => {
   useEffect(() => {
     if (!categoriesLoaded) {
       loadCategories();
+      return;
     }
-  }, [categoriesLoaded, loadCategories]);
+    categories.forEach(({ id }) => {
+      loadCategoryImage(id);
+    });
+  }, [categories, categoriesLoaded, loadCategories, loadCategoryImage]);
 
   return (
     <ManagementProvider

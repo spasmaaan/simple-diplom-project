@@ -10,7 +10,21 @@ import { IPhotosPageProps } from '../lib';
 import * as styles from './PhotosPage.module.scss';
 
 export const PhotosPage = ({ className }: IPhotosPageProps) => {
-  const { add, edit, remove, load, photos, photosLoaded } = usePhotosStore();
+  const { add, edit, remove, load, loadImage, photos, photosLoaded } = usePhotosStore();
+
+  const getDefaults = useCallback(
+    (id: PhotoId | undefined) => {
+      const currentPhoto = id && photos.find((photo) => photo.id === id);
+      if (!currentPhoto) {
+        return undefined;
+      }
+      return {
+        ...currentPhoto,
+        image: currentPhoto.image as string,
+      };
+    },
+    [photos]
+  );
 
   const createDialogOkHandler = useCallback(
     (id: PhotoId | undefined, handleOk: (item: IPhoto | IPhotoData) => void) =>
@@ -26,8 +40,12 @@ export const PhotosPage = ({ className }: IPhotosPageProps) => {
   useEffect(() => {
     if (!photosLoaded) {
       load();
+      return;
     }
-  }, [load, photosLoaded]);
+    photos.forEach(({ id }) => {
+      loadImage(id);
+    });
+  }, [load, loadImage, photos, photosLoaded]);
 
   return (
     <ManagementProvider
@@ -38,7 +56,7 @@ export const PhotosPage = ({ className }: IPhotosPageProps) => {
       renderDialog={({ open, id, title, okText, onOk, onClose }) => (
         <PhotoDialog
           open={open}
-          defaults={photos.find((photo) => photo.id === id)}
+          defaults={getDefaults(id)}
           title={title}
           okText={okText}
           onOk={createDialogOkHandler(id, onOk)}

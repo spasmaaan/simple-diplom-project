@@ -8,5 +8,11 @@ export const buildDevServer = (options: BuildOptions): Configuration => {
     open: true,
     historyApiFallback: true,
     hot: true,
+    proxy: [
+      {
+        context: ['/api'],
+        target: 'http://localhost:5063',
+      },
+    ],
   };
 };

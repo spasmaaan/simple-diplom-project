@@ -7,6 +7,92 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <None Remove="SeedData\CommercialServices\Images\1.jpg" />
+    <None Remove="SeedData\CommercialServices\Images\2.jpg" />
+    <None Remove="SeedData\DishCategories\Images\1.jpg" />
+    <None Remove="SeedData\DishCategories\Images\2.jpg" />
+    <None Remove="SeedData\Dishes\Images\1.jpg" />
+    <None Remove="SeedData\Dishes\Images\2.jpg" />
+    <None Remove="SeedData\Dishes\Images\3.jpg" />
+    <None Remove="SeedData\Photos\Images\1.jpg" />
+    <None Remove="SeedData\Photos\Images\10.jpg" />
+    <None Remove="SeedData\Photos\Images\11.jpg" />
+    <None Remove="SeedData\Photos\Images\12.jpg" />
+    <None Remove="SeedData\Photos\Images\13.jpg" />
+    <None Remove="SeedData\Photos\Images\2.jpg" />
+    <None Remove="SeedData\Photos\Images\3.jpg" />
+    <None Remove="SeedData\Photos\Images\4.jpg" />
+    <None Remove="SeedData\Photos\Images\5.jpg" />
+    <None Remove="SeedData\Photos\Images\6.jpg" />
+    <None Remove="SeedData\Photos\Images\7.jpg" />
+    <None Remove="SeedData\Photos\Images\8.jpg" />
+    <None Remove="SeedData\Photos\Images\9.jpg" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Content Include="SeedData\CommercialServices\Images\1.jpg">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="SeedData\CommercialServices\Images\2.jpg">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="SeedData\DishCategories\Images\1.jpg">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="SeedData\DishCategories\Images\2.jpg">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="SeedData\Dishes\Images\3.jpg">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="SeedData\Dishes\Images\2.jpg">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="SeedData\Dishes\Images\1.jpg">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="SeedData\Photos\Images\1.jpg">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="SeedData\Photos\Images\10.jpg">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="SeedData\Photos\Images\11.jpg">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="SeedData\Photos\Images\12.jpg">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="SeedData\Photos\Images\13.jpg">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="SeedData\Photos\Images\2.jpg">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="SeedData\Photos\Images\3.jpg">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="SeedData\Photos\Images\4.jpg">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="SeedData\Photos\Images\5.jpg">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="SeedData\Photos\Images\6.jpg">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="SeedData\Photos\Images\7.jpg">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="SeedData\Photos\Images\8.jpg">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="SeedData\Photos\Images\9.jpg">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+  </ItemGroup>
+
+  <ItemGroup>
     <PackageReference Include="Microsoft.AspNetCore.Identity.EntityFrameworkCore" Version="8.0.10" />
     <PackageReference Include="Microsoft.EntityFrameworkCore.Design" Version="8.0.10">
       <PrivateAssets>all</PrivateAssets>

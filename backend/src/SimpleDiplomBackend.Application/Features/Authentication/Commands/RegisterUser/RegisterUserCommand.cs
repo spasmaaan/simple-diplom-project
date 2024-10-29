@@ -49,8 +49,6 @@ namespace SimpleDiplomBackend.Application.Features.Authentication.Commands.Regis
                 LastName = request.LastName,
                 Email = request.Email
             }, cancellationToken);
-
-           
         }
     }
 }

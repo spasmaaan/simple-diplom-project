@@ -26,6 +26,9 @@ namespace SimpleDiplomBackend.Persistence.Configurations
                 .HasMaxLength(500)
                 .IsRequired();
 
+            builder.Property(e => e.PreviewMimeType)
+                .HasColumnName("previewMimeType");
+
             builder.Property(e => e.PreviewImage)
                 .HasColumnName("previewImage");
 

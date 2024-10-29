@@ -1,12 +1,12 @@
 import { backendGet, backendPost, backendPut } from 'shared/api';
 import { BookingBackendUrl } from 'shared/config';
-import { BookingId, IBooking, IBookingData } from '../lib';
-import { MOCK_BOOKINGS } from './mock';
+import { IPaginationResult } from 'shared/types';
+import { IBooking, IBookingData } from '../lib';
 
 const getBookingsPath = (url: string = '') => `${BookingBackendUrl}${url}`;
 
-export const loadBookings = async (): Promise<IBooking[]> => {
-  return MOCK_BOOKINGS; // (await backendGet(null, getBookingsPath())).json();
+export const loadBookings = async (): Promise<IPaginationResult<IBooking>> => {
+  return (await backendGet(null, getBookingsPath())).json();
 };
 
 export const addBooking = async (bookingData: IBookingData): Promise<IBooking> => {

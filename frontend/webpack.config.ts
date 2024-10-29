@@ -1,6 +1,7 @@
 import path from 'path';
 import { Configuration } from 'webpack';
 import { BuildPaths, BuildEnv, buildWebpackConfig } from './config/webpack';
+import 'dotenv/config';
 
 export default (env: BuildEnv): Configuration => {
   const paths: BuildPaths = {

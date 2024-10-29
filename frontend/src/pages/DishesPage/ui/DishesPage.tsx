@@ -20,6 +20,7 @@ export const DishesPage = ({ className }: IDishesPageProps) => {
     editDish,
     removeDish,
     loadDish,
+    loadDishImage,
     loadCategories,
   } = useDishesStore();
 
@@ -59,8 +60,12 @@ export const DishesPage = ({ className }: IDishesPageProps) => {
     }
     if (!dishesLoaded) {
       loadDish();
+    } else {
+      dishes.forEach(({ id }) => {
+        loadDishImage(id);
+      });
     }
-  }, [dishesLoaded, categoriesLoaded, loadCategories, loadDish]);
+  }, [dishesLoaded, categoriesLoaded, dishes, loadCategories, loadDish, loadDishImage]);
 
   if (!categoryId) {
     return null;

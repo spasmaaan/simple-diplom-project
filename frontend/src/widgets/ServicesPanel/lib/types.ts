@@ -1,8 +1,8 @@
-import { IService, ServiceId } from 'entities/services';
+import { ServiceId, IServiceState } from 'entities/services';
 
 export interface IServicesPanelProps {
   className?: string;
-  services: IService[];
+  services: IServiceState[];
   showCounts: boolean;
   counts: Record<ServiceId, number>;
   pricePostfix?: string;

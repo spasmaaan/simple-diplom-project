@@ -1,9 +1,9 @@
-import { DishId, IDish, IDishCategory } from 'entities/dishes';
+import { DishId, IDishCategory, IDishState } from 'entities/dishes';
 
 export interface IDishesPanelProps {
   className?: string;
   category?: IDishCategory;
-  dishes: IDish[];
+  dishes: IDishState[];
   showCounts: boolean;
   counts: Record<DishId, number>;
   pricePostfix?: string;

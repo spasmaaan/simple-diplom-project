@@ -30,7 +30,6 @@ namespace SimpleDiplomBackend.Application.Features.Service.Queries.GetAll
                     Id = p.Id,
                     Name = p.Name,
                     Description = p.Description,
-                    PreviewImage = p.PreviewImage,
                     Price = p.Price,               
                 })
                 .OrderBy(p => p.Name)

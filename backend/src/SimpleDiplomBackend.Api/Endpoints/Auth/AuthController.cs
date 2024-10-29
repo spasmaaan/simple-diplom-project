@@ -1,17 +1,23 @@
 ﻿
 using MediatR;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using SimpleDiplomBackend.Application.Features.Authentication.Commands.AddClaimToUser;
 using SimpleDiplomBackend.Application.Features.Authentication.Commands.AddUserToRole;
 using SimpleDiplomBackend.Application.Features.Authentication.Commands.CreateRole;
 using SimpleDiplomBackend.Application.Features.Authentication.Commands.Login;
+using SimpleDiplomBackend.Application.Features.Authentication.Commands.Logout;
 using SimpleDiplomBackend.Application.Features.Authentication.Commands.RefreshToken;
 using SimpleDiplomBackend.Application.Features.Authentication.Commands.RegisterUser;
 using SimpleDiplomBackend.Application.Features.Authentication.Commands.RemoveUserFromRole;
 using SimpleDiplomBackend.Application.Features.Authentication.Queries.GetAllRoles;
+using SimpleDiplomBackend.Application.Features.Authentication.Queries.GetProfile;
 using SimpleDiplomBackend.Application.Features.Authentication.Queries.GetUserClaims;
 using SimpleDiplomBackend.Application.Features.Authentication.Queries.GetUserRoles;
+using SimpleDiplomBackend.Application.Shared.Extensions;
+using System.Net;
+using System.Text.RegularExpressions;
 
 namespace SimpleDiplomBackend.Api.Endpoints.Auth
 {
@@ -39,17 +45,16 @@ namespace SimpleDiplomBackend.Api.Endpoints.Auth
         {
             var command = new LoginCommand()
             {
-                Email = request.User.Trim(),
+                Email = request.Email.Trim(),
                 Password = request.Password.Trim()
             };
 
             var result = await _mediator.Send(command);
             return Ok(result);
-
         }
 
         /// <summary>
-        ///  refresh JWT when expired.
+        /// Refresh JWT when expired.
         /// </summary>
         /// <param name="request"></param>
         /// <returns></returns>
@@ -92,6 +97,47 @@ namespace SimpleDiplomBackend.Api.Endpoints.Auth
 
             await _mediator.Send(command);
             return Ok();
+        }
+
+
+        /// <summary>
+        /// Logout user.
+        /// </summary>
+        /// <returns></returns>
+        [HttpPost]
+        [ApiVersion("1.0")]
+        [Route("api/v{version:apiVersion}/auth/logout")]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [Authorize]
+        public async Task<IActionResult> Logout()
+        {
+            var command = new LogoutCommand()
+            {
+                AccessToken = Request.GetBearerToken(),
+            };
+
+            await _mediator.Send(command);
+            return Ok();
+        }
+
+        /// <summary>
+        /// Get current user info.
+        /// </summary>
+        /// <returns></returns>
+        [HttpGet]
+        [ApiVersion("1.0")]
+        [Route("api/v{version:apiVersion}/auth/profile")]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [Authorize]
+        public async Task<IActionResult> CurrentUser()
+        {
+            var command = new GetProfileQuery()
+            {
+                AccessToken = Request.GetBearerToken(),
+            };
+
+            var result = await _mediator.Send(command);
+            return Ok(result);
         }
 
         /// <summary>

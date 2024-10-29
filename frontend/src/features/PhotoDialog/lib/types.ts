@@ -9,3 +9,7 @@ export interface IPhotoDialogProps {
   onOk: (data: IPhotoData) => void;
   onClose: () => void;
 }
+
+export interface IPhotoDialogDefaults extends IPhotoData {
+  image: string;
+}

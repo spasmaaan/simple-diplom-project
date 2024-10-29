@@ -1,3 +1,5 @@
+import { IImageItem } from 'shared/types';
+
 export type DishCategoryId = number;
 export type DishId = number;
 
@@ -11,6 +13,8 @@ export interface IDishCategory extends IDishCategoryData {
   id: DishCategoryId;
 }
 
+export interface IDishCategoryState extends IDishCategory, IImageItem {}
+
 export interface IDishData {
   name: string;
   description: string;
@@ -23,3 +27,5 @@ export interface IDishData {
 export interface IDish extends IDishData {
   id: DishId;
 }
+
+export interface IDishState extends IDish, IImageItem {}

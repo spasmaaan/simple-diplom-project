@@ -8,7 +8,7 @@ namespace SimpleDiplomBackend.Application.Features.Authentication.Interfaces
         Task AddClaimToUser(string email, string claimName, string claimValue);
         Task AddUserToRoleAsync(string email, string roleName);
         Task CreateRoleAsync(string roleName);
-        Task<List<AppUser>> GetAllUsersAsync();
+        Task<List<UserInfo>> GetUsersAsync(Func<string, bool>? emailFilter = null);
         Task<IEnumerable<string?>> GetRolesAsync();
         Task<IList<Claim>> GetUserClaimsAsync(string email);
         Task<IList<string>> GetUserRolesAsync(string email);

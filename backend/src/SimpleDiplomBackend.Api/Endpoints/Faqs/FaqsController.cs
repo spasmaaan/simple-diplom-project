@@ -34,7 +34,7 @@ namespace SimpleDiplomBackend.Api.Endpoints.Faq
             var query = new GetAllFaqsQuery()
             {
                 SearchTerm = "",
-                Offset = 0,
+                Offset = 1,
                 Limit = 10000,
             };
             var result = await _mediator.Send(query);

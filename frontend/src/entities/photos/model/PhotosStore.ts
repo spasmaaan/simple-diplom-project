@@ -1,7 +1,7 @@
 import { create } from 'zustand';
 import { deleteElementWithId, setElementWithId } from 'shared/helpers';
-import { IPhoto, IPhotoData, PhotoId, PhotosAction, PhotosState } from '../lib';
-import { addPhoto, editPhoto, loadPhotos, removePhoto } from '../api';
+import { IPhoto, IPhotoData, IPhotoState, PhotoId, PhotosAction, PhotosState } from '../lib';
+import { addPhoto, editPhoto, loadImage, loadPhotos, removePhoto } from '../api';
 
 export const usePhotosStoreBase = create<PhotosState & PhotosAction>()((set, get) => ({
   photosLoading: false,
@@ -13,8 +13,57 @@ export const usePhotosStoreBase = create<PhotosState & PhotosAction>()((set, get
       return;
     }
     set(() => ({ photosLoaded: false, photosLoading: true }));
-    const photos = await loadPhotos();
-    set(() => ({ photosLoaded: true, photosLoading: false, photos }));
+    const result = await loadPhotos();
+    set(() => ({
+      photosLoaded: true,
+      photosLoading: false,
+      photos: result.items.map((item) => ({ ...item, loading: false, url: null, data: null })),
+    }));
+  },
+  loadImage: async (id: PhotoId) => {
+    const { photosLoaded, photosLoading, photos } = get();
+    if (!photosLoaded || photosLoading) {
+      return;
+    }
+    const currentPhoto = photos.find((photo) => photo.id === id);
+    if (currentPhoto && (currentPhoto.loading || currentPhoto.image != null)) {
+      return;
+    }
+    set((state) => ({
+      photos: state.photos.map((photo) => {
+        if (photo.id !== id) {
+          return photo;
+        }
+        return {
+          ...photo,
+          loading: true,
+        };
+      }),
+    }));
+    let data = null;
+    let url = null;
+    let image = '';
+    try {
+      data = await loadImage(id);
+      url = URL.createObjectURL(data);
+      image = await data.text();
+    } catch (error) {
+      console.error(error);
+    }
+    set((state) => ({
+      photos: state.photos.map((photo) => {
+        if (photo.id !== id) {
+          return photo;
+        }
+        return {
+          ...photo,
+          loading: false,
+          image,
+          url,
+          data,
+        };
+      }),
+    }));
   },
   add: async (photoData: IPhotoData) => {
     if (!get().photosLoaded) {
@@ -26,7 +75,18 @@ export const usePhotosStoreBase = create<PhotosState & PhotosAction>()((set, get
     }
     set(() => ({ photosLoading: true }));
     const addedPhoto = await addPhoto(photoData);
-    set((state) => ({ photosLoading: false, photos: [...state.photos, addedPhoto] }));
+    set((state) => ({
+      photosLoading: false,
+      photos: [
+        ...state.photos,
+        {
+          ...addedPhoto,
+          loading: false,
+          url: null,
+          data: null,
+        },
+      ],
+    }));
   },
   edit: async (photo: IPhoto) => {
     if (!get().photosLoaded) {
@@ -49,7 +109,7 @@ export const usePhotosStoreBase = create<PhotosState & PhotosAction>()((set, get
       return;
     }
     set(() => ({ photosLoading: true }));
-    const removedPhoto = await removePhoto(photoId);
+    const removedPhoto = (await removePhoto(photoId)) as IPhotoState;
     set((state) => ({
       photosLoading: false,
       photos: deleteElementWithId(state.photos, removedPhoto),

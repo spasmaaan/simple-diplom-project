@@ -1,8 +1,8 @@
-import { DishCategoryId, IDishCategory } from 'entities/dishes';
+import { DishCategoryId, IDishCategoryState } from 'entities/dishes';
 
 export interface IDishCategoriesPanelProps {
   className?: string;
-  dishCategories: IDishCategory[];
+  dishCategories: IDishCategoryState[];
   onAdd: () => void;
   onEdit: (id: DishCategoryId) => void;
   onRemove: (id: DishCategoryId) => void;

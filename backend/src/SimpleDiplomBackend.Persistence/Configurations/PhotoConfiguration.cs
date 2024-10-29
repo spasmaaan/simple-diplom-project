@@ -17,9 +17,13 @@ namespace SimpleDiplomBackend.Persistence.Configurations
                 .HasColumnName("id")
                 .ValueGeneratedOnAdd();
 
+            builder.Property(e => e.MimeType)
+                .HasColumnName("mimeType");
+
             builder.Property(e => e.Image)
                 .HasColumnName("image")
                 .IsRequired();
+
         }
     }
 }

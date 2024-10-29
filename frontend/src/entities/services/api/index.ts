@@ -1,12 +1,15 @@
 import { backendDelete, backendGet, backendPost, backendPut } from 'shared/api';
 import { ServicesBackendUrl } from 'shared/config';
+import { IPaginationResult } from 'shared/types';
 import { IService, IServiceData, ServiceId } from '../lib';
-import { MOCK_SERVICES } from './mock';
 
 const getServicesPath = (url: string = '') => `${ServicesBackendUrl}${url}`;
 
-export const loadServices = async (): Promise<IService[]> => {
-  return MOCK_SERVICES; // (await backendGet(null, getServicesPath())).json();
+export const loadServices = async (): Promise<IPaginationResult<IService>> => {
+  return (await backendGet(null, getServicesPath())).json();
+};
+export const loadServiceImage = async (id: ServiceId): Promise<Blob> => {
+  return (await backendGet(null, getServicesPath(`/${id}`))).blob();
 };
 export const addService = async (serviceData: IServiceData): Promise<IService> => {
   return (await backendPost(null, getServicesPath(), serviceData)).json();

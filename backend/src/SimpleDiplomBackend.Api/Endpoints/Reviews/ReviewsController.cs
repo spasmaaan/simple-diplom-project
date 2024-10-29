@@ -25,7 +25,11 @@ namespace SimpleDiplomBackend.Api.Endpoints.Reviews
         [ProducesResponseType(StatusCodes.Status200OK)]
         public async Task<IActionResult> GetAll()
         {
-            var query = new GetAllQuery();
+            var query = new GetAllQuery
+            {
+                Offset = 1,
+                Limit = 10000,
+            };
             var result = await _mediator.Send(query);
 
             return Ok(result);

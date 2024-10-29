@@ -1,10 +1,11 @@
-import { Typography, Flex, Card, Space, Button, Statistic, InputNumber } from 'antd';
+import { Typography, Flex, Card, Space, Button, Statistic, InputNumber, Spin } from 'antd';
 import { useAuthStore } from 'entities/auth';
 import { DeleteOutlined, EditOutlined } from '@ant-design/icons';
-import { useCallback } from 'react';
+import { useCallback, useMemo } from 'react';
 import { AddItemCard } from 'shared/components/AddItemCard';
 import cn from 'classnames';
 import { useNavigate } from 'react-router-dom';
+import { UserRole } from 'entities/auth/lib/constants';
 import { IDishesPanelProps, ItemCartWidth, ItemImageHeight, MinItemsCount } from '../lib';
 
 import * as styles from './DishesPanel.module.scss';
@@ -23,8 +24,11 @@ export const DishesPanel = ({
   onRemove,
   onChangeCount,
 }: IDishesPanelProps) => {
-  const { isAdmin } = useAuthStore();
+  const { userInfo } = useAuthStore();
   const navigateTo = useNavigate();
+
+  const isAdmin = useMemo(() => Boolean(userInfo?.roles.includes(UserRole.Admin)), [userInfo]);
+
   const toDishCategories = useCallback(() => {
     navigateTo('../cuisine');
   }, [navigateTo]);
@@ -49,7 +53,11 @@ export const DishesPanel = ({
           return (
             <Card key={dish.id} style={{ width: ItemCartWidth }}>
               <Space className={styles.Item} direction="vertical">
-                <img src={dish.previewImage} alt="Service" width={ItemImageHeight} />
+                {dish.loading || !dish.url ? (
+                  <Spin style={{ width: ItemCartWidth, height: ItemCartWidth }} />
+                ) : (
+                  <img src={dish.url} alt="Dish" width={ItemImageHeight} />
+                )}
                 {isAdmin && (
                   <Space
                     className={styles.Controls}

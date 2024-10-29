@@ -29,8 +29,7 @@ namespace SimpleDiplomBackend.Application.Features.Dishes.Queries.GetAllDishCate
                 {
                     Id = p.Id,
                     Name = p.Name,
-                    Description = p.Description,
-                    PreviewImage = p.PreviewImage,              
+                    Description = p.Description,           
                 })
                 .OrderBy(p => p.Name)
                 .PaginatedListAsync(request.Offset, request.Limit, cancellationToken);
