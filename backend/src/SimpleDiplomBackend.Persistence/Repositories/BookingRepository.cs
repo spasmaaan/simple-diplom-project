@@ -36,5 +36,14 @@ namespace SimpleDiplomBackend.Persistence.Repositories
         {
             throw new NotImplementedException();
         }
+
+        public Task UpdateDishes(Domain.Entities.Booking booking, Dictionary<int, int>? dishes)
+        {
+            throw new NotImplementedException();
+        }
+        public Task UpdateServices(Domain.Entities.Booking booking, Dictionary<int, int>? services)
+        {
+            throw new NotImplementedException();
+        }
     }
 }

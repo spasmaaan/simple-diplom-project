@@ -1,9 +1,9 @@
 .AdminPage {
-  display: flex;
   height: 100%;
-  flex-direction: column;
+  width: 100%;
+  padding: 1rem;
 }
 
-.Sheet {
-  flex-grow: 1;
+.CardBody {
+  padding: 0 !important;
 }

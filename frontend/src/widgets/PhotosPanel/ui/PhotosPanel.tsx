@@ -19,11 +19,7 @@ export const PhotosPanel = ({
   onRemove,
 }: IPhotosPanelProps) => {
   const { userInfo } = useAuthStore();
-  const isAdmin = useMemo(
-    // DEBUG
-    () => true || Boolean(userInfo?.roles.includes(UserRole.Admin)),
-    [userInfo]
-  );
+  const isAdmin = useMemo(() => Boolean(userInfo?.roles.includes(UserRole.Admin)), [userInfo]);
   const photosList = useMemo(
     () => photos.map((photo) => photo.url).filter((url) => url != null) as string[],
     [photos]

@@ -5,6 +5,7 @@ using SimpleDiplomBackend.Application.Features.Booking.Commands.UpdateBooking;
 using SimpleDiplomBackend.Application.Features.Booking.Queries.GetAll;
 using SimpleDiplomBackend.Application.Features.Booking.Commands.CreateBooking;
 using Microsoft.AspNetCore.Authorization;
+using SimpleDiplomBackend.Application.Shared.Extensions;
 
 namespace SimpleDiplomBackend.Api.Endpoints.Bookings
 {
@@ -38,6 +39,18 @@ namespace SimpleDiplomBackend.Api.Endpoints.Bookings
             return Ok(result);
         }
 
+        [HttpGet]
+        [ApiVersion("1.0")]
+        [Route("api/v{version:apiVersion}/bookings/freeTime")]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        public async Task<IActionResult> GetAllFreeTime()
+        {
+            var query = new GetAllFreeTimeQuery();
+            var result = await _mediator.Send(query);
+
+            return Ok(result);
+        }
+
         [HttpPost]
         [ApiVersion("1.0")]
         [Route("api/v{version:apiVersion}/bookings")]
@@ -47,10 +60,11 @@ namespace SimpleDiplomBackend.Api.Endpoints.Bookings
         {
             var command = new CreateBookingCommand()
             {
-                // TODO: ПОлучить юзера.
-                UserId = "",
+                AccessToken = Request.GetBearerToken(),
                 StartDate = request.StartDate,
-                EndDate = request.EndDate
+                EndDate = request.EndDate,
+                Dishes = request.Dishes,
+                Services = request.Services
             };
             var result = await _mediator.Send(command);
 

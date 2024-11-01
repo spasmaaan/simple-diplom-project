@@ -6,8 +6,15 @@
   width: 100%;
 }
 
+.Card,
+.CardBody,
+.CardContent {
+  height: 100%;
+}
+
 .Item {
   width: 100%;
+  height: 100%;
   padding: 0.5rem;
 }
 

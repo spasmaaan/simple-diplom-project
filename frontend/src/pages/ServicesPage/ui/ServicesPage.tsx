@@ -4,12 +4,14 @@ import { ServiceDialog } from 'features/ServiceDialog';
 import { useCallback, useEffect } from 'react';
 import { ManagementProvider } from 'widgets/ManagementProvider';
 import { ServicesPanel } from 'widgets/ServicesPanel';
+import { useBookingStore } from 'entities/booking';
 import { IServicesPageProps } from '../lib';
 
 import * as styles from './ServicesPage.module.scss';
 
 export const ServicesPage = ({ className }: IServicesPageProps) => {
   const { services, servicesLoaded, add, edit, remove, load, loadImage } = useServiceStore();
+  const { newBooking, setService } = useBookingStore();
 
   const createDialogOkHandler = useCallback(
     (id: ServiceId | undefined, handleOk: (item: IService | IServiceData) => void) =>
@@ -54,8 +56,8 @@ export const ServicesPage = ({ className }: IServicesPageProps) => {
             services={services}
             pricePostfix="₽"
             showCounts
-            counts={{}}
-            onChangeCount={() => {}}
+            counts={newBooking?.services || {}}
+            onChangeCount={setService}
             onAdd={onAdd}
             onEdit={onEdit}
             onRemove={onRemove}

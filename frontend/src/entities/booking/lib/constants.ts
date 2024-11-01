@@ -1,8 +1,8 @@
 export enum BookingStatus {
-  Processing = 0,
-  Approved = 1,
-  Paid = 2,
-  InProgress = 3,
-  Completed = 4,
-  Rejected = 5,
+  Processing = 1,
+  Approved = 2,
+  Paid = 3,
+  InProgress = 4,
+  Completed = 5,
+  Rejected = 6,
 }

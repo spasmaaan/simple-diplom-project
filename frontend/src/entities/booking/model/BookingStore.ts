@@ -3,13 +3,17 @@ import { DishId } from 'entities/dishes/lib';
 import { ServiceId } from 'entities/services/lib';
 import { getItemById, setElementWithId } from 'shared/helpers';
 import { BookingAction, BookingId, BookingState, IBooking, IBookingData } from '../lib';
-import { addBooking, loadBookings, updateBooking } from '../api';
+import { addBooking, loadBookings, loadFreeTime, updateBooking } from '../api';
 import { BookingStatus } from '../lib/constants';
 
 export const useBookingStoreBase = create<BookingState & BookingAction>()((set, get) => ({
   bookingsLoading: false,
   bookingsLoaded: false,
   bookings: [],
+  freeTimeLoaded: false,
+  freeTimeLoading: false,
+  freeTime: [],
+  newBooking: {},
   load: async () => {
     const { bookingsLoaded, bookingsLoading } = get();
     if (bookingsLoaded || bookingsLoading) {
@@ -18,6 +22,15 @@ export const useBookingStoreBase = create<BookingState & BookingAction>()((set, 
     set(() => ({ bookingsLoaded: false, bookingsLoading: true }));
     const result = await loadBookings();
     set(() => ({ bookingsLoaded: true, bookingsLoading: false, bookings: result.items }));
+  },
+  loadFreeTime: async () => {
+    const { freeTimeLoaded, freeTimeLoading } = get();
+    if (freeTimeLoaded || freeTimeLoading) {
+      return;
+    }
+    set(() => ({ freeTimeLoaded: false, freeTimeLoading: true }));
+    const freeTime = await loadFreeTime();
+    set(() => ({ freeTimeLoaded: true, freeTimeLoading: false, freeTime }));
   },
   add: async (bookingData: IBookingData) => {
     if (!get().bookingsLoaded) {
@@ -75,36 +88,41 @@ export const useBookingStoreBase = create<BookingState & BookingAction>()((set, 
       statusId: BookingStatus.Rejected,
     });
   },
-  setDish: async (bookingId: BookingId, dishId: DishId, count: number) => {
-    if (!get().bookingsLoaded) {
-      await get().load();
-    }
-    const booking = getItemById(get().bookings, bookingId);
-    if (!booking) {
-      return;
-    }
-    get().edit({
-      id: bookingId,
-      dishes: {
-        ...booking.item.dishes,
-        [dishId]: count,
-      },
+  clearNewBooking: () => {
+    set(() => ({
+      newBooking: {},
+    }));
+  },
+  setDish: (dishId: DishId, count: number) => {
+    set((state) => {
+      const dishes = state.newBooking?.dishes || {};
+      if (count > 0) {
+        dishes[dishId] = count;
+      } else {
+        delete dishes[dishId];
+      }
+      return {
+        newBooking: {
+          ...state.newBooking,
+          dishes,
+        },
+      };
     });
   },
-  setService: async (bookingId: BookingId, serviceId: ServiceId, count: number) => {
-    if (!get().bookingsLoaded) {
-      await get().load();
-    }
-    const booking = getItemById(get().bookings, bookingId);
-    if (!booking) {
-      return;
-    }
-    get().edit({
-      id: bookingId,
-      services: {
-        ...booking.item.services,
-        [serviceId]: count,
-      },
+  setService: (serviceId: ServiceId, count: number) => {
+    set((state) => {
+      const services = state.newBooking?.services || {};
+      if (count > 0) {
+        services[serviceId] = count;
+      } else {
+        delete services[serviceId];
+      }
+      return {
+        newBooking: {
+          ...state.newBooking,
+          services,
+        },
+      };
     });
   },
 }));

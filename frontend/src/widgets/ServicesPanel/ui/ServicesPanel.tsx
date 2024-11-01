@@ -34,21 +34,33 @@ export const ServicesPanel = ({
         const serviceCount = counts[service.id] || 0;
         const serviceMaxCount = service.maxCount;
         return (
-          <Card key={service.id} style={{ width: ItemCartWidth }}>
-            <Space className={styles.Item} direction="vertical">
-              {service.loading || !service.url ? (
-                <Spin style={{ width: ItemCartWidth, height: ItemCartWidth }} />
-              ) : (
-                <img src={service.url} alt="Service" width={ItemImageHeight} />
-              )}
-              {isAdmin && (
-                <Space className={styles.Controls} direction="horizontal" size="small" align="end">
-                  <Button icon={<EditOutlined />} onClick={() => onEdit(service.id)} />
-                  <Button icon={<DeleteOutlined />} onClick={() => onRemove(service.id)} />
-                </Space>
-              )}
-              <Paragraph strong>{service.name}</Paragraph>
-              <Paragraph>{service.description}</Paragraph>
+          <Card
+            key={service.id}
+            className={styles.Card}
+            classNames={{ body: styles.CardBody }}
+            style={{ width: ItemCartWidth }}
+          >
+            <Flex justify="space-between" vertical className={styles.CardContent}>
+              <Space className={styles.Item} direction="vertical">
+                {service.loading || !service.url ? (
+                  <Spin style={{ width: ItemCartWidth, height: ItemCartWidth }} />
+                ) : (
+                  <img src={service.url} alt="Service" width={ItemImageHeight} />
+                )}
+                {isAdmin && (
+                  <Space
+                    className={styles.Controls}
+                    direction="horizontal"
+                    size="small"
+                    align="end"
+                  >
+                    <Button icon={<EditOutlined />} onClick={() => onEdit(service.id)} />
+                    <Button icon={<DeleteOutlined />} onClick={() => onRemove(service.id)} />
+                  </Space>
+                )}
+                <Paragraph strong>{service.name}</Paragraph>
+                <Paragraph>{service.description}</Paragraph>
+              </Space>
               <Flex justify="space-between">
                 <Statistic title="Цена" value={`${service.price}${pricePostfix || ''}`} />
                 {showCounts && (
@@ -62,7 +74,7 @@ export const ServicesPanel = ({
                   </Space>
                 )}
               </Flex>
-            </Space>
+            </Flex>
           </Card>
         );
       })}

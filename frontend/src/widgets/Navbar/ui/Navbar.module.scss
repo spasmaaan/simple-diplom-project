@@ -5,21 +5,26 @@
   gap: 1rem;
 }
 
+.Title {
+  cursor: default;
+}
+
 .FeaturesContainer {
   width: 100%;
   display: flex;
   justify-content: space-between;
-}
-
-.AdminMenuContainer {
-  background-color: grey;
+  align-items: center;
 }
 
 .Profile {
   margin-right: 1rem;
 }
 
-.BookingButton {
+.Button {
+  border-width: 0;
+}
+
+.ActiveButton {
   border-width: 0;
 
   > span {

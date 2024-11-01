@@ -99,7 +99,6 @@ export const DishDialog = ({
       onClose={closeDialog}
     >
       <Space className={styles.Content} direction="vertical" size="middle">
-        <Select className={styles.CategoriesSelect} options={categoriesList} value={categoryId} onChange={onCategoryChanged} />
         <Input placeholder="Наименование" value={name} onChange={onNameChanged} />
         <Input placeholder="Описание" value={description} onChange={onDescriptionChanged} />
         <UploadImageCard

@@ -1,6 +1,7 @@
 import { IUser } from 'entities/auth/lib';
 
-const getFirstUpperLetterText = (text: string | undefined) => (text || '').toLocaleUpperCase();
+const getFirstUpperLetterText = (text: string | undefined) =>
+  (text || '').toLocaleUpperCase()[0] || '';
 
 export const getAvatarText = (user: IUser | null): string =>
   user

@@ -23,16 +23,19 @@ namespace SimpleDiplomBackend.Application.Features.Booking.Queries.GetAll
 
         public async Task<PaginatedList<BookingDto>> Handle(GetAllQuery request, CancellationToken cancellationToken)
         {
+            var statuses = await _dbContext.BookingStatuses.ToDictionaryAsync(x => x.Id, y => y.Name);
             return await _dbContext.Bookings
                 .AsNoTracking()
                 .Select(p => new BookingDto
                 {
-                    Id = p.Id,
-                    UserId = p.UserId, // FIXME: Only god
+                    Id = p.Id, 
+                    UserId = p.UserId, // FIXME: Only authorized
                     CreationDate = p.CreationDate,
                     StartDate = p.StartDate,
                     EndDate = p.EndDate,
                     StatusId = p.StatusId,
+                    StatusName = statuses[p.StatusId],
+                    Comment = p.Comment,
                     // TODO: Добавить извлечение dishes.
                     Dishes = new Dictionary<int, int>(),
                     // TODO: Добавить извлечение services.

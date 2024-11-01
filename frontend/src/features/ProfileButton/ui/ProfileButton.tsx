@@ -1,3 +1,4 @@
+import cn from 'classnames';
 import { Avatar, Button, Dropdown, MenuProps } from 'antd';
 import { useCallback, useMemo, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
@@ -14,6 +15,7 @@ export const ProfileButton = ({ className }: IProfileButtonProps) => {
   const [loginDialogOpened, setLoginDialogOpened] = useState(false);
 
   const isAdmin = useMemo(() => Boolean(userInfo?.roles.includes(UserRole.Admin)), [userInfo]);
+  const isManager = useMemo(() => Boolean(userInfo?.roles.includes(UserRole.Manager)), [userInfo]);
   const avatarText = useMemo(() => getAvatarText(userInfo), [userInfo]);
 
   const openLoginDialog = useCallback(() => {
@@ -56,9 +58,21 @@ export const ProfileButton = ({ className }: IProfileButtonProps) => {
     const additionalItems: MenuProps['items'] = [];
     if (isAdmin) {
       additionalItems.push({
+        key: 'administration',
+        label: 'Администрирование',
+        onClick: () => navigateTo('/administration'),
+      });
+      additionalItems.push({
         key: 'statistics',
         label: 'Статистика',
         onClick: () => navigateTo('/statistics'),
+      });
+    }
+    if (isAdmin || isManager) {
+      additionalItems.push({
+        key: 'manage',
+        label: 'Управление',
+        onClick: () => navigateTo('/manage'),
       });
     }
     return [
@@ -82,7 +96,7 @@ export const ProfileButton = ({ className }: IProfileButtonProps) => {
         onClick: logout,
       },
     ];
-  }, [authenticated, isAdmin, userInfo, toProfile, logout, navigateTo]);
+  }, [authenticated, isAdmin, isManager, userInfo, toProfile, logout, navigateTo]);
 
   return (
     <div className={styles.Wrapper}>
@@ -95,7 +109,7 @@ export const ProfileButton = ({ className }: IProfileButtonProps) => {
       <div className={styles.Content}>
         {authenticated ? (
           <Dropdown menu={{ items: menuItems }}>
-            <Avatar size={32} shape="square" style={{ background: 'pink' }} className={className}>
+            <Avatar size={42} shape="circle" className={cn(styles.Avatar, className)}>
               {avatarText}
             </Avatar>
           </Dropdown>

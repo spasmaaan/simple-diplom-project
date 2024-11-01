@@ -36,7 +36,7 @@ export const UploadImageCard = ({
       customRequest={() => {}}
     >
       {previewLoadedImage && previewLoadedImage.length > 0 ? (
-        <img src={previewLoadedImage} alt="Uploading_photo" className={styles.PreviewImage} />
+        <img src={previewLoadedImage} alt="Upload" className={styles.PreviewImage} />
       ) : (
         <AddItemContent
           text={text}

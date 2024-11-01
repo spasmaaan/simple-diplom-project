@@ -7,7 +7,7 @@ export interface IServiceData {
   description: string;
   previewImage: string;
   price: number;
-  maxCount?: number;
+  maxCount: number;
 }
 
 export interface IService extends IServiceData {

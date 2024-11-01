@@ -61,6 +61,7 @@ export const useAuthStoreBase = create<AuthState & AuthAction>()((set, get) => (
     const { errors, ...token } = await login(userId, password);
     if (!errors) {
       set(() => ({ authenticated: true, authLoading: false, token }));
+      await get().loadUserInfo();
       return null;
     }
     set(() => ({ authenticated: false, authLoading: false }));

@@ -10,6 +10,7 @@ namespace SimpleDiplomBackend.Application.Features.Booking.Commands.UpdateBookin
         public DateTime? StartDate { get; set; }
         public DateTime? EndDate { get; set; }
         public int? StatusId { get; set; }
+        public string? Comment { get; set; }
         public Dictionary<int, int>? Dishes { get; set; }
         public Dictionary<int, int>? Services { get; set; }
     }
@@ -39,21 +40,27 @@ namespace SimpleDiplomBackend.Application.Features.Booking.Commands.UpdateBookin
             {
                 entity.EndDate = request.EndDate.Value;
             }
+            if (request.Comment != null)
+            {
+                entity.Comment = request.Comment;
+            }
             if (request.StatusId.HasValue)
             {
                 entity.StatusId = request.StatusId.Value;
             }
-            if (request.Dishes != null)
-            {
-                // entity.Dishes = request.Dishes;
-            }
-            if (request.Services != null)
-            {
-                // entity.Dishes = request.Dishes;
-            }
 
             // update dish record
             await _bookingReporsitory.Update(entity);
+
+            if (request.Dishes != null)
+            {
+                await _bookingReporsitory.UpdateDishes(entity, request.Dishes);
+            }
+            if (request.Services != null)
+            {
+                await _bookingReporsitory.UpdateDishes(entity, request.Services);
+            }
+
             return entity;
         }
     }

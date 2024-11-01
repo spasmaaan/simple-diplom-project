@@ -12,17 +12,20 @@ namespace SimpleDiplomBackend.Persistence.SeedData.CommercialServices
 {
     internal static class CommercialServicesData
     {
-        private static readonly CommercialService[] _services = (new (int, string, string, decimal, string)[]
+        private static readonly CommercialService[] _services = (new (int, string, string, decimal, int, string)[]
             {
-                (1, "Сервис 1", "Описание сервиса 1", 10, "1.jpg"),
-                (2, "Сервис 2", "Описание сервиса 2", 12, "2.jpg"),
+                (1, "Лепестки роз", "Количество 1 л.", 400, 10, "1.jpg"),
+                (2, "Свечи на стол", "Свечи, создающие романтическую обстановку. Цена за 1 шт.", 50, 10, "2.jpg"),
+                (3, "Воздушные шары", "Романтические шары с гелием. Цена за 1 шт.", 200, 30, "3.jpg"),
+                (4, "Фотосессия", "В стоимость входит работа фотографа в течении 2-х оборотов колеса.", 2000, 1, "4.jpg"),
             })
-            .Select(((int Id, string Name, string Description, decimal Price, string FileName) dish) => new CommercialService
+            .Select(((int Id, string Name, string Description, decimal Price, int MaxCount, string FileName) dish) => new CommercialService
             {
                 Id = dish.Id,
                 Name = dish.Name,
                 Description = dish.Description,
                 Price = dish.Price,
+                MaxCount = dish.MaxCount,
                 PreviewMimeType = DataFileLoaderUtilities.GetFileMimeType(dish.FileName),
                 PreviewImage = DataFileLoaderUtilities.GetFileData($"SeedData/{nameof(CommercialServices)}/Images/{dish.FileName}")
             })

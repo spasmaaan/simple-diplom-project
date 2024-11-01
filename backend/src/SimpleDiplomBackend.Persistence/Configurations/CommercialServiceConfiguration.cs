@@ -35,6 +35,10 @@ namespace SimpleDiplomBackend.Persistence.Configurations
             builder.Property(e => e.Price)
                 .HasColumnName("price")
                 .IsRequired();
+
+            builder.Property(e => e.MaxCount)
+                .HasColumnName("maxCount")
+                .IsRequired();
         }
     }
 }

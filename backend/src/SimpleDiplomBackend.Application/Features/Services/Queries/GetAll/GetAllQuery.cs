@@ -30,7 +30,8 @@ namespace SimpleDiplomBackend.Application.Features.Service.Queries.GetAll
                     Id = p.Id,
                     Name = p.Name,
                     Description = p.Description,
-                    Price = p.Price,               
+                    Price = p.Price,
+                    MaxCount = p.MaxCount,
                 })
                 .OrderBy(p => p.Name)
                 .PaginatedListAsync(request.Offset, request.Limit, cancellationToken);

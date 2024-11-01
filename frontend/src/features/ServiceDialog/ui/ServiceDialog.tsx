@@ -18,7 +18,7 @@ export const ServiceDialog = ({
   const [description, setDescription] = useState<string>('');
   const [previewImage, setPreviewImage] = useState<string>('');
   const [price, setPrice] = useState<number>(0);
-  const [maxCount, setMaxCount] = useState<number | undefined>();
+  const [maxCount, setMaxCount] = useState<number>(1);
 
   const onNameChanged = useCallback((event?: ChangeEvent<HTMLInputElement>) => {
     setName(event?.target.value || '');
@@ -33,9 +33,9 @@ export const ServiceDialog = ({
     setPrice(value || 0);
   }, []);
   const onMaxCountChanged = useCallback((value: number | null) => {
-    let currentValue: number | undefined = value || 0;
-    if (!currentValue || currentValue <= 0) {
-      currentValue = undefined;
+    let currentValue: number = value || 1;
+    if (currentValue < 1) {
+      currentValue = 1;
     }
     setMaxCount(currentValue);
   }, []);
@@ -45,7 +45,7 @@ export const ServiceDialog = ({
     setDescription('');
     setPreviewImage('');
     setPrice(0);
-    setMaxCount(undefined);
+    setMaxCount(1);
 
     onClose();
   }, [onClose]);
@@ -65,7 +65,7 @@ export const ServiceDialog = ({
     setDescription(defaults?.description || '');
     setPreviewImage(defaults?.previewImage || '');
     setPrice(defaults?.price || 0);
-    setMaxCount(defaults?.maxCount);
+    setMaxCount(defaults?.maxCount || 1);
   }, [defaults]);
 
   return (

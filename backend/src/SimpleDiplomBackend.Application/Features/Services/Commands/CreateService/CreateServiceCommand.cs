@@ -10,6 +10,7 @@ namespace SimpleDiplomBackend.Booking.Features.Service.Commands.CreateService
         public string Description { get; set; } = string.Empty;
         public byte[]? PreviewImage { get; set; }
         public decimal Price { get; set; }
+        public int MaxCount { get; set; }
     }
 
     public class CreateServiceCommandHandler : IRequestHandler<CreateServiceCommand, CommercialService>
@@ -28,7 +29,8 @@ namespace SimpleDiplomBackend.Booking.Features.Service.Commands.CreateService
                 Name = request.Name,
                 Description = request.Description,
                 PreviewImage = request.PreviewImage,
-                Price = request.Price
+                Price = request.Price,
+                MaxCount = request.MaxCount
             };
 
             var added = _dbContext.CommercialServices.Add(entity);

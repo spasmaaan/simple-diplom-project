@@ -8,5 +8,6 @@
         public string PreviewMimeType { get; set; } = string.Empty;
         public byte[]? PreviewImage { get; set; }
         public decimal Price { get; set; }
+        public int MaxCount { get; set; }
     }
 }

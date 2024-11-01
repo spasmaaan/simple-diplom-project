@@ -43,7 +43,7 @@ export const DishesPanel = ({
           {category?.name}
         </Title>
       </Flex>
-      <Flex className={cn(styles.Services, className)} wrap>
+      <Flex className={cn(styles.Dishes, className)} wrap>
         {isAdmin && (
           <AddItemCard className={styles.Item} text="Блюдо" width={ItemCartWidth} onClick={onAdd} />
         )}
@@ -51,26 +51,33 @@ export const DishesPanel = ({
           const dishCount = counts[dish.id] || 0;
           const serviceMaxCount = dish.maxCount;
           return (
-            <Card key={dish.id} style={{ width: ItemCartWidth }}>
-              <Space className={styles.Item} direction="vertical">
-                {dish.loading || !dish.url ? (
-                  <Spin style={{ width: ItemCartWidth, height: ItemCartWidth }} />
-                ) : (
-                  <img src={dish.url} alt="Dish" width={ItemImageHeight} />
-                )}
-                {isAdmin && (
-                  <Space
-                    className={styles.Controls}
-                    direction="horizontal"
-                    size="small"
-                    align="end"
-                  >
-                    <Button icon={<EditOutlined />} onClick={() => onEdit(dish.id)} />
-                    <Button icon={<DeleteOutlined />} onClick={() => onRemove(dish.id)} />
-                  </Space>
-                )}
-                <Paragraph strong>{dish.name}</Paragraph>
-                <Paragraph>{dish.description}</Paragraph>
+            <Card
+              key={dish.id}
+              className={styles.Card}
+              classNames={{ body: styles.CardBody }}
+              style={{ width: ItemCartWidth }}
+            >
+              <Flex justify="space-between" vertical className={styles.CardContent}>
+                <Space className={styles.Item} direction="vertical">
+                  {dish.loading || !dish.url ? (
+                    <Spin style={{ width: ItemCartWidth, height: ItemCartWidth }} />
+                  ) : (
+                    <img src={dish.url} alt="Dish" width={ItemImageHeight} />
+                  )}
+                  {isAdmin && (
+                    <Space
+                      className={styles.Controls}
+                      direction="horizontal"
+                      size="small"
+                      align="end"
+                    >
+                      <Button icon={<EditOutlined />} onClick={() => onEdit(dish.id)} />
+                      <Button icon={<DeleteOutlined />} onClick={() => onRemove(dish.id)} />
+                    </Space>
+                  )}
+                  <Paragraph strong>{dish.name}</Paragraph>
+                  <Paragraph>{dish.description}</Paragraph>
+                </Space>
                 <Flex justify="space-between">
                   <Statistic title="Цена" value={`${dish.price}${pricePostfix || ''}`} />
                   {showCounts && (
@@ -84,7 +91,7 @@ export const DishesPanel = ({
                     </Space>
                   )}
                 </Flex>
-              </Space>
+              </Flex>
             </Card>
           );
         })}

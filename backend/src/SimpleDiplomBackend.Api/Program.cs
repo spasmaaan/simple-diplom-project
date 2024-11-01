@@ -10,13 +10,9 @@ using SimpleDiplomBackend.Application;
 using SimpleDiplomBackend.Application.Shared.Interface;
 using SimpleDiplomBackend.Infrastructure;
 using SimpleDiplomBackend.Persistence;
-using Quartz;
 using Serilog;
 using Swashbuckle.AspNetCore.SwaggerGen;
 using System.Reflection;
-using Microsoft.AspNetCore.Identity;
-using Microsoft.Extensions.DependencyInjection;
-using SimpleDiplomBackend.Infrastructure.Auth;
 
 var builder = WebApplication.CreateBuilder(args);
 

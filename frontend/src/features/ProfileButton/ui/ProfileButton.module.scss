@@ -1,7 +1,14 @@
 .Wrapper {
-    padding-left: 2rem;
+  padding-left: 2rem;
+
 }
 
 .Content {
-    position: relative;
+  position: relative;
+}
+
+.Avatar {
+  background: rgb(65, 88, 208);
+  margin-top: -4px;
+  cursor: default;
 }

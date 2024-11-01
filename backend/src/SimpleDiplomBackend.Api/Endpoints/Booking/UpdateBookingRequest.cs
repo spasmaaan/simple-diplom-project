@@ -8,6 +8,7 @@ namespace SimpleDiplomBackend.Api.Endpoints.Bookings
         public DateTime? StartDate { get; set; }
         public DateTime? EndDate { get; set; }
         public int? StatusId { get; set; }
+        public string? Comment { get; set; }
         public Dictionary<int, int>? Dishes { get; set; }
         public Dictionary<int, int>? Services { get; set; }
     }

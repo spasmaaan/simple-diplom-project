@@ -1,9 +1,29 @@
 .BookingsPage {
-  display: flex;
   height: 100%;
-  flex-direction: column;
+  padding: 1rem;
 }
 
-.Sheet {
-  flex-grow: 1;
+.BookingsPanel {
+  min-width: 700px;
+}
+
+.CreateBookingTitle {
+  padding-bottom: 1rem;
+}
+
+.CreateBookingOptions {
+  width: 400px;
+}
+
+.CreateBookingCalendar {
+  color: inherit;
+}
+
+.CreateBookingCalendarItem {
+  justify-content: flex-end;
+}
+
+.CreateBookingControls {
+  padding-top: 1rem;
+  gap: 1rem;
 }

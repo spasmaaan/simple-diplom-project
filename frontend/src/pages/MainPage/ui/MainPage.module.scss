@@ -1,9 +1,68 @@
 .MainPage {
   display: flex;
   height: 100%;
+  width: 100%;
+  overflow: hidden;
   flex-direction: column;
+  background-color: #8EC5FC;
+  background-image: linear-gradient(62deg, #8EC5FC 0%, #E0C3FC 100%);
 }
 
-.Sheet {
-  flex-grow: 1;
+.Button {
+  position: absolute;
+  top: 71vh;
+  left: 19vw;
+  border-width: 0;
+  font-size: 1.5rem;
+  height: 3.5rem;
+  padding: 1rem 2rem;
+  border-radius: 1.2rem;
+
+  > span {
+    position: relative;
+  }
+
+  &::before {
+    content: '';
+    background: linear-gradient(135deg, #6253e1, #04befe);
+    position: absolute;
+    inset: 0;
+    opacity: 1;
+    transition: all 0.3s;
+    border-radius: inherit;
+  }
+
+  &:hover::before {
+    opacity: 0;
+  }
+}
+
+.Image {
+  position: absolute;
+  bottom: 107px;
+  right: 150px;
+  transform: scale(1.5);
+  opacity: 0.7;
+}
+
+.Hearts {
+  position: relative;
+  top: 0;
+  left: 0;
+  height: 100%;
+  width: 100%;
+  opacity: 0.15;
+  transform: rotate3d(12, -13, 8, 45deg);
+  background-size: 20rem;
+}
+
+.Text {
+  position: absolute;
+  top: 19vh;
+  left: 9vw;
+  width: 34vw;
+  height: 38vh;
+  padding: 1rem;
+  background-color: transparent;
+  border-width: 2px;
 }

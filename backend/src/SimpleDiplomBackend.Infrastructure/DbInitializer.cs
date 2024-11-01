@@ -3,11 +3,41 @@ using Microsoft.Extensions.DependencyInjection;
 using SimpleDiplomBackend.Infrastructure.Auth;
 using SimpleDiplomBackend.Application.Features.Authentication.Models;
 using SimpleDiplomBackend.Application.Features.Authentication.Interfaces;
+using SimpleDiplomBackend.Application.Shared.Enums;
 
 namespace SimpleDiplomBackend.Infrastructure
 {
     public static class DbInitializer
     {
+        private class InitAppUser
+        {
+            public AppUser User { get; set; }
+            public string Password { get; set; } = string.Empty;
+            public string Role { get; set; } = string.Empty;
+
+            public InitAppUser((string Email, string Password, string FirstName, string LastName, string Role) user)
+            {
+                User = new AppUser
+                {
+                    Email = user.Email,
+                    FirstName = user.FirstName,
+                    LastName = user.LastName
+                };
+                Password = user.Password;
+                Role = user.Role;
+            }
+        }
+
+        private static readonly InitAppUser[] _users = (new (string, string, string, string, string)[]
+            {
+                ("admin@admin.ru", "ADMIN!admin1", "Админ", "Главный", UserRole.Admin),
+                ("t1@t.test", "ADMIN!admin1", "Тестовый", "Пользователь", UserRole.Client),
+                ("t2@t.test", "ADMIN!admin1", "Второй", "Тестовый", UserRole.Client),
+                ("m@t.test", "ADMIN!admin1", "Сотрудник", "Пользователь", UserRole.Manager),
+            })
+            .Select(((string, string, string, string, string) user) => new InitAppUser(user))
+            .ToArray();
+
         public static IApplicationBuilder UseInitializeInfrastructureDatabase(this IApplicationBuilder application, bool doReinitDatabase)
         {
             if (doReinitDatabase)
@@ -33,23 +63,17 @@ namespace SimpleDiplomBackend.Infrastructure
             using IServiceScope serviceScope = application.ApplicationServices.CreateScope();
             IAuthenticationService authService = serviceScope.ServiceProvider.GetService<IAuthenticationService>()!;
 
-            string[] roles = { "admin", "manager", "client" };
-            
+            string[] roles = { UserRole.Admin, UserRole.Manager, UserRole.Client };
             foreach (var role in roles)
             {
                 await authService.CreateRoleAsync(role);
             }
 
-            var user = new AppUser
+            foreach (var user in _users)
             {
-                FirstName = "admin",
-                LastName = "admin",
-                Email = "admin@admin.ru",
-            };
-            var result = await authService.RegisterUserAsync(user, "ADMIN!admin1");
-
-            await authService.AddUserToRoleAsync(user.Email, "admin");
-
+                var result = await authService.RegisterUserAsync(user.User, user.Password);
+                await authService.AddUserToRoleAsync(user.User.Email, user.Role);
+            }
         }
     }
 }

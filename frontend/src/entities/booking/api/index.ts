@@ -1,12 +1,17 @@
 import { backendGet, backendPost, backendPut } from 'shared/api';
 import { BookingBackendUrl } from 'shared/config';
 import { IPaginationResult } from 'shared/types';
-import { IBooking, IBookingData } from '../lib';
+import { IBooking, IBookingData, IBookingFreeTime } from '../lib';
+import { MOCK_BOOKINGS } from './mock';
 
 const getBookingsPath = (url: string = '') => `${BookingBackendUrl}${url}`;
 
 export const loadBookings = async (): Promise<IPaginationResult<IBooking>> => {
-  return (await backendGet(null, getBookingsPath())).json();
+  return MOCK_BOOKINGS; // (await backendGet(null, getBookingsPath())).json();
+};
+
+export const loadFreeTime = async (): Promise<IBookingFreeTime[]> => {
+  return (await backendGet(null, getBookingsPath('/freeTime'))).json();
 };
 
 export const addBooking = async (bookingData: IBookingData): Promise<IBooking> => {

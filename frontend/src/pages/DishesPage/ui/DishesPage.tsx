@@ -5,6 +5,7 @@ import { useCallback, useEffect, useMemo } from 'react';
 import { DishesPanel } from 'widgets/DishesPanel';
 import { ManagementProvider } from 'widgets/ManagementProvider';
 import { useMatch } from 'react-router-dom';
+import { useBookingStore } from 'entities/booking';
 import { IDishesPageProps } from '../lib';
 
 import * as styles from './DishesPage.module.scss';
@@ -23,6 +24,7 @@ export const DishesPage = ({ className }: IDishesPageProps) => {
     loadDishImage,
     loadCategories,
   } = useDishesStore();
+  const { newBooking, setDish } = useBookingStore();
 
   const categoryId: number | null = useMemo(() => {
     if (!match?.params.dishCategoryId) {
@@ -92,10 +94,10 @@ export const DishesPage = ({ className }: IDishesPageProps) => {
           <DishesPanel
             category={currentCategory}
             dishes={currentDishes}
-            counts={{}}
+            counts={newBooking?.dishes || {}}
             showCounts
             pricePostfix="₽"
-            onChangeCount={() => {}}
+            onChangeCount={setDish}
             onAdd={onAdd}
             onEdit={onEdit}
             onRemove={onRemove}

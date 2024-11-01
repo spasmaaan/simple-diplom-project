@@ -13,7 +13,13 @@
   color: black !important;
 }
 
-.Services {
+.Card,
+.CardBody,
+.CardContent {
+  height: 100%;
+}
+
+.Dishes {
   gap: 0.5rem;
 }
 

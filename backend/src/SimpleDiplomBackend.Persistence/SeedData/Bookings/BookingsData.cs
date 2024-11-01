@@ -1,5 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using SimpleDiplomBackend.Domain.Entities;
+using SimpleDiplomBackend.Domain.Shared;
 
 namespace SimpleDiplomBackend.Persistence.SeedData.Bookings
 {
@@ -7,7 +8,12 @@ namespace SimpleDiplomBackend.Persistence.SeedData.Bookings
     {
         private static readonly BookingStatus[] _bookingStatuses = (new (int, string)[]
             {
-                (1, "Готово"),
+                ((int)BookingStatusType.Processing, "Ожидает отправки"),
+                ((int)BookingStatusType.Approved, "На подтверждении"),
+                ((int)BookingStatusType.Paid, "Ожидание оплаты"),
+                ((int)BookingStatusType.InProgress, "Забронировано"),
+                ((int)BookingStatusType.Completed, "Выполнено"),
+                ((int)BookingStatusType.Rejected, "Отклонено"),
             })
             .Select(((int Id, string Name) dishLink) => new BookingStatus
             {
@@ -18,7 +24,7 @@ namespace SimpleDiplomBackend.Persistence.SeedData.Bookings
 
         private static readonly Domain.Entities.Booking[] _bookings = (new (int, DateTime, string, DateTime, DateTime, int)[]
             {
-                (1, new DateTime(2024, 3, 2), "admin@admin.ru", new DateTime(2024, 3, 3), new DateTime(2024, 3, 4), 1),
+                (1, new DateTime(2024, 3, 2), "admin@admin.ru", new DateTime(2024, 3, 3), new DateTime(2024, 3, 4), (int)BookingStatusType.Paid),
             })
             .Select(((int Id, DateTime CreationDate, string UserId, DateTime StartDate, DateTime EndDate, int StatusId) booking) => new Domain.Entities.Booking
             {

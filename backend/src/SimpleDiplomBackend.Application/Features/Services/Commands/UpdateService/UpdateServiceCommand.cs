@@ -12,6 +12,7 @@ namespace SimpleDiplomBackend.Application.Features.Service.Commands.UpdateServic
         public string? Description { get; set; }
         public byte[]? PreviewImage { get; set; }
         public decimal? Price { get; set; }
+        public int? MaxCount { get; set; }
     }
 
     public class UpdateServiceCommandHandler : IRequestHandler<UpdateServiceCommand, CommercialService>
@@ -47,6 +48,10 @@ namespace SimpleDiplomBackend.Application.Features.Service.Commands.UpdateServic
             if (request.PreviewImage != null)
             {
                 entity.PreviewImage = request.PreviewImage;
+            }
+            if (request.MaxCount.HasValue)
+            {
+                entity.MaxCount = request.MaxCount.Value;
             }
 
             // update dish record
